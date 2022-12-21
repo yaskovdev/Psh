@@ -20,7 +20,7 @@ package org.spiderland.Psh;
  * The Push stack type for integers.
  */
 
-public class intStack extends Stack {
+public class IntStack extends Stack {
 	private static final long serialVersionUID = 1L;
 
 	protected int _stack[];
@@ -31,7 +31,7 @@ public class intStack extends Stack {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final intStack other = (intStack) obj;
+		final IntStack other = (IntStack) obj;
 		if (_size != other._size)
 			return false;
 		for (int i = 0; i < _size; i++)

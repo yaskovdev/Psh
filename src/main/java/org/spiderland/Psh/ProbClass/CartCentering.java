@@ -24,8 +24,8 @@ import org.spiderland.Psh.ObjectStack;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.booleanStack;
-import org.spiderland.Psh.floatStack;
+import org.spiderland.Psh.BooleanStack;
+import org.spiderland.Psh.FloatStack;
 
 /**
  * A sample problem class for testing the cart centering problem. This solves
@@ -86,8 +86,8 @@ public class CartCentering extends PushGP {
 		for(int step = 1; step <= timeSteps; step++){
 			_interpreter.ClearStacks();
 
-			floatStack fStack = _interpreter.floatStack();
-			booleanStack bStack = _interpreter.boolStack();
+			FloatStack fStack = _interpreter.floatStack();
+			BooleanStack bStack = _interpreter.boolStack();
 			ObjectStack iStack = _interpreter.inputStack();
 			
 			// Position will be on the top of the stack, and velocity will be

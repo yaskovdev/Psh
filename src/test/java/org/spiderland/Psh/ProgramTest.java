@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.spiderland.Psh.test;
+package org.spiderland.Psh;
 
 import junit.framework.*;
 import org.spiderland.Psh.*;

@@ -23,7 +23,7 @@ import org.spiderland.Psh.ObjectPair;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.floatStack;
+import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.TestCase.TestCaseGenerator;
 
 /**
@@ -100,7 +100,7 @@ public class FloatSymbolicRegression extends PushGP {
 
 		float currentInput = (Float) inInput;
 
-		floatStack stack = _interpreter.floatStack();
+		FloatStack stack = _interpreter.floatStack();
 
 		stack.push(currentInput);
 
@@ -125,7 +125,7 @@ public class FloatSymbolicRegression extends PushGP {
 
 		float currentInput = (Float) inTestCase._input;
 
-		floatStack stack = _interpreter.floatStack();
+		FloatStack stack = _interpreter.floatStack();
 
 		stack.push(currentInput);
 

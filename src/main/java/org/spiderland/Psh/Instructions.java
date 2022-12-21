@@ -131,7 +131,7 @@ class Shove extends StackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack iStack = inI.intStack();
+		IntStack iStack = inI.intStack();
 		
 		if (iStack.size() > 0) {
 			int index = iStack.pop();
@@ -168,7 +168,7 @@ class Yank extends StackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack iStack = inI.intStack();
+		IntStack iStack = inI.intStack();
 		
 		if (iStack.size() > 0) {
 			int index = iStack.pop();
@@ -191,7 +191,7 @@ class YankDup extends StackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack iStack = inI.intStack();
+		IntStack iStack = inI.intStack();
 		
 		if (iStack.size() > 0) {
 			int index = iStack.pop();
@@ -214,7 +214,7 @@ class Depth extends StackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack stack = inI.intStack();
+		IntStack stack = inI.intStack();
 		stack.push(_stack.size());
 	}
 }
@@ -292,7 +292,7 @@ abstract class BinaryIntegerInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack stack = inI.intStack();
+		IntStack stack = inI.intStack();
 
 		if (stack.size() > 1) {
 			int a, b;
@@ -464,7 +464,7 @@ abstract class UnaryIntInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack stack = inI.intStack();
+		IntStack stack = inI.intStack();
 
 		if (stack.size() > 0)
 			stack.push(UnaryOperator(stack.pop()));
@@ -542,8 +542,8 @@ class IntegerFromFloat extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack iStack = inI.intStack();
-		floatStack fStack = inI.floatStack();
+		IntStack iStack = inI.intStack();
+		FloatStack fStack = inI.floatStack();
 		
 		if(fStack.size() > 0){
 			iStack.push((int) fStack.pop());
@@ -556,8 +556,8 @@ class IntegerFromBoolean extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bStack = inI.boolStack();
-		intStack iStack = inI.intStack();
+		BooleanStack bStack = inI.boolStack();
+		IntStack iStack = inI.intStack();
 		
 		if(bStack.size() > 0){
 			if(bStack.pop()){
@@ -581,8 +581,8 @@ abstract class BinaryIntegerBoolInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
-		booleanStack bstack = inI.boolStack();
+		IntStack istack = inI.intStack();
+		BooleanStack bstack = inI.boolStack();
 
 		if (istack.size() > 1) {
 			int a, b;
@@ -631,7 +631,7 @@ abstract class BinaryFloatInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		floatStack stack = inI.floatStack();
+		FloatStack stack = inI.floatStack();
 
 		if (stack.size() > 1) {
 			float a, b;
@@ -801,7 +801,7 @@ abstract class UnaryFloatInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		floatStack stack = inI.floatStack();
+		FloatStack stack = inI.floatStack();
 
 		if (stack.size() > 0)
 			stack.push(UnaryOperator(stack.pop()));
@@ -938,8 +938,8 @@ class FloatFromInteger extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack iStack = inI.intStack();
-		floatStack fStack = inI.floatStack();
+		IntStack iStack = inI.intStack();
+		FloatStack fStack = inI.floatStack();
 		
 		if(iStack.size() > 0){
 			fStack.push(iStack.pop());
@@ -952,8 +952,8 @@ class FloatFromBoolean extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bStack = inI.boolStack();
-		floatStack fStack = inI.floatStack();
+		BooleanStack bStack = inI.boolStack();
+		FloatStack fStack = inI.floatStack();
 		
 		if(bStack.size() > 0){
 			if(bStack.pop()){
@@ -977,8 +977,8 @@ abstract class BinaryFloatBoolInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		floatStack fstack = inI.floatStack();
-		booleanStack bstack = inI.boolStack();
+		FloatStack fstack = inI.floatStack();
+		BooleanStack bstack = inI.boolStack();
 
 		if (fstack.size() > 1) {
 			float a, b;
@@ -1028,7 +1028,7 @@ abstract class BinaryBoolInstruction extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack stack = inI.boolStack();
+		BooleanStack stack = inI.boolStack();
 
 		if (stack.size() > 1) {
 			boolean a, b;
@@ -1109,8 +1109,8 @@ class BooleanFromInteger extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bStack = inI.boolStack();
-		intStack iStack = inI.intStack();
+		BooleanStack bStack = inI.boolStack();
+		IntStack iStack = inI.intStack();
 		
 		if(iStack.size() > 0){
 			bStack.push(iStack.pop() != 0);
@@ -1123,8 +1123,8 @@ class BooleanFromFloat extends Instruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bStack = inI.boolStack();
-		floatStack fStack = inI.floatStack();
+		BooleanStack bStack = inI.boolStack();
+		FloatStack fStack = inI.floatStack();
 		
 		if(fStack.size() > 0){
 			bStack.push(fStack.pop() != 0.0);
@@ -1196,7 +1196,7 @@ class InputIndex extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 
 		if (istack.size() > 0 && _stack.size() > 0) {
 			int index = istack.pop();
@@ -1228,7 +1228,7 @@ class CodeDoRange extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 1) {
@@ -1270,7 +1270,7 @@ class CodeDoTimes extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 0) {
@@ -1318,7 +1318,7 @@ class CodeDoCount extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 0) {
@@ -1358,7 +1358,7 @@ class CodeFromBoolean extends Instruction {
 	@Override
 	public void Execute(Interpreter inI) {
 		ObjectStack codeStack = inI.codeStack();
-		booleanStack bStack = inI.boolStack();
+		BooleanStack bStack = inI.boolStack();
 		
 		if(bStack.size() > 0){
 			codeStack.push(bStack.pop());
@@ -1372,7 +1372,7 @@ class CodeFromInteger extends Instruction {
 	@Override
 	public void Execute(Interpreter inI) {
 		ObjectStack codeStack = inI.codeStack();
-		intStack iStack = inI.intStack();
+		IntStack iStack = inI.intStack();
 		
 		if(iStack.size() > 0){
 			codeStack.push(iStack.pop());
@@ -1386,7 +1386,7 @@ class CodeFromFloat extends Instruction {
 	@Override
 	public void Execute(Interpreter inI) {
 		ObjectStack codeStack = inI.codeStack();
-		floatStack fStack = inI.floatStack();
+		FloatStack fStack = inI.floatStack();
 		
 		if(fStack.size() > 0){
 			codeStack.push(fStack.pop());
@@ -1405,7 +1405,7 @@ class ExecDoRange extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 1) {
@@ -1448,7 +1448,7 @@ class ExecDoTimes extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 0) {
@@ -1495,7 +1495,7 @@ class ExecDoCount extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		intStack istack = inI.intStack();
+		IntStack istack = inI.intStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 0 && istack.size() > 0) {
@@ -1651,7 +1651,7 @@ class ObjectEquals extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bstack = inI.boolStack();
+		BooleanStack bstack = inI.boolStack();
 
 		if (_stack.size() > 1) {
 			Object o1 = _stack.pop();
@@ -1671,7 +1671,7 @@ class If extends ObjectStackInstruction {
 
 	@Override
 	public void Execute(Interpreter inI) {
-		booleanStack bstack = inI.boolStack();
+		BooleanStack bstack = inI.boolStack();
 		ObjectStack estack = inI.execStack();
 
 		if (_stack.size() > 1 && bstack.size() > 0) {

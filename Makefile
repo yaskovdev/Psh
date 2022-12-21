@@ -34,7 +34,7 @@ tilde:
 	rm -f org/spiderland/Psh/*~
 
 test:
-	java -cp junit-4.4.jar:. junit.textui.TestRunner org.spiderland.Psh.test.ProgramTest
+	java -cp junit-4.4.jar:. junit.textui.TestRunner org.spiderland.Psh.ProgramTest
 
 docs:
 	javadoc -d docs/api org.spiderland.Psh

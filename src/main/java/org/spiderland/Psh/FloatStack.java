@@ -19,7 +19,7 @@ package org.spiderland.Psh;
 /**
  * The Push stack type for object-based data (Strings, Programs, etc.)
  */
-public class floatStack extends Stack {
+public class FloatStack extends Stack {
 	private static final long serialVersionUID = 1L;
 
 	protected float _stack[];
@@ -30,7 +30,7 @@ public class floatStack extends Stack {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final floatStack other = (floatStack) obj;
+		final FloatStack other = (FloatStack) obj;
 		if (_size != other._size)
 			return false;
 		for (int i = 0; i < _size; i++)

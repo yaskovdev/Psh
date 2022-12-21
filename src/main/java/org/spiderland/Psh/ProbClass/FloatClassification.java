@@ -22,7 +22,7 @@ import org.spiderland.Psh.Interpreter;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.floatStack;
+import org.spiderland.Psh.FloatStack;
 
 public class FloatClassification extends PushGP {
 	private static final long serialVersionUID = 1L;
@@ -69,7 +69,7 @@ public class FloatClassification extends PushGP {
 
 		_currentInput = (Float) inInput;
 
-		floatStack stack = _interpreter.floatStack();
+		FloatStack stack = _interpreter.floatStack();
 
 		stack.push(_currentInput);
 

@@ -23,7 +23,7 @@ import org.spiderland.Psh.ObjectPair;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.intStack;
+import org.spiderland.Psh.IntStack;
 import org.spiderland.Psh.TestCase.TestCaseGenerator;
 
 /**
@@ -99,7 +99,7 @@ public class IntSymbolicRegression extends PushGP {
 
 		int currentInput = (Integer) inInput;
 
-		intStack stack = _interpreter.intStack();
+		IntStack stack = _interpreter.intStack();
 
 		stack.push(currentInput);
 

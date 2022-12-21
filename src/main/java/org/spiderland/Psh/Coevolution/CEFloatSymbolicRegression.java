@@ -26,7 +26,7 @@ import org.spiderland.Psh.ObjectPair;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.floatStack;
+import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.TestCase.TestCaseGenerator;
 
 /**
@@ -146,7 +146,7 @@ public class CEFloatSymbolicRegression extends PushGP {
 
 		_currentInput = (Float) inInput;
 
-		floatStack fstack = _interpreter.floatStack();
+		FloatStack fstack = _interpreter.floatStack();
 
 		fstack.push(_currentInput);
 

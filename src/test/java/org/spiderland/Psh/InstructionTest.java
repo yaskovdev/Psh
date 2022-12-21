@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package org.spiderland.Psh.test;
+package org.spiderland.Psh;
 
 import junit.framework.TestCase;
-import org.spiderland.Psh.*;
 
 /**
  *
@@ -26,9 +25,9 @@ import org.spiderland.Psh.*;
 public class InstructionTest extends TestCase
 {
     protected Interpreter interpreter = null;
-    protected intStack istack = null;
-    protected floatStack fstack = null;
-    protected booleanStack bstack = null;
+    protected IntStack istack = null;
+    protected FloatStack fstack = null;
+    protected BooleanStack bstack = null;
 
     // Sets things up before each and every test in the test case
     
@@ -38,9 +37,9 @@ public class InstructionTest extends TestCase
         interpreter = new Interpreter();
         Program instructionList = new Program(interpreter, "( )");
         interpreter.SetInstructions(instructionList);
-        istack = new intStack();
-        fstack = new floatStack();
-        bstack = new booleanStack();
+        istack = new IntStack();
+        fstack = new FloatStack();
+        bstack = new BooleanStack();
     }
 
     public void testNumberName() throws Exception

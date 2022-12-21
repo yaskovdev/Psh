@@ -28,13 +28,13 @@ public class InputPusher implements Serializable {
 			Object inObject = _stack.peek(n);
 
 			if (inObject instanceof Integer) {
-				intStack istack = inI.intStack();
+				IntStack istack = inI.intStack();
 				istack.push((Integer) inObject);
 			} else if (inObject instanceof Number) {
-				floatStack fstack = inI.floatStack();
+				FloatStack fstack = inI.floatStack();
 				fstack.push(((Number) inObject).floatValue());
 			} else if (inObject instanceof Boolean) {
-				booleanStack bstack = inI.boolStack();
+				BooleanStack bstack = inI.boolStack();
 				bstack.push((Boolean) inObject);
 
 			} else {

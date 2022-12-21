@@ -34,9 +34,9 @@ public class Interpreter implements Serializable {
 	protected ArrayList<AtomGenerator> _randomGenerators = new ArrayList<AtomGenerator>();
 
 	// Create the stacks.
-	protected intStack _intStack;
-	protected floatStack _floatStack;
-	protected booleanStack _boolStack;
+	protected IntStack _intStack;
+	protected FloatStack _floatStack;
+	protected BooleanStack _boolStack;
 	protected ObjectStack _codeStack;
 	protected ObjectStack _nameStack;
 	protected ObjectStack _execStack = new ObjectStack();
@@ -451,7 +451,7 @@ public class Interpreter implements Serializable {
 	 * Fetch the active integer stack.
 	 */
 
-	public intStack intStack() {
+	public IntStack intStack() {
 		return _intStack;
 	}
 
@@ -459,7 +459,7 @@ public class Interpreter implements Serializable {
 	 * Fetch the active float stack.
 	 */
 
-	public floatStack floatStack() {
+	public FloatStack floatStack() {
 		return _floatStack;
 	}
 
@@ -483,7 +483,7 @@ public class Interpreter implements Serializable {
 	 * Fetch the active bool stack.
 	 */
 
-	public booleanStack boolStack() {
+	public BooleanStack boolStack() {
 		return _boolStack;
 	}
 
@@ -519,17 +519,17 @@ public class Interpreter implements Serializable {
 	}
 
 	protected void AssignStacksFromFrame() {
-		_floatStack = (floatStack) _floatFrameStack.top();
-		_intStack = (intStack) _intFrameStack.top();
-		_boolStack = (booleanStack) _boolFrameStack.top();
+		_floatStack = (FloatStack) _floatFrameStack.top();
+		_intStack = (IntStack) _intFrameStack.top();
+		_boolStack = (BooleanStack) _boolFrameStack.top();
 		_codeStack = (ObjectStack) _codeFrameStack.top();
 		_nameStack = (ObjectStack) _nameFrameStack.top();
 	}
 
 	public void PushStacks() {
-		_floatFrameStack.push(new floatStack());
-		_intFrameStack.push(new intStack());
-		_boolFrameStack.push(new booleanStack());
+		_floatFrameStack.push(new FloatStack());
+		_intFrameStack.push(new IntStack());
+		_boolFrameStack.push(new BooleanStack());
 		_codeFrameStack.push(new ObjectStack());
 		_nameFrameStack.push(new ObjectStack());
 

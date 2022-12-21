@@ -20,7 +20,7 @@ package org.spiderland.Psh;
  * The Push stack type for booleans.
  */
 
-public class booleanStack extends Stack {
+public class BooleanStack extends Stack {
 	private static final long serialVersionUID = 1L;
 
 	protected boolean _stack[];
@@ -31,7 +31,7 @@ public class booleanStack extends Stack {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final booleanStack other = (booleanStack) obj;
+		final BooleanStack other = (BooleanStack) obj;
 		if (_size != other._size)
 			return false;
 		for (int i = 0; i < _size; i++)
