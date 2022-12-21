@@ -16,12 +16,13 @@
 
 package org.spiderland.Psh;
 
-import java.util.Vector;
-import junit.framework.TestCase;
-import org.spiderland.Psh.GenericStack;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class GenericStackTest extends TestCase
-{
+import java.util.Vector;
+
+public class GenericStackTest {
+    @Test
     public void testPushPop() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
@@ -37,21 +38,22 @@ public class GenericStackTest extends TestCase
         stringStack.push("value 2");
         stringVectorStack.push(null);
 
-        assertEquals(2, stringStack.size());
-        assertEquals(2, stringVectorStack.size());
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals(2, stringVectorStack.size());
 
-        assertEquals("value 2", stringStack.pop());
-        assertEquals(1, stringStack.size());
-        assertEquals("value 1", stringStack.pop());
-        assertEquals(0, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.pop());
+        Assert.assertEquals(1, stringStack.size());
+        Assert.assertEquals("value 1", stringStack.pop());
+        Assert.assertEquals(0, stringStack.size());
 
-        assertNull(stringVectorStack.pop());
-        assertEquals(vect, stringVectorStack.pop());
+        Assert.assertNull(stringVectorStack.pop());
+        Assert.assertEquals(vect, stringVectorStack.pop());
 
-        assertNull(stringStack.pop());
-        assertEquals(0, stringStack.size());
+        Assert.assertNull(stringStack.pop());
+        Assert.assertEquals(0, stringStack.size());
     }
 
+    @Test
     public void testPushAllReverse() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
@@ -63,12 +65,13 @@ public class GenericStackTest extends TestCase
 
         stringStack.PushAllReverse(stringStack2);
 
-        assertEquals(2, stringStack.size());
-        assertEquals(2, stringStack2.size());
-        assertEquals("value 1", stringStack2.pop());
-        assertEquals("value 2", stringStack2.pop());
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals(2, stringStack2.size());
+        Assert.assertEquals("value 1", stringStack2.pop());
+        Assert.assertEquals("value 2", stringStack2.pop());
     }
 
+    @Test
     public void testEquals() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
@@ -76,23 +79,24 @@ public class GenericStackTest extends TestCase
         GenericStack<Vector<String>> stringVectorStack = new GenericStack<Vector<String>>();
 
         System.out.println("StringStack type is " + stringStack.getClass());
-        assertTrue(stringStack.equals(stringVectorStack)); // see note in equals
-        assertTrue(stringStack.equals(stringStack2));
+        Assert.assertTrue(stringStack.equals(stringVectorStack)); // see note in equals
+        Assert.assertTrue(stringStack.equals(stringStack2));
 
-        assertEquals(stringStack.hashCode(), stringStack2.hashCode());
-        assertEquals(stringStack.hashCode(), stringVectorStack.hashCode()); // see note in equals
+        Assert.assertEquals(stringStack.hashCode(), stringStack2.hashCode());
+        Assert.assertEquals(stringStack.hashCode(), stringVectorStack.hashCode()); // see note in equals
 
         stringStack.push("value 1");
-        assertFalse(stringStack.equals(stringStack2));
-        assertFalse(stringStack.equals(stringVectorStack));
-        assertFalse(stringStack.hashCode() == stringStack2.hashCode());
+        Assert.assertFalse(stringStack.equals(stringStack2));
+        Assert.assertFalse(stringStack.equals(stringVectorStack));
+        Assert.assertFalse(stringStack.hashCode() == stringStack2.hashCode());
 
         stringStack2.push("value 1");
-        assertTrue(stringStack.equals(stringStack2));
+        Assert.assertTrue(stringStack.equals(stringStack2));
 
-        assertEquals(stringStack.hashCode(), stringStack2.hashCode());
+        Assert.assertEquals(stringStack.hashCode(), stringStack2.hashCode());
     }
 
+    @Test
     public void testPeek() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
@@ -100,47 +104,50 @@ public class GenericStackTest extends TestCase
         stringStack.push("value 1");
         stringStack.push("value 2");
 
-        assertEquals("value 1", stringStack.peek(0)); // deepest stack
-        assertEquals(2, stringStack.size());
-        assertEquals("value 2", stringStack.top());
-        assertEquals(2, stringStack.size());
-        assertEquals("value 2", stringStack.peek(1));
+        Assert.assertEquals("value 1", stringStack.peek(0)); // deepest stack
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.top());
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(1));
     }
 
+    @Test
     public void testDup() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
 
         stringStack.dup();
-        assertEquals(0, stringStack.size());
+        Assert.assertEquals(0, stringStack.size());
 
         stringStack.push("value 1");
         stringStack.push("value 2");
         stringStack.dup();
 
-        assertEquals(3, stringStack.size());
-        assertEquals("value 2", stringStack.peek(2));
-        assertEquals("value 2", stringStack.peek(1));
-        assertEquals("value 1", stringStack.peek(0));
+        Assert.assertEquals(3, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(2));
+        Assert.assertEquals("value 2", stringStack.peek(1));
+        Assert.assertEquals("value 1", stringStack.peek(0));
     }
 
+    @Test
     public void testSwap() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
 
         stringStack.push("value 1");
         stringStack.swap();
-        assertEquals(1, stringStack.size());
-        assertEquals("value 1", stringStack.peek(0));
+        Assert.assertEquals(1, stringStack.size());
+        Assert.assertEquals("value 1", stringStack.peek(0));
 
         stringStack.push("value 2");
         stringStack.swap();
 
-        assertEquals(2, stringStack.size());
-        assertEquals("value 1", stringStack.peek(1));
-        assertEquals("value 2", stringStack.peek(0));
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals("value 1", stringStack.peek(1));
+        Assert.assertEquals("value 2", stringStack.peek(0));
     }
 
+    @Test
     public void testRot() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
@@ -149,38 +156,39 @@ public class GenericStackTest extends TestCase
         stringStack.push("value 2");
         stringStack.rot();
 
-        assertEquals(2, stringStack.size());
-        assertEquals("value 2", stringStack.peek(1));
-        assertEquals("value 1", stringStack.peek(0));
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(1));
+        Assert.assertEquals("value 1", stringStack.peek(0));
 
         stringStack.push("value 3");
         stringStack.push("value 4");
         stringStack.rot();
-        assertEquals(4, stringStack.size());
-        assertEquals("value 2", stringStack.peek(3));
-        assertEquals("value 4", stringStack.peek(2));
-        assertEquals("value 3", stringStack.peek(1));
-        assertEquals("value 1", stringStack.peek(0));
+        Assert.assertEquals(4, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(3));
+        Assert.assertEquals("value 4", stringStack.peek(2));
+        Assert.assertEquals("value 3", stringStack.peek(1));
+        Assert.assertEquals("value 1", stringStack.peek(0));
    }
 
+    @Test
     public void testShove() throws Exception
     {
         GenericStack<String> stringStack = new GenericStack<String>();
 
         stringStack.shove("value 1", 0);
-        assertEquals(1, stringStack.size());
-        assertEquals("value 1", stringStack.peek(0));
+        Assert.assertEquals(1, stringStack.size());
+        Assert.assertEquals("value 1", stringStack.peek(0));
 
         stringStack.shove("value 2", 1);
-        assertEquals(2, stringStack.size());
-        assertEquals("value 2", stringStack.peek(0));
-        assertEquals("value 1", stringStack.peek(1));
+        Assert.assertEquals(2, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(0));
+        Assert.assertEquals("value 1", stringStack.peek(1));
 
         stringStack.shove("value 3", 1);
-        assertEquals(3, stringStack.size());
-        assertEquals("value 2", stringStack.peek(0));
-        assertEquals("value 3", stringStack.peek(1));
-        assertEquals("value 1", stringStack.peek(2));
+        Assert.assertEquals(3, stringStack.size());
+        Assert.assertEquals("value 2", stringStack.peek(0));
+        Assert.assertEquals("value 3", stringStack.peek(1));
+        Assert.assertEquals("value 1", stringStack.peek(2));
 
     }
 }

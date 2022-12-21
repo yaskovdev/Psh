@@ -16,11 +16,12 @@
 
 package org.spiderland.Psh;
 
-import junit.framework.*;
-import org.spiderland.Psh.*;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class ProgramTest extends TestCase {
-	@SuppressWarnings("deprecation")
+public class ProgramTest {
+	@Test
+    @SuppressWarnings("deprecation")
 	public void testEquals() throws Exception {
 		// Equality testing of nested programs 
 
@@ -30,11 +31,12 @@ public class ProgramTest extends TestCase {
 		q.Parse( "( 1.0 ( TEST 2 ( 3 ) ) )" );
 		r.Parse( "( 2.0 ( TEST 2 ( 3 ) ) )" );
 
-		assertFalse( p.equals( r ) );
-		assertTrue( p.equals( q ) );
+		Assert.assertFalse(p.equals(r));
+		Assert.assertTrue(p.equals(q));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Test
+    @SuppressWarnings("deprecation")
 	public void testParse() throws Exception {
 		// Parse a program, and then re-parse its string representation.
 		// They should be equal.
@@ -45,18 +47,20 @@ public class ProgramTest extends TestCase {
 		p.Parse( program );
 		q.Parse( p.toString() );
 
-		assertTrue( p.equals( q ) );
+		Assert.assertTrue(p.equals(q));
 	}
 
-	@SuppressWarnings("deprecation")
+	@Test
+    @SuppressWarnings("deprecation")
 	public void testSubtreeFetch() throws Exception {
 		Program p = new Program();
 		p.Parse( "( 2.0 ( TEST 2 ( 3 ) ) )" );
 
-		assertTrue( true );
+		Assert.assertTrue(true);
 	}
 
-	@SuppressWarnings("deprecation")
+	@Test
+    @SuppressWarnings("deprecation")
 	public void testSubtreeReplace() throws Exception {
 		Program p = new Program();
 		Program q = new Program();
@@ -71,7 +75,7 @@ public class ProgramTest extends TestCase {
 
 		q.Parse( "( 3 ( TEST2 ( X ) ( 3 ) ) )" );
 
-		assertTrue( q.equals( p ) );
+		Assert.assertTrue(q.equals(p));
 	}
 
 }
