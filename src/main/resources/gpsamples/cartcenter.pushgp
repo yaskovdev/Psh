@@ -7,9 +7,6 @@
 # approximations) by applying a fixed-magnitude force to accelerate the cart
 # in the forward or backward direction.
 #
-# Tom Helmuth <thelmuth (at) cs.umass.edu>
-# 05/20/2010
-#
 
 
 ### Set classes for the Push intepreter and individuals.  These

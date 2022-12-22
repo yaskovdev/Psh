@@ -1,10 +1,6 @@
 #
 # A difficult int symbolic regression problem that needs many test cases. Will
-# be used to test TestCaseGenerator.java. The problem to be solved is 
-#                          y = 9x^3 + 24x^2 - 3x + 10
-#
-# Tom Helmuth
-# 8/9/10
+# be used to test TestCaseGenerator.java. The problem to be solved is y = 9x^3 + 24x^2 - 3x + 10
 #
 
 ### Setup required parameters

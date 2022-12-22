@@ -7,13 +7,13 @@ import java.io.Serializable;
  */
 
 public class GATestCase implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public GATestCase(Object inInput, Object inOutput) {
-		_input = inInput;
-		_output = inOutput;
-	}
+    public GATestCase(Object inInput, Object inOutput) {
+        _input = inInput;
+        _output = inOutput;
+    }
 
-	public Object _input;
-	public Object _output;
+    public Object _input;
+    public Object _output;
 }

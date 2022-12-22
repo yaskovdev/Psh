@@ -3,9 +3,6 @@
 # In this demo, the system solves the equation y = x^2 - 7, using
 # floating point symbolic regression
 #
-# Tom Helmuth <thelmuth (at) cs.umass.edu>
-# 06/08/2010
-#
 
 ### Setup required parameters
 

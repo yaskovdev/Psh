@@ -1,11 +1,7 @@
 #
 # A difficult symbolic regression problem that needs many test cases. Will be
 # used to test TestCaseGenerator.java as well as co-evolved fitness prediction.
-# The problem to be solved is 
-#                          y = (e ^ |x|) * sin(x)
-#
-# Tom Helmuth
-# 8/14/10
+# The problem to be solved is y = (e ^ |x|) * sin(x)
 #
 
 ### Setup solution GP parameters

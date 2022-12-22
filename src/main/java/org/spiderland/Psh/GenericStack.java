@@ -7,210 +7,210 @@ import java.util.Arrays;
  */
 
 public class GenericStack<T> extends Stack {
-	private static final long serialVersionUID = 1L;
-	
-	protected T[] _stack;
-	final static int _blocksize = 16;
+    private static final long serialVersionUID = 1L;
 
-	public void PushAllReverse(GenericStack<T> inOther) {
-		for (int n = _size - 1; n >= 0; n--)
-			inOther.push(_stack[n]);
-	}
+    protected T[] _stack;
+    final static int _blocksize = 16;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean equals(Object inOther) {
-		if (this == inOther)
-			return true;
+    public void PushAllReverse(GenericStack<T> inOther) {
+        for (int n = _size - 1; n >= 0; n--)
+            inOther.push(_stack[n]);
+    }
 
-		// Sadly, because generics are implemented using type erasure,
-		// a GenericStack<A> will be the same class as a GenericStack<B>,
-		// this being GenericStack. So the best we can do here is be assured
-		// that inOther is at least a GenericStack.
-		//
-		// This just means that every empty stack is the same as every other
-		// empty stack.
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object inOther) {
+        if (this == inOther)
+            return true;
 
-		if (inOther.getClass() != getClass())
-			return false;
+        // Sadly, because generics are implemented using type erasure,
+        // a GenericStack<A> will be the same class as a GenericStack<B>,
+        // this being GenericStack. So the best we can do here is be assured
+        // that inOther is at least a GenericStack.
+        //
+        // This just means that every empty stack is the same as every other
+        // empty stack.
 
-		return ((GenericStack<T>) inOther).comparestack(_stack, _size);
-	}
+        if (inOther.getClass() != getClass())
+            return false;
 
-	@Override
-	public int hashCode() {
-		int hash = getClass().hashCode();
-		hash = 37 * hash + Arrays.deepHashCode(this._stack);
-		return hash;
-	}
+        return ((GenericStack<T>) inOther).comparestack(_stack, _size);
+    }
 
-	boolean comparestack(T[] inOther, int inOtherSize) {
-		if (inOtherSize != _size)
-			return false;
+    @Override
+    public int hashCode() {
+        int hash = getClass().hashCode();
+        hash = 37 * hash + Arrays.deepHashCode(this._stack);
+        return hash;
+    }
 
-		for (int n = 0; n < _size; n++) {
-			if (!_stack[n].equals(inOther[n]))
-				return false;
-		}
+    boolean comparestack(T[] inOther, int inOtherSize) {
+        if (inOtherSize != _size)
+            return false;
 
-		return true;
-	}
+        for (int n = 0; n < _size; n++) {
+            if (!_stack[n].equals(inOther[n]))
+                return false;
+        }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	void resize(int inSize) {
-		T[] newstack = (T[]) new Object[inSize];
+        return true;
+    }
 
-		if (_stack != null)
-			System.arraycopy(_stack, 0, newstack, 0, _size);
+    @SuppressWarnings("unchecked")
+    @Override
+    void resize(int inSize) {
+        T[] newstack = (T[]) new Object[inSize];
 
-		_stack = newstack;
-		_maxsize = inSize;
-	}
+        if (_stack != null)
+            System.arraycopy(_stack, 0, newstack, 0, _size);
 
-	public T peek(int inIndex) {
-		if (inIndex >= 0 && inIndex < _size)
-			return _stack[inIndex];
+        _stack = newstack;
+        _maxsize = inSize;
+    }
 
-		return null;
-	}
+    public T peek(int inIndex) {
+        if (inIndex >= 0 && inIndex < _size)
+            return _stack[inIndex];
 
-	public T top() {
-		return peek(_size - 1);
-	}
+        return null;
+    }
 
-	public T pop() {
-		T result = null;
+    public T top() {
+        return peek(_size - 1);
+    }
 
-		if (_size > 0) {
-			result = _stack[_size - 1];
-			_size--;
-		}
+    public T pop() {
+        T result = null;
 
-		return result;
-	}
+        if (_size > 0) {
+            result = _stack[_size - 1];
+            _size--;
+        }
 
-	@SuppressWarnings("unchecked")
-	public void push(T inValue) {
-		if (inValue instanceof Program)
-			inValue = (T) new Program((Program) inValue);
+        return result;
+    }
 
-		_stack[_size] = inValue;
-		_size++;
+    @SuppressWarnings("unchecked")
+    public void push(T inValue) {
+        if (inValue instanceof Program)
+            inValue = (T) new Program((Program) inValue);
 
-		if (_size >= _maxsize)
-			resize(_maxsize + _blocksize);
-	}
+        _stack[_size] = inValue;
+        _size++;
 
-	@Override
-	public void dup() {
-		if (_size > 0)
-			push(_stack[_size - 1]);
-	}
+        if (_size >= _maxsize)
+            resize(_maxsize + _blocksize);
+    }
 
-	public void shove(T obj, int n) {
-		if (n > _size)
-			n = _size;
+    @Override
+    public void dup() {
+        if (_size > 0)
+            push(_stack[_size - 1]);
+    }
 
-		// n = 0 is the same as push, so
-		// the position in the array we insert at is
-		// _size-n.
+    public void shove(T obj, int n) {
+        if (n > _size)
+            n = _size;
 
-		n = _size - n;
+        // n = 0 is the same as push, so
+        // the position in the array we insert at is
+        // _size-n.
 
-		for (int i = _size; i > n; i--)
-			_stack[i] = _stack[i - 1];
-		_stack[n] = obj;
-		_size++;
-		if (_size >= _maxsize)
-			resize(_maxsize + _blocksize);
-	}
+        n = _size - n;
 
-	@Override
-	public void shove(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
-			
-			T toShove = top();
-			int shovedIndex = _size - inIndex - 1;
+        for (int i = _size; i > n; i--)
+            _stack[i] = _stack[i - 1];
+        _stack[n] = obj;
+        _size++;
+        if (_size >= _maxsize)
+            resize(_maxsize + _blocksize);
+    }
 
-			for (int i = _size - 1; i > shovedIndex; i--) {
-				_stack[i] = _stack[i - 1];
-			}
-			_stack[shovedIndex] = toShove;
-		}
-	}
-	
-	@Override
-	public void swap() {
-		if (_size > 1) {
-			T tmp = _stack[_size - 2];
-			_stack[_size - 2] = _stack[_size - 1];
-			_stack[_size - 1] = tmp;
-		}
-	}
+    @Override
+    public void shove(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-	@Override
-	public void rot() {
-		if (_size > 2) {
-			T tmp = _stack[_size - 3];
-			_stack[_size - 3] = _stack[_size - 2];
-			_stack[_size - 2] = _stack[_size - 1];
-			_stack[_size - 1] = tmp;
-		}
-	}
+            T toShove = top();
+            int shovedIndex = _size - inIndex - 1;
 
-	@Override
-	public void yank(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
+            for (int i = _size - 1; i > shovedIndex; i--) {
+                _stack[i] = _stack[i - 1];
+            }
+            _stack[shovedIndex] = toShove;
+        }
+    }
 
-			int yankedIndex = _size - inIndex - 1;
-			T toYank = peek(yankedIndex);
+    @Override
+    public void swap() {
+        if (_size > 1) {
+            T tmp = _stack[_size - 2];
+            _stack[_size - 2] = _stack[_size - 1];
+            _stack[_size - 1] = tmp;
+        }
+    }
 
-			for (int i = yankedIndex; i < _size - 1; i++) {
-				_stack[i] = _stack[i + 1];
-			}
-			_stack[_size - 1] = toYank;
-		}
-	}
+    @Override
+    public void rot() {
+        if (_size > 2) {
+            T tmp = _stack[_size - 3];
+            _stack[_size - 3] = _stack[_size - 2];
+            _stack[_size - 2] = _stack[_size - 1];
+            _stack[_size - 1] = tmp;
+        }
+    }
 
-	public void yankdup(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
+    @Override
+    public void yank(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-			int yankedIndex = _size - inIndex - 1;
-			push(peek(yankedIndex));
-		}
-	}
+            int yankedIndex = _size - inIndex - 1;
+            T toYank = peek(yankedIndex);
 
-	@Override
-	public String toString() {
-		String result = "[";
+            for (int i = yankedIndex; i < _size - 1; i++) {
+                _stack[i] = _stack[i + 1];
+            }
+            _stack[_size - 1] = toYank;
+        }
+    }
 
-		for (int n = _size - 1; n >= 0; n--) {
-			if (n == _size - 1)
-				result += _stack[n];
-			else
-				result += " " + _stack[n];
-		}
-		result += "]";
+    public void yankdup(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-		return result;
-	}
+            int yankedIndex = _size - inIndex - 1;
+            push(peek(yankedIndex));
+        }
+    }
+
+    @Override
+    public String toString() {
+        String result = "[";
+
+        for (int n = _size - 1; n >= 0; n--) {
+            if (n == _size - 1)
+                result += _stack[n];
+            else
+                result += " " + _stack[n];
+        }
+        result += "]";
+
+        return result;
+    }
 }

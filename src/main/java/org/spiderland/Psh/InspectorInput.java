@@ -1,6 +1,6 @@
 package org.spiderland.Psh;
 
-import java.io.*;
+import java.io.File;
 
 /**
  * A utility class to help read PshInspector input files.
@@ -8,129 +8,125 @@ import java.io.*;
 
 public class InspectorInput {
 
-	Program _program;
-	int _executionLimit;
-	Interpreter _interpreter;
+    Program _program;
+    int _executionLimit;
+    Interpreter _interpreter;
 
-	/**
-	 * Constructs an InspectorInput from a filename string
-	 * 
-	 * @param inFilename
-	 *            The file to input from.
-	 */
-	public InspectorInput(String inFilename) throws Exception {
-		InitInspectorInput(new File(inFilename));
-	}
+    /**
+     * Constructs an InspectorInput from a filename string
+     *
+     * @param inFilename The file to input from.
+     */
+    public InspectorInput(String inFilename) throws Exception {
+        InitInspectorInput(new File(inFilename));
+    }
 
-	/**
-	 * Constructs an InspectorInput from a filename string
-	 * 
-	 * @param inFile
-	 *            The file to input from.
-	 */
-	public InspectorInput(File inFile) throws Exception {
-		InitInspectorInput(inFile);
-	}
+    /**
+     * Constructs an InspectorInput from a filename string
+     *
+     * @param inFile The file to input from.
+     */
+    public InspectorInput(File inFile) throws Exception {
+        InitInspectorInput(inFile);
+    }
 
-	/**
-	 * Initializes an InspectorInput. The file should be organized as follows:
-	 * 
-	 * 1 Program to execute
-	 * 2 Execution limit
-	 * 3 Integer, float, or boolean inputs
-	 * 4 Available instructions. This is only used for creating random code
-	 *   with code.rand or exec.rand
-	 * 
-	 * @param inFile
-	 *            The file to input from.
-	 */
-	private void InitInspectorInput(File inFile) throws Exception {
-		_interpreter = new Interpreter();
+    /**
+     * Initializes an InspectorInput. The file should be organized as follows:
+     * <p>
+     * 1 Program to execute
+     * 2 Execution limit
+     * 3 Integer, float, or boolean inputs
+     * 4 Available instructions. This is only used for creating random code
+     * with code.rand or exec.rand
+     *
+     * @param inFile The file to input from.
+     */
+    private void InitInspectorInput(File inFile) throws Exception {
+        _interpreter = new Interpreter();
 
-		// Read fileString
-		String fileString = Params.ReadFileString(inFile);
+        // Read fileString
+        String fileString = Params.ReadFileString(inFile);
 
-		// Get programString
-		int indexNewline = fileString.indexOf("\n");
-		String programString = fileString.substring(0, indexNewline).trim();
-		fileString = fileString.substring(indexNewline + 1);
+        // Get programString
+        int indexNewline = fileString.indexOf("\n");
+        String programString = fileString.substring(0, indexNewline).trim();
+        fileString = fileString.substring(indexNewline + 1);
 
-		// Get _executionLimit
-		indexNewline = fileString.indexOf("\n");
-		if (indexNewline != -1) {
-			String limitString = fileString.substring(0,indexNewline).trim();
-			
-			_executionLimit = Integer.parseInt(limitString);
-			fileString = fileString.substring(indexNewline + 1);
-		} else {
-			// If here, no inputs to be pushed were included
-			_executionLimit = Integer.parseInt(fileString);
-			fileString = "";
-		}
+        // Get _executionLimit
+        indexNewline = fileString.indexOf("\n");
+        if (indexNewline != -1) {
+            String limitString = fileString.substring(0, indexNewline).trim();
 
-		// Get inputs and push them onto correct stacks. If fileString = ""
-		// at this point, then can still do the following with correct result.
-		indexNewline = fileString.indexOf("\n");
-		if (indexNewline != -1) {
-			String inputsString = fileString.substring(0, indexNewline).trim();
-			fileString = fileString.substring(indexNewline + 1);
-			
-			// Parse the inputs and load them into the interpreter
-			parseAndLoadInputs(inputsString);
-		}
-		else {
-			parseAndLoadInputs(fileString);
-			fileString = "";
-		}
-		
-		// Get the available instructions for random code generation
-		indexNewline = fileString.indexOf("\n");
-		if (!fileString.trim().equals("")) {
-			_interpreter.SetInstructions(new Program(_interpreter, fileString.trim()));
-		}
+            _executionLimit = Integer.parseInt(limitString);
+            fileString = fileString.substring(indexNewline + 1);
+        } else {
+            // If here, no inputs to be pushed were included
+            _executionLimit = Integer.parseInt(fileString);
+            fileString = "";
+        }
 
-		// Check for input.inN instructions
-		checkForInputIn(programString);
-		
-		// Add random integer and float parameters
-		_interpreter._minRandomInt = -10;
-		_interpreter._maxRandomInt = 10;
-		_interpreter._randomIntResolution = 1;
-		_interpreter._minRandomFloat = -10.0f;
-		_interpreter._maxRandomFloat = 10.0f;
-		_interpreter._randomFloatResolution = 0.01f;
-		
-		_interpreter._maxRandomCodeSize = 50;
+        // Get inputs and push them onto correct stacks. If fileString = ""
+        // at this point, then can still do the following with correct result.
+        indexNewline = fileString.indexOf("\n");
+        if (indexNewline != -1) {
+            String inputsString = fileString.substring(0, indexNewline).trim();
+            fileString = fileString.substring(indexNewline + 1);
 
-		// Load the program
-		_program = new Program(_interpreter, programString);
-		_interpreter.LoadProgram(_program); // Initializes program
-	}
+            // Parse the inputs and load them into the interpreter
+            parseAndLoadInputs(inputsString);
+        } else {
+            parseAndLoadInputs(fileString);
+            fileString = "";
+        }
 
-	/**
-	 * Returns the initialized interpreter
-	 * 
-	 * @return The initialized interpreter
-	 */
-	public Interpreter getInterpreter() {
-		return _interpreter;
-	}
+        // Get the available instructions for random code generation
+        indexNewline = fileString.indexOf("\n");
+        if (!fileString.trim().equals("")) {
+            _interpreter.SetInstructions(new Program(_interpreter, fileString.trim()));
+        }
 
-	public Program getProgram() {
-		return _program;
-	}
-	
-	/**
-	 * Returns the execution limit
-	 * 
-	 * @return The execution limit
-	 */
-	public int getExecutionLimit() {
-		return _executionLimit;
-	}
+        // Check for input.inN instructions
+        checkForInputIn(programString);
 
-	private void parseAndLoadInputs(String inputs) throws Exception {
-		String[] inputTokens = inputs.split("\\s+");
+        // Add random integer and float parameters
+        _interpreter._minRandomInt = -10;
+        _interpreter._maxRandomInt = 10;
+        _interpreter._randomIntResolution = 1;
+        _interpreter._minRandomFloat = -10.0f;
+        _interpreter._maxRandomFloat = 10.0f;
+        _interpreter._randomFloatResolution = 0.01f;
+
+        _interpreter._maxRandomCodeSize = 50;
+
+        // Load the program
+        _program = new Program(_interpreter, programString);
+        _interpreter.LoadProgram(_program); // Initializes program
+    }
+
+    /**
+     * Returns the initialized interpreter
+     *
+     * @return The initialized interpreter
+     */
+    public Interpreter getInterpreter() {
+        return _interpreter;
+    }
+
+    public Program getProgram() {
+        return _program;
+    }
+
+    /**
+     * Returns the execution limit
+     *
+     * @return The execution limit
+     */
+    public int getExecutionLimit() {
+        return _executionLimit;
+    }
+
+    private void parseAndLoadInputs(String inputs) throws Exception {
+        String[] inputTokens = inputs.split("\\s+");
 
         for (String token : inputTokens) {
             if (token.equals("")) {
@@ -154,52 +150,52 @@ public class InspectorInput {
                                 + token + "\" is none of these.");
             }
         }
-	}
+    }
 
-	private void checkForInputIn(String programString) {
-		String added = "";
-		String numstr = "";
-		int index = 0;
-		int numindex = 0;
-		int spaceindex = 0;
-		int parenindex = 0;
-		int endindex = 0;
+    private void checkForInputIn(String programString) {
+        String added = "";
+        String numstr = "";
+        int index = 0;
+        int numindex = 0;
+        int spaceindex = 0;
+        int parenindex = 0;
+        int endindex = 0;
 
-		while (true) {
+        while (true) {
 
-			index = programString.indexOf("input.in");
-			if (index == -1)
-				break;
+            index = programString.indexOf("input.in");
+            if (index == -1)
+                break;
 
-			// System.out.println(programString + "    " + index);
+            // System.out.println(programString + "    " + index);
 
-			numindex = index + 8;
-			if (!Character.isDigit(programString.charAt(numindex))) {
-				programString = programString.substring(numindex);
-				continue;
-			}
+            numindex = index + 8;
+            if (!Character.isDigit(programString.charAt(numindex))) {
+                programString = programString.substring(numindex);
+                continue;
+            }
 
-			spaceindex = programString.indexOf(' ', numindex);
-			parenindex = programString.indexOf(')', numindex);
-			if (spaceindex == -1)
-				endindex = parenindex;
-			else if (parenindex == -1)
-				endindex = spaceindex;
-			else
-				endindex = Math.min(spaceindex, parenindex);
+            spaceindex = programString.indexOf(' ', numindex);
+            parenindex = programString.indexOf(')', numindex);
+            if (spaceindex == -1)
+                endindex = parenindex;
+            else if (parenindex == -1)
+                endindex = spaceindex;
+            else
+                endindex = Math.min(spaceindex, parenindex);
 
-			numstr = programString.substring(numindex, endindex);
+            numstr = programString.substring(numindex, endindex);
 
-			// Check for doubles in added
-			if (added.indexOf(" " + numstr + " ") == -1) {
-				added = added + " " + numstr + " ";
-				_interpreter.AddInstruction("input.in" + numstr, new InputInN(
-						Integer.parseInt(numstr)));
-			}
+            // Check for doubles in added
+            if (added.indexOf(" " + numstr + " ") == -1) {
+                added = added + " " + numstr + " ";
+                _interpreter.AddInstruction("input.in" + numstr, new InputInN(
+                        Integer.parseInt(numstr)));
+            }
 
-			programString = programString.substring(numindex);
-		}
+            programString = programString.substring(numindex);
+        }
 
-	}
+    }
 
 }

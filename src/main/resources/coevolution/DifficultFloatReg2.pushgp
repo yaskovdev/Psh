@@ -1,10 +1,6 @@
 #
 # A difficult symbolic regression problem that needs many test cases. Will be
-# used to test TestCaseGenerator.java. The problem to be solved is 
-#                          y = (e ^ |x|) * sin(x)
-#
-# Tom Helmuth
-# 8/9/10
+# used to test TestCaseGenerator.java. The problem to be solved is y = (e ^ |x|) * sin(x)
 #
 
 ### Setup required parameters

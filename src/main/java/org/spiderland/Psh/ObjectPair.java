@@ -7,18 +7,18 @@ import java.io.Serializable;
  */
 
 public class ObjectPair implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public ObjectPair(Object inFirst, Object inSecond) {
-		_first = inFirst;
-		_second = inSecond;
-	}
+    public ObjectPair(Object inFirst, Object inSecond) {
+        _first = inFirst;
+        _second = inSecond;
+    }
 
-	public Object _first;
-	public Object _second;
-	
-	public String toString(){
-		return "<" + _first.toString() + ", " + _second.toString() + ">";
-	}
-	
+    public Object _first;
+    public Object _second;
+
+    public String toString() {
+        return "<" + _first.toString() + ", " + _second.toString() + ">";
+    }
+
 }

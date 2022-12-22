@@ -1,228 +1,232 @@
 package org.spiderland.Psh;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 /**
  * The Push language interpreter.
  */
 
 public class Interpreter implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected HashMap<String, Instruction> _instructions = new HashMap<String, Instruction>();
+    protected HashMap<String, Instruction> _instructions = new HashMap<String, Instruction>();
 
-	// All generators
+    // All generators
 
-	protected HashMap<String, AtomGenerator> _generators = new HashMap<String, AtomGenerator>();
-	protected ArrayList<AtomGenerator> _randomGenerators = new ArrayList<AtomGenerator>();
+    protected HashMap<String, AtomGenerator> _generators = new HashMap<String, AtomGenerator>();
+    protected ArrayList<AtomGenerator> _randomGenerators = new ArrayList<AtomGenerator>();
 
-	// Create the stacks.
-	protected IntStack _intStack;
-	protected FloatStack _floatStack;
-	protected BooleanStack _boolStack;
-	protected ObjectStack _codeStack;
-	protected ObjectStack _nameStack;
-	protected ObjectStack _execStack = new ObjectStack();
+    // Create the stacks.
+    protected IntStack _intStack;
+    protected FloatStack _floatStack;
+    protected BooleanStack _boolStack;
+    protected ObjectStack _codeStack;
+    protected ObjectStack _nameStack;
+    protected ObjectStack _execStack = new ObjectStack();
 
-	protected ObjectStack _inputStack = new ObjectStack();
-	
-	// This arraylist will hold all custom stacks that can be created by the
-	// problem classes
-	protected ArrayList<Stack> _customStacks = new ArrayList<Stack>();
+    protected ObjectStack _inputStack = new ObjectStack();
 
-	/* Since the _inputStack will not change after initialization, it will not
-	 * need a frame stack.
-	 */
-	protected ObjectStack _intFrameStack = new ObjectStack();
-	protected ObjectStack _floatFrameStack = new ObjectStack();
-	protected ObjectStack _boolFrameStack = new ObjectStack();
-	protected ObjectStack _codeFrameStack = new ObjectStack();
-	protected ObjectStack _nameFrameStack = new ObjectStack();
+    // This arraylist will hold all custom stacks that can be created by the
+    // problem classes
+    protected ArrayList<Stack> _customStacks = new ArrayList<Stack>();
 
-	protected boolean _useFrames;
+    /* Since the _inputStack will not change after initialization, it will not
+     * need a frame stack.
+     */
+    protected ObjectStack _intFrameStack = new ObjectStack();
+    protected ObjectStack _floatFrameStack = new ObjectStack();
+    protected ObjectStack _boolFrameStack = new ObjectStack();
+    protected ObjectStack _codeFrameStack = new ObjectStack();
+    protected ObjectStack _nameFrameStack = new ObjectStack();
 
-	protected int _totalStepsTaken;
-	protected long _evaluationExecutions = 0;
-	
-	protected int _maxRandomInt;
-	protected int _minRandomInt;
-	protected int _randomIntResolution;
+    protected boolean _useFrames;
 
-	protected float _maxRandomFloat;
-	protected float _minRandomFloat;
-	protected float _randomFloatResolution;
-	
-	protected int _maxRandomCodeSize;
-	protected int _maxPointsInProgram;
+    protected int _totalStepsTaken;
+    protected long _evaluationExecutions = 0;
 
-	protected Random _RNG = new Random();
+    protected int _maxRandomInt;
+    protected int _minRandomInt;
+    protected int _randomIntResolution;
 
-	protected InputPusher _inputPusher = new InputPusher();
+    protected float _maxRandomFloat;
+    protected float _minRandomFloat;
+    protected float _randomFloatResolution;
 
-	public Interpreter() {
-		
-		_useFrames = false;
-		PushStacks();
+    protected int _maxRandomCodeSize;
+    protected int _maxPointsInProgram;
 
-		DefineInstruction("integer.+", new IntegerAdd());
-		DefineInstruction("integer.-", new IntegerSub());
-		DefineInstruction("integer./", new IntegerDiv());
-		DefineInstruction("integer.%", new IntegerMod());
-		DefineInstruction("integer.*", new IntegerMul());
-		DefineInstruction("integer.pow", new IntegerPow());
-		DefineInstruction("integer.log", new IntegerLog());
-		DefineInstruction("integer.=", new IntegerEquals());
-		DefineInstruction("integer.>", new IntegerGreaterThan());
-		DefineInstruction("integer.<", new IntegerLessThan());
-		DefineInstruction("integer.min", new IntegerMin());
-		DefineInstruction("integer.max", new IntegerMax());
-		DefineInstruction("integer.abs", new IntegerAbs());
-		DefineInstruction("integer.neg", new IntegerNeg());
-		DefineInstruction("integer.ln", new IntegerLn());
-		DefineInstruction("integer.fromfloat", new IntegerFromFloat());
-		DefineInstruction("integer.fromboolean", new IntegerFromBoolean());
-		DefineInstruction("integer.rand", new IntegerRand());
+    protected Random _RNG = new Random();
 
-		DefineInstruction("float.+", new FloatAdd());
-		DefineInstruction("float.-", new FloatSub());
-		DefineInstruction("float./", new FloatDiv());
-		DefineInstruction("float.%", new FloatMod());
-		DefineInstruction("float.*", new FloatMul());
-		DefineInstruction("float.pow", new FloatPow());
-		DefineInstruction("float.log", new FloatLog());
-		DefineInstruction("float.=", new FloatEquals());
-		DefineInstruction("float.>", new FloatGreaterThan());
-		DefineInstruction("float.<", new FloatLessThan());
-		DefineInstruction("float.min", new FloatMin());
-		DefineInstruction("float.max", new FloatMax());
-		DefineInstruction("float.sin", new FloatSin());
-		DefineInstruction("float.cos", new FloatCos());
-		DefineInstruction("float.tan", new FloatTan());
-		DefineInstruction("float.exp", new FloatExp());
-		DefineInstruction("float.abs", new FloatAbs());
-		DefineInstruction("float.neg", new FloatNeg());
-		DefineInstruction("float.ln", new FloatLn());
-		DefineInstruction("float.frominteger", new FloatFromInteger());
-		DefineInstruction("float.fromboolean", new FloatFromBoolean());
-		DefineInstruction("float.rand", new FloatRand());
-		
-		DefineInstruction("boolean.=", new BoolEquals());
-		DefineInstruction("boolean.not", new BoolNot());
-		DefineInstruction("boolean.and", new BoolAnd());
-		DefineInstruction("boolean.or", new BoolOr());
-		DefineInstruction("boolean.xor", new BoolXor());
-		DefineInstruction("boolean.frominteger", new BooleanFromInteger());
-		DefineInstruction("boolean.fromfloat", new BooleanFromFloat());
-		DefineInstruction("boolean.rand", new BoolRand());
+    protected InputPusher _inputPusher = new InputPusher();
 
-		DefineInstruction("code.quote", new Quote());
-		DefineInstruction("code.fromboolean", new CodeFromBoolean());
-		DefineInstruction("code.frominteger", new CodeFromInteger());
-		DefineInstruction("code.fromfloat", new CodeFromFloat());
-		DefineInstruction("code.noop", new ExecNoop());
-		
-		DefineInstruction("exec.k", new ExecK(_execStack));
-		DefineInstruction("exec.s", new ExecS(_execStack, _maxPointsInProgram));
-		DefineInstruction("exec.y", new ExecY(_execStack));
-		DefineInstruction("exec.noop", new ExecNoop());
+    public Interpreter() {
 
-		DefineInstruction("exec.do*times", new ExecDoTimes(this));
-		DefineInstruction("code.do*times", new CodeDoTimes(this));
-		DefineInstruction("exec.do*count", new ExecDoCount(this));
-		DefineInstruction("code.do*count", new CodeDoCount(this));
-		DefineInstruction("exec.do*range", new ExecDoRange(this));
-		DefineInstruction("code.do*range", new CodeDoRange(this));
-		DefineInstruction("code.=", new ObjectEquals(_codeStack));
-		DefineInstruction("exec.=", new ObjectEquals(_execStack));
-		DefineInstruction("code.if", new If(_codeStack));
-		DefineInstruction("exec.if", new If(_execStack));
-		DefineInstruction("code.rand", new RandomPushCode(_codeStack));
-		DefineInstruction("exec.rand", new RandomPushCode(_execStack));
-		
-		DefineInstruction("true", new BooleanConstant(true));
-		DefineInstruction("false", new BooleanConstant(false));
+        _useFrames = false;
+        PushStacks();
 
-		DefineInstruction("input.index", new InputIndex(_inputStack));
-		DefineInstruction("input.inall", new InputInAll(_inputStack));
-		DefineInstruction("input.inallrev", new InputInRev(_inputStack));
-		DefineInstruction("input.stackdepth", new Depth(_inputStack));
+        DefineInstruction("integer.+", new IntegerAdd());
+        DefineInstruction("integer.-", new IntegerSub());
+        DefineInstruction("integer./", new IntegerDiv());
+        DefineInstruction("integer.%", new IntegerMod());
+        DefineInstruction("integer.*", new IntegerMul());
+        DefineInstruction("integer.pow", new IntegerPow());
+        DefineInstruction("integer.log", new IntegerLog());
+        DefineInstruction("integer.=", new IntegerEquals());
+        DefineInstruction("integer.>", new IntegerGreaterThan());
+        DefineInstruction("integer.<", new IntegerLessThan());
+        DefineInstruction("integer.min", new IntegerMin());
+        DefineInstruction("integer.max", new IntegerMax());
+        DefineInstruction("integer.abs", new IntegerAbs());
+        DefineInstruction("integer.neg", new IntegerNeg());
+        DefineInstruction("integer.ln", new IntegerLn());
+        DefineInstruction("integer.fromfloat", new IntegerFromFloat());
+        DefineInstruction("integer.fromboolean", new IntegerFromBoolean());
+        DefineInstruction("integer.rand", new IntegerRand());
 
-		DefineStackInstructions("integer", _intStack);
-		DefineStackInstructions("float", _floatStack);
-		DefineStackInstructions("boolean", _boolStack);
-		DefineStackInstructions("name", _nameStack);
-		DefineStackInstructions("code", _codeStack);
-		DefineStackInstructions("exec", _execStack);
+        DefineInstruction("float.+", new FloatAdd());
+        DefineInstruction("float.-", new FloatSub());
+        DefineInstruction("float./", new FloatDiv());
+        DefineInstruction("float.%", new FloatMod());
+        DefineInstruction("float.*", new FloatMul());
+        DefineInstruction("float.pow", new FloatPow());
+        DefineInstruction("float.log", new FloatLog());
+        DefineInstruction("float.=", new FloatEquals());
+        DefineInstruction("float.>", new FloatGreaterThan());
+        DefineInstruction("float.<", new FloatLessThan());
+        DefineInstruction("float.min", new FloatMin());
+        DefineInstruction("float.max", new FloatMax());
+        DefineInstruction("float.sin", new FloatSin());
+        DefineInstruction("float.cos", new FloatCos());
+        DefineInstruction("float.tan", new FloatTan());
+        DefineInstruction("float.exp", new FloatExp());
+        DefineInstruction("float.abs", new FloatAbs());
+        DefineInstruction("float.neg", new FloatNeg());
+        DefineInstruction("float.ln", new FloatLn());
+        DefineInstruction("float.frominteger", new FloatFromInteger());
+        DefineInstruction("float.fromboolean", new FloatFromBoolean());
+        DefineInstruction("float.rand", new FloatRand());
 
-		DefineInstruction("frame.push", new PushFrame());
-		DefineInstruction("frame.pop", new PopFrame());
+        DefineInstruction("boolean.=", new BoolEquals());
+        DefineInstruction("boolean.not", new BoolNot());
+        DefineInstruction("boolean.and", new BoolAnd());
+        DefineInstruction("boolean.or", new BoolOr());
+        DefineInstruction("boolean.xor", new BoolXor());
+        DefineInstruction("boolean.frominteger", new BooleanFromInteger());
+        DefineInstruction("boolean.fromfloat", new BooleanFromFloat());
+        DefineInstruction("boolean.rand", new BoolRand());
 
-		_generators.put("float.erc", new FloatAtomGenerator());
-		_generators.put("integer.erc", new IntAtomGenerator());
-	}
+        DefineInstruction("code.quote", new Quote());
+        DefineInstruction("code.fromboolean", new CodeFromBoolean());
+        DefineInstruction("code.frominteger", new CodeFromInteger());
+        DefineInstruction("code.fromfloat", new CodeFromFloat());
+        DefineInstruction("code.noop", new ExecNoop());
 
-	/**
-	 * Enables experimental Push "frames"
-	 * 
-	 * When frames are enabled, each Push subtree is given a fresh set of stacks
-	 * (a "frame") when it executes. When a frame is pushed, the top value from
-	 * each stack is passed to the new frame, and likewise when the frame pops,
-	 * allowing for input arguments and return values.
-	 */
+        DefineInstruction("exec.k", new ExecK(_execStack));
+        DefineInstruction("exec.s", new ExecS(_execStack, _maxPointsInProgram));
+        DefineInstruction("exec.y", new ExecY(_execStack));
+        DefineInstruction("exec.noop", new ExecNoop());
 
-	public void SetUseFrames(boolean inUseFrames) {
-		_useFrames = inUseFrames;
-	}
+        DefineInstruction("exec.do*times", new ExecDoTimes(this));
+        DefineInstruction("code.do*times", new CodeDoTimes(this));
+        DefineInstruction("exec.do*count", new ExecDoCount(this));
+        DefineInstruction("code.do*count", new CodeDoCount(this));
+        DefineInstruction("exec.do*range", new ExecDoRange(this));
+        DefineInstruction("code.do*range", new CodeDoRange(this));
+        DefineInstruction("code.=", new ObjectEquals(_codeStack));
+        DefineInstruction("exec.=", new ObjectEquals(_execStack));
+        DefineInstruction("code.if", new If(_codeStack));
+        DefineInstruction("exec.if", new If(_execStack));
+        DefineInstruction("code.rand", new RandomPushCode(_codeStack));
+        DefineInstruction("exec.rand", new RandomPushCode(_execStack));
 
-	/**
-	 * Defines the instruction set used for random code generation in this Push
-	 * interpreter.
-	 * 
-	 * @param inInstructionList
-	 *            A program consisting of a list of string instruction names to
-	 *            be placed in the instruction set.
-	 */
+        DefineInstruction("true", new BooleanConstant(true));
+        DefineInstruction("false", new BooleanConstant(false));
 
-	public void SetInstructions(Program inInstructionList) {
-		_randomGenerators.clear();
+        DefineInstruction("input.index", new InputIndex(_inputStack));
+        DefineInstruction("input.inall", new InputInAll(_inputStack));
+        DefineInstruction("input.inallrev", new InputInRev(_inputStack));
+        DefineInstruction("input.stackdepth", new Depth(_inputStack));
 
-		for (int n = 0; n < inInstructionList.size(); n++) {
-			Object o = inInstructionList.peek(n);
-			String name = null;
+        DefineStackInstructions("integer", _intStack);
+        DefineStackInstructions("float", _floatStack);
+        DefineStackInstructions("boolean", _boolStack);
+        DefineStackInstructions("name", _nameStack);
+        DefineStackInstructions("code", _codeStack);
+        DefineStackInstructions("exec", _execStack);
 
-			if (o instanceof Instruction) {
-				String[] keys = _instructions.keySet().toArray(new String[0]);
+        DefineInstruction("frame.push", new PushFrame());
+        DefineInstruction("frame.pop", new PopFrame());
 
-				for (String key : keys)
-					if (_instructions.get(key) == o) {
-						name = key;
-						break;
-					}
-			} else if (o instanceof String){
-				name = (String) o;
-			} else
-				throw new RuntimeException(
-						"Instruction list must contain a list of Push instruction names only");
+        _generators.put("float.erc", new FloatAtomGenerator());
+        _generators.put("integer.erc", new IntAtomGenerator());
+    }
 
-			// Check for registered
-			if (name.indexOf("registered.") == 0) {
-				String registeredType = name.substring(11);
+    /**
+     * Enables experimental Push "frames"
+     * <p>
+     * When frames are enabled, each Push subtree is given a fresh set of stacks
+     * (a "frame") when it executes. When a frame is pushed, the top value from
+     * each stack is passed to the new frame, and likewise when the frame pops,
+     * allowing for input arguments and return values.
+     */
 
-				if (!registeredType.equals("integer")
-						&& !registeredType.equals("float")
-						&& !registeredType.equals("boolean")
-						&& !registeredType.equals("exec")
-						&& !registeredType.equals("code")
-						&& !registeredType.equals("name")
-						&& !registeredType.equals("input")
-						&& !registeredType.equals("frame")) {
-					System.err.println("Unknown instruction \"" + name
-							+ "\" in instruction set");
-				} else {
-					// Legal stack type, so add all generators matching
-					// registeredType to _randomGenerators.
-					Object[] keys = _instructions.keySet().toArray();
+    public void SetUseFrames(boolean inUseFrames) {
+        _useFrames = inUseFrames;
+    }
+
+    /**
+     * Defines the instruction set used for random code generation in this Push
+     * interpreter.
+     *
+     * @param inInstructionList A program consisting of a list of string instruction names to
+     *                          be placed in the instruction set.
+     */
+
+    public void SetInstructions(Program inInstructionList) {
+        _randomGenerators.clear();
+
+        for (int n = 0; n < inInstructionList.size(); n++) {
+            Object o = inInstructionList.peek(n);
+            String name = null;
+
+            if (o instanceof Instruction) {
+                String[] keys = _instructions.keySet().toArray(new String[0]);
+
+                for (String key : keys)
+                    if (_instructions.get(key) == o) {
+                        name = key;
+                        break;
+                    }
+            } else if (o instanceof String) {
+                name = (String) o;
+            } else
+                throw new RuntimeException(
+                        "Instruction list must contain a list of Push instruction names only");
+
+            // Check for registered
+            if (name.indexOf("registered.") == 0) {
+                String registeredType = name.substring(11);
+
+                if (!registeredType.equals("integer")
+                        && !registeredType.equals("float")
+                        && !registeredType.equals("boolean")
+                        && !registeredType.equals("exec")
+                        && !registeredType.equals("code")
+                        && !registeredType.equals("name")
+                        && !registeredType.equals("input")
+                        && !registeredType.equals("frame")) {
+                    System.err.println("Unknown instruction \"" + name
+                            + "\" in instruction set");
+                } else {
+                    // Legal stack type, so add all generators matching
+                    // registeredType to _randomGenerators.
+                    Object[] keys = _instructions.keySet().toArray();
 
                     for (Object value : keys) {
                         String key = (String) value;
@@ -232,590 +236,582 @@ public class Interpreter implements Serializable {
                         }
                     }
 
-					if (registeredType.equals("boolean")) {
-						AtomGenerator t = _generators.get("true");
-						_randomGenerators.add(t);
-						AtomGenerator f = _generators.get("false");
-						_randomGenerators.add(f);
-					}
-					if (registeredType.equals("integer")) {
-						AtomGenerator g = _generators.get("integer.erc");
-						_randomGenerators.add(g);
-					}
-					if (registeredType.equals("float")) {
-						AtomGenerator g = _generators.get("float.erc");
-						_randomGenerators.add(g);
-					}
+                    if (registeredType.equals("boolean")) {
+                        AtomGenerator t = _generators.get("true");
+                        _randomGenerators.add(t);
+                        AtomGenerator f = _generators.get("false");
+                        _randomGenerators.add(f);
+                    }
+                    if (registeredType.equals("integer")) {
+                        AtomGenerator g = _generators.get("integer.erc");
+                        _randomGenerators.add(g);
+                    }
+                    if (registeredType.equals("float")) {
+                        AtomGenerator g = _generators.get("float.erc");
+                        _randomGenerators.add(g);
+                    }
 
-				}
-			} else if (name.indexOf("input.makeinputs") == 0) {
-				String strnum = name.substring(16);
-				int num = Integer.parseInt(strnum);
+                }
+            } else if (name.indexOf("input.makeinputs") == 0) {
+                String strnum = name.substring(16);
+                int num = Integer.parseInt(strnum);
 
-				for (int i = 0; i < num; i++) {
-					DefineInstruction("input.in" + i, new InputInN(i));
-					AtomGenerator g = _generators.get("input.in" + i);
-					_randomGenerators.add(g);
-				}
-			} else {
-				AtomGenerator g = _generators.get(name);
+                for (int i = 0; i < num; i++) {
+                    DefineInstruction("input.in" + i, new InputInN(i));
+                    AtomGenerator g = _generators.get("input.in" + i);
+                    _randomGenerators.add(g);
+                }
+            } else {
+                AtomGenerator g = _generators.get(name);
 
-				if (g == null) {
-					throw new RuntimeException("Unknown instruction \"" + name
-							+ "\" in instruction set");
-				} else {
-					_randomGenerators.add(g);
-				}
-			}
-		}
-	}
+                if (g == null) {
+                    throw new RuntimeException("Unknown instruction \"" + name
+                            + "\" in instruction set");
+                } else {
+                    _randomGenerators.add(g);
+                }
+            }
+        }
+    }
 
-	public void AddInstruction(String inName, Instruction inInstruction) {
-		InstructionAtomGenerator iag = new InstructionAtomGenerator(inName);
-		_instructions.put(inName, inInstruction);
-		_generators.put(inName, iag);
-		_randomGenerators.add(iag);
-	}
+    public void AddInstruction(String inName, Instruction inInstruction) {
+        InstructionAtomGenerator iag = new InstructionAtomGenerator(inName);
+        _instructions.put(inName, inInstruction);
+        _generators.put(inName, iag);
+        _randomGenerators.add(iag);
+    }
 
-	protected void DefineInstruction(String inName, Instruction inInstruction) {
-		_instructions.put(inName, inInstruction);
-		_generators.put(inName, new InstructionAtomGenerator(inName));
-	}
+    protected void DefineInstruction(String inName, Instruction inInstruction) {
+        _instructions.put(inName, inInstruction);
+        _generators.put(inName, new InstructionAtomGenerator(inName));
+    }
 
-	protected void DefineStackInstructions(String inTypeName, Stack inStack) {
-		DefineInstruction(inTypeName + ".pop", new Pop(inStack));
-		DefineInstruction(inTypeName + ".swap", new Swap(inStack));
-		DefineInstruction(inTypeName + ".rot", new Rot(inStack));
-		DefineInstruction(inTypeName + ".flush", new Flush(inStack));
-		DefineInstruction(inTypeName + ".dup", new Dup(inStack));
-		DefineInstruction(inTypeName + ".stackdepth", new Depth(inStack));
-		DefineInstruction(inTypeName + ".shove", new Shove(inStack));
-		DefineInstruction(inTypeName + ".yank", new Yank(inStack));
-		DefineInstruction(inTypeName + ".yankdup", new YankDup(inStack));
-	}
-	
-	/**
-	 * Sets the parameters for the ERCs.
-	 * 
-	 * @param minRandomInt
-	 * @param maxRandomInt
-	 * @param randomIntResolution
-	 * @param minRandomFloat
-	 * @param maxRandomFloat
-	 * @param randomFloatResolution
-	 */
-	public void SetRandomParameters(int minRandomInt, int maxRandomInt,
-			int randomIntResolution, float minRandomFloat,
-			float maxRandomFloat, float randomFloatResolution,
-			int maxRandomCodeSize, int maxPointsInProgram) {
+    protected void DefineStackInstructions(String inTypeName, Stack inStack) {
+        DefineInstruction(inTypeName + ".pop", new Pop(inStack));
+        DefineInstruction(inTypeName + ".swap", new Swap(inStack));
+        DefineInstruction(inTypeName + ".rot", new Rot(inStack));
+        DefineInstruction(inTypeName + ".flush", new Flush(inStack));
+        DefineInstruction(inTypeName + ".dup", new Dup(inStack));
+        DefineInstruction(inTypeName + ".stackdepth", new Depth(inStack));
+        DefineInstruction(inTypeName + ".shove", new Shove(inStack));
+        DefineInstruction(inTypeName + ".yank", new Yank(inStack));
+        DefineInstruction(inTypeName + ".yankdup", new YankDup(inStack));
+    }
 
-		_minRandomInt = minRandomInt;
-		_maxRandomInt = maxRandomInt;
-		_randomIntResolution = randomIntResolution;
+    /**
+     * Sets the parameters for the ERCs.
+     *
+     * @param minRandomInt
+     * @param maxRandomInt
+     * @param randomIntResolution
+     * @param minRandomFloat
+     * @param maxRandomFloat
+     * @param randomFloatResolution
+     */
+    public void SetRandomParameters(int minRandomInt, int maxRandomInt,
+            int randomIntResolution, float minRandomFloat,
+            float maxRandomFloat, float randomFloatResolution,
+            int maxRandomCodeSize, int maxPointsInProgram) {
 
-		_minRandomFloat = minRandomFloat;
-		_maxRandomFloat = maxRandomFloat;
-		_randomFloatResolution = randomFloatResolution;
-		
-		_maxRandomCodeSize = maxRandomCodeSize;
-		_maxPointsInProgram = maxPointsInProgram;
-	}
+        _minRandomInt = minRandomInt;
+        _maxRandomInt = maxRandomInt;
+        _randomIntResolution = randomIntResolution;
 
-	/**
-	 * Executes a Push program with no execution limit.
-	 * 
-	 * @return The number of instructions executed.
-	 */
+        _minRandomFloat = minRandomFloat;
+        _maxRandomFloat = maxRandomFloat;
+        _randomFloatResolution = randomFloatResolution;
 
-	public int Execute(Program inProgram) {
-		return Execute(inProgram, -1);
-	}
+        _maxRandomCodeSize = maxRandomCodeSize;
+        _maxPointsInProgram = maxPointsInProgram;
+    }
 
-	/**
-	 * Executes a Push program with a given instruction limit.
-	 * 
-	 * @param inMaxSteps
-	 *            The maximum number of instructions allowed to be executed.
-	 * @return The number of instructions executed.
-	 */
+    /**
+     * Executes a Push program with no execution limit.
+     *
+     * @return The number of instructions executed.
+     */
 
-	public int Execute(Program inProgram, int inMaxSteps) {
-		_evaluationExecutions++;
-		LoadProgram(inProgram); // Initializes program
-		return Step(inMaxSteps);
-	}
+    public int Execute(Program inProgram) {
+        return Execute(inProgram, -1);
+    }
 
-	/**
-	 * Loads a Push program into the interpreter's exec and code stacks.
-	 * 
-	 * @param inProgram
-	 *            The program to load.
-	 */
+    /**
+     * Executes a Push program with a given instruction limit.
+     *
+     * @param inMaxSteps The maximum number of instructions allowed to be executed.
+     * @return The number of instructions executed.
+     */
 
-	public void LoadProgram(Program inProgram) {
-		_codeStack.push(inProgram);
-		_execStack.push(inProgram);
-	}
+    public int Execute(Program inProgram, int inMaxSteps) {
+        _evaluationExecutions++;
+        LoadProgram(inProgram); // Initializes program
+        return Step(inMaxSteps);
+    }
 
-	/**
-	 * Steps a Push interpreter forward with a given instruction limit.
-	 * 
-	 * This method assumes that the intepreter is already setup with an active
-	 * program (typically using \ref Execute).
-	 * 
-	 * @param inMaxSteps
-	 *            The maximum number of instructions allowed to be executed.
-	 * @return The number of instructions executed.
-	 */
+    /**
+     * Loads a Push program into the interpreter's exec and code stacks.
+     *
+     * @param inProgram The program to load.
+     */
 
-	public int Step(int inMaxSteps) {
-		int executed = 0;
-		while (inMaxSteps != 0 && _execStack.size() > 0) {			
-			ExecuteInstruction(_execStack.pop());
-			inMaxSteps--;
-			executed++;
-		}
+    public void LoadProgram(Program inProgram) {
+        _codeStack.push(inProgram);
+        _execStack.push(inProgram);
+    }
 
-		_totalStepsTaken += executed;
+    /**
+     * Steps a Push interpreter forward with a given instruction limit.
+     * <p>
+     * This method assumes that the intepreter is already setup with an active
+     * program (typically using \ref Execute).
+     *
+     * @param inMaxSteps The maximum number of instructions allowed to be executed.
+     * @return The number of instructions executed.
+     */
 
-		return executed;
-	}
+    public int Step(int inMaxSteps) {
+        int executed = 0;
+        while (inMaxSteps != 0 && _execStack.size() > 0) {
+            ExecuteInstruction(_execStack.pop());
+            inMaxSteps--;
+            executed++;
+        }
 
-	public int ExecuteInstruction(Object inObject) {
+        _totalStepsTaken += executed;
 
-		if (inObject instanceof Program p) {
+        return executed;
+    }
+
+    public int ExecuteInstruction(Object inObject) {
+
+        if (inObject instanceof Program p) {
 
             if (_useFrames) {
-				_execStack.push("frame.pop");
-			}
-
-			p.PushAllReverse(_execStack);
-
-			if (_useFrames) {
-				_execStack.push("frame.push");
-			}
-
-			return 0;
-		}
-
-		if (inObject instanceof Integer) {
-			_intStack.push((Integer) inObject);
-			return 0;
-		}
-
-		if (inObject instanceof Number) {
-			_floatStack.push(((Number) inObject).floatValue());
-			return 0;
-		}
-
-		if (inObject instanceof Instruction) {
-			((Instruction) inObject).Execute(this);
-			return 0;
-		}
-
-		if (inObject instanceof String) {
-			Instruction i = _instructions.get(inObject);
-
-			if (i != null) {
-				i.Execute(this);
-			} else {
-				_nameStack.push(inObject);
-			}
-
-			return 0;
-		}
-
-		return -1;
-	}
-
-	/**
-	 * Fetch the active integer stack.
-	 */
-
-	public IntStack intStack() {
-		return _intStack;
-	}
-
-	/**
-	 * Fetch the active float stack.
-	 */
-
-	public FloatStack floatStack() {
-		return _floatStack;
-	}
-
-	/**
-	 * Fetch the active exec stack.
-	 */
-
-	public ObjectStack execStack() {
-		return _execStack;
-	}
-
-	/**
-	 * Fetch the active code stack.
-	 */
-
-	public ObjectStack codeStack() {
-		return _codeStack;
-	}
-
-	/**
-	 * Fetch the active bool stack.
-	 */
-
-	public BooleanStack boolStack() {
-		return _boolStack;
-	}
-
-	/**
-	 * Fetch the active name stack.
-	 */
-
-	public ObjectStack nameStack() {
-		return _nameStack;
-	}
-
-	/**
-	 * Fetch the active input stack.
-	 */
-
-	public ObjectStack inputStack() {
-		return _inputStack;
-	}
-	
-	/**
-	 * Fetch the indexed custom stack
-	 */
-	public Stack getCustomStack(int inIndex){
-		return _customStacks.get(inIndex);
-	}
-	
-	/**
-	 * Add a custom stack, and return that stack's index
-	 */
-	public int addCustomStack(Stack inStack){
-		_customStacks.add(inStack);
-		return _customStacks.size() - 1;
-	}
-
-	protected void AssignStacksFromFrame() {
-		_floatStack = (FloatStack) _floatFrameStack.top();
-		_intStack = (IntStack) _intFrameStack.top();
-		_boolStack = (BooleanStack) _boolFrameStack.top();
-		_codeStack = (ObjectStack) _codeFrameStack.top();
-		_nameStack = (ObjectStack) _nameFrameStack.top();
-	}
-
-	public void PushStacks() {
-		_floatFrameStack.push(new FloatStack());
-		_intFrameStack.push(new IntStack());
-		_boolFrameStack.push(new BooleanStack());
-		_codeFrameStack.push(new ObjectStack());
-		_nameFrameStack.push(new ObjectStack());
-
-		AssignStacksFromFrame();
-	}
-
-	public void PopStacks() {
-		_floatFrameStack.pop();
-		_intFrameStack.pop();
-		_boolFrameStack.pop();
-		_codeFrameStack.pop();
-		_nameFrameStack.pop();
-
-		AssignStacksFromFrame();
-	}
-
-	public void PushFrame() {
-		if (_useFrames) {
-			boolean boolTop = _boolStack.top();
-			int intTop = _intStack.top();
-			float floatTop = _floatStack.top();
-			Object nameTop = _nameStack.top();
-			Object codeTop = _codeStack.top();
-
-			PushStacks();
-
-			_floatStack.push(floatTop);
-			_intStack.push(intTop);
-			_boolStack.push(boolTop);
-
-			if (nameTop != null)
-				_nameStack.push(nameTop);
-			if (codeTop != null)
-				_codeStack.push(codeTop);
-		}
-	}
-
-	public void PopFrame() {
-		if (_useFrames) {
-			boolean boolTop = _boolStack.top();
-			int intTop = _intStack.top();
-			float floatTop = _floatStack.top();
-			Object nameTop = _nameStack.top();
-			Object codeTop = _codeStack.top();
-
-			PopStacks();
-
-			_floatStack.push(floatTop);
-			_intStack.push(intTop);
-			_boolStack.push(boolTop);
-
-			if (nameTop != null)
-				_nameStack.push(nameTop);
-			if (codeTop != null)
-				_codeStack.push(codeTop);
-		}
-	}
-
-	/**
-	 * Prints out the current stack states.
-	 */
-
-	public void PrintStacks() {
-		System.out.println(this);
-	}
-
-	/**
-	 * Returns a string containing the current Interpreter stack states.
-	 */
-
-	public String toString() {
-		String result = "";
-		result += "exec stack: " + _execStack + "\n";
-		result += "code stack: " + _codeStack + "\n";
-		result += "int stack: " + _intStack + "\n";
-		result += "float stack: " + _floatStack + "\n";
-		result += "boolean stack: " + _boolStack + "\n";
-		result += "name stack: " + _nameStack + "\n";
-		result += "input stack: " + _inputStack + "\n";
-
-		return result;
-	}
-
-	/**
-	 * Resets the Push interpreter state by clearing all of the stacks.
-	 */
-
-	public void clearStacks() {
-		_intStack.clear();
-		_floatStack.clear();
-		_execStack.clear();
-		_nameStack.clear();
-		_boolStack.clear();
-		_codeStack.clear();
-		_inputStack.clear();
-		
-		// Clear all custom stacks
-		for(Stack s : _customStacks){
-			s.clear();
-		}
-	}
-
-	/**
-	 * Returns a string list of all instructions enabled in the interpreter.
-	 */
-	public String GetRegisteredInstructionsString() {
-		Object[] keys = _instructions.keySet().toArray();
-		Arrays.sort(keys);
-		String list = "";
-
-		for (int n = 0; n < keys.length; n++)
-			list += keys[n] + " ";
-
-		return list;
-	}
-	
-	/**
-	 * Returns a string of all the instructions used in this run.
-	 * @return
-	 */
-	public String GetInstructionsString(){
-		Object[] keys = _instructions.keySet().toArray();
-		ArrayList<String> strings = new ArrayList<String>();
-		String str = "";
-
-		for (int i = 0; i < keys.length; i++) {
-			String key = (String) keys[i];
-
-			if(_randomGenerators.contains(_generators.get(key))){
-				strings.add(key);
-			}
-	
-		}
-		
-		if(_randomGenerators.contains(_generators.get("float.erc"))){
-			strings.add("float.erc");
-		}
-		if(_randomGenerators.contains(_generators.get("integer.erc"))){
-			strings.add("integer.erc");
-		}
-
-		Collections.sort(strings);
-		for(String s : strings){
-			str += s + " ";
-		}
-		
-		return str.substring(0, str.length() - 1);
-	}
-
-	/**
-	 * Returns the Instruction whose name is given in instr.
-	 * 
-	 * @param instr
-	 * @return the Instruction or null if no such Instruction.
-	 */
-	public Instruction GetInstruction(String instr) {
-		return _instructions.get(instr);
-	}
-
-	/**
-	 * Returns the number of evaluation executions so far this run.
-	 * 
-	 * @return The number of evaluation executions during this run.
-	 */
-	public long GetEvaluationExecutions(){
-		return _evaluationExecutions;
-	}
-	
-	public InputPusher getInputPusher() {
-		return _inputPusher;
-	}
-
-	public void setInputPusher(InputPusher _inputPusher) {
-		this._inputPusher = _inputPusher;
-	}
-	
-	/**
-	 * Generates a single random Push atom (instruction name, integer, float,
-	 * etc) for use in random code generation algorithms.
-	 * 
-	 * @return A random atom based on the interpreter's current active
-	 *         instruction set.
-	 */
-
-	public Object RandomAtom() {
-		int index = _RNG.nextInt(_randomGenerators.size());
-
-		return _randomGenerators.get(index).Generate(this);
-	}
-
-	/**
-	 * Generates a random Push program of a given size.
-	 * 
-	 * @param inSize
-	 *            The requested size for the program to be generated.
-	 * @return A random Push program of the given size.
-	 */
-
-	public Program RandomCode(int inSize) {
-		Program p = new Program(this);
-
-		List<Integer> distribution = RandomCodeDistribution(inSize - 1,
-				inSize - 1);
-
-		for (int i = 0; i < distribution.size(); i++) {
-			int count = distribution.get(i);
-
-			if (count == 1) {
-				p.push(RandomAtom());
-			} else {
-				p.push(RandomCode(count));
-			}
-		}
-
-		return p;
-	}
-
-	/**
-	 * Generates a list specifying a size distribution to be used for random
-	 * code.
-	 * 
-	 * Note: This method is called "decompose" in the lisp implementation.
-	 * 
-	 * @param inCount
-	 *            The desired resulting program size.
-	 * @param inMaxElements
-	 *            The maxmimum number of elements at this level.
-	 * @return A list of integers representing the size distribution.
-	 */
-
-	public List<Integer> RandomCodeDistribution(int inCount, int inMaxElements) {
-		ArrayList<Integer> result = new ArrayList<Integer>();
-
-		RandomCodeDistribution(result, inCount, inMaxElements);
-
-		Collections.shuffle(result);
-
-		return result;
-	}
-
-	/**
-	 * The recursive worker function for the public RandomCodeDistribution.
-	 * 
-	 * @param ioList
-	 *            The working list of distribution values to append to.
-	 * @param inCount
-	 *            The desired resulting program size.
-	 * @param inMaxElements
-	 *            The maxmimum number of elements at this level.
-	 */
-
-	private void RandomCodeDistribution(List<Integer> ioList, int inCount,
-			int inMaxElements) {
-		if (inCount < 1)
-			return;
-
-		int thisSize = inCount < 2 ? 1 : (_RNG.nextInt(inCount) + 1);
-
-		ioList.add(thisSize);
-
-		RandomCodeDistribution(ioList, inCount - thisSize, inMaxElements - 1);
-	}
-
-	abstract class AtomGenerator implements Serializable {
-		private static final long serialVersionUID = 1L;
-
-		abstract Object Generate(Interpreter inInterpreter);
-	}
-
-	private class InstructionAtomGenerator extends AtomGenerator {
-		private static final long serialVersionUID = 1L;
-
-		String _instruction;
-
-		InstructionAtomGenerator(String inInstructionName) {
-			_instruction = inInstructionName;
-		}
-
-		Object Generate(Interpreter inInterpreter) {
-			return _instruction;
-		}
-	}
-
-	private class FloatAtomGenerator extends AtomGenerator {
-		private static final long serialVersionUID = 1L;
-
-		Object Generate(Interpreter inInterpreter) {
-			float r = _RNG.nextFloat() * (_maxRandomFloat - _minRandomFloat);
-
-			r -= (r % _randomFloatResolution);
-
-			return r + _minRandomFloat;
-		}
-	}
-
-	private class IntAtomGenerator extends AtomGenerator {
-		private static final long serialVersionUID = 1L;
-
-		Object Generate(Interpreter inInterpreter) {
-			int r = _RNG.nextInt(_maxRandomInt - _minRandomInt);
-
-			r -= (r % _randomIntResolution);
-
-			return r + _minRandomInt;
-		}
-	}
+                _execStack.push("frame.pop");
+            }
+
+            p.PushAllReverse(_execStack);
+
+            if (_useFrames) {
+                _execStack.push("frame.push");
+            }
+
+            return 0;
+        }
+
+        if (inObject instanceof Integer) {
+            _intStack.push((Integer) inObject);
+            return 0;
+        }
+
+        if (inObject instanceof Number) {
+            _floatStack.push(((Number) inObject).floatValue());
+            return 0;
+        }
+
+        if (inObject instanceof Instruction) {
+            ((Instruction) inObject).Execute(this);
+            return 0;
+        }
+
+        if (inObject instanceof String) {
+            Instruction i = _instructions.get(inObject);
+
+            if (i != null) {
+                i.Execute(this);
+            } else {
+                _nameStack.push(inObject);
+            }
+
+            return 0;
+        }
+
+        return -1;
+    }
+
+    /**
+     * Fetch the active integer stack.
+     */
+
+    public IntStack intStack() {
+        return _intStack;
+    }
+
+    /**
+     * Fetch the active float stack.
+     */
+
+    public FloatStack floatStack() {
+        return _floatStack;
+    }
+
+    /**
+     * Fetch the active exec stack.
+     */
+
+    public ObjectStack execStack() {
+        return _execStack;
+    }
+
+    /**
+     * Fetch the active code stack.
+     */
+
+    public ObjectStack codeStack() {
+        return _codeStack;
+    }
+
+    /**
+     * Fetch the active bool stack.
+     */
+
+    public BooleanStack boolStack() {
+        return _boolStack;
+    }
+
+    /**
+     * Fetch the active name stack.
+     */
+
+    public ObjectStack nameStack() {
+        return _nameStack;
+    }
+
+    /**
+     * Fetch the active input stack.
+     */
+
+    public ObjectStack inputStack() {
+        return _inputStack;
+    }
+
+    /**
+     * Fetch the indexed custom stack
+     */
+    public Stack getCustomStack(int inIndex) {
+        return _customStacks.get(inIndex);
+    }
+
+    /**
+     * Add a custom stack, and return that stack's index
+     */
+    public int addCustomStack(Stack inStack) {
+        _customStacks.add(inStack);
+        return _customStacks.size() - 1;
+    }
+
+    protected void AssignStacksFromFrame() {
+        _floatStack = (FloatStack) _floatFrameStack.top();
+        _intStack = (IntStack) _intFrameStack.top();
+        _boolStack = (BooleanStack) _boolFrameStack.top();
+        _codeStack = (ObjectStack) _codeFrameStack.top();
+        _nameStack = (ObjectStack) _nameFrameStack.top();
+    }
+
+    public void PushStacks() {
+        _floatFrameStack.push(new FloatStack());
+        _intFrameStack.push(new IntStack());
+        _boolFrameStack.push(new BooleanStack());
+        _codeFrameStack.push(new ObjectStack());
+        _nameFrameStack.push(new ObjectStack());
+
+        AssignStacksFromFrame();
+    }
+
+    public void PopStacks() {
+        _floatFrameStack.pop();
+        _intFrameStack.pop();
+        _boolFrameStack.pop();
+        _codeFrameStack.pop();
+        _nameFrameStack.pop();
+
+        AssignStacksFromFrame();
+    }
+
+    public void PushFrame() {
+        if (_useFrames) {
+            boolean boolTop = _boolStack.top();
+            int intTop = _intStack.top();
+            float floatTop = _floatStack.top();
+            Object nameTop = _nameStack.top();
+            Object codeTop = _codeStack.top();
+
+            PushStacks();
+
+            _floatStack.push(floatTop);
+            _intStack.push(intTop);
+            _boolStack.push(boolTop);
+
+            if (nameTop != null)
+                _nameStack.push(nameTop);
+            if (codeTop != null)
+                _codeStack.push(codeTop);
+        }
+    }
+
+    public void PopFrame() {
+        if (_useFrames) {
+            boolean boolTop = _boolStack.top();
+            int intTop = _intStack.top();
+            float floatTop = _floatStack.top();
+            Object nameTop = _nameStack.top();
+            Object codeTop = _codeStack.top();
+
+            PopStacks();
+
+            _floatStack.push(floatTop);
+            _intStack.push(intTop);
+            _boolStack.push(boolTop);
+
+            if (nameTop != null)
+                _nameStack.push(nameTop);
+            if (codeTop != null)
+                _codeStack.push(codeTop);
+        }
+    }
+
+    /**
+     * Prints out the current stack states.
+     */
+
+    public void PrintStacks() {
+        System.out.println(this);
+    }
+
+    /**
+     * Returns a string containing the current Interpreter stack states.
+     */
+
+    public String toString() {
+        String result = "";
+        result += "exec stack: " + _execStack + "\n";
+        result += "code stack: " + _codeStack + "\n";
+        result += "int stack: " + _intStack + "\n";
+        result += "float stack: " + _floatStack + "\n";
+        result += "boolean stack: " + _boolStack + "\n";
+        result += "name stack: " + _nameStack + "\n";
+        result += "input stack: " + _inputStack + "\n";
+
+        return result;
+    }
+
+    /**
+     * Resets the Push interpreter state by clearing all of the stacks.
+     */
+
+    public void clearStacks() {
+        _intStack.clear();
+        _floatStack.clear();
+        _execStack.clear();
+        _nameStack.clear();
+        _boolStack.clear();
+        _codeStack.clear();
+        _inputStack.clear();
+
+        // Clear all custom stacks
+        for (Stack s : _customStacks) {
+            s.clear();
+        }
+    }
+
+    /**
+     * Returns a string list of all instructions enabled in the interpreter.
+     */
+    public String GetRegisteredInstructionsString() {
+        Object[] keys = _instructions.keySet().toArray();
+        Arrays.sort(keys);
+        String list = "";
+
+        for (int n = 0; n < keys.length; n++)
+            list += keys[n] + " ";
+
+        return list;
+    }
+
+    /**
+     * Returns a string of all the instructions used in this run.
+     *
+     * @return
+     */
+    public String GetInstructionsString() {
+        Object[] keys = _instructions.keySet().toArray();
+        ArrayList<String> strings = new ArrayList<String>();
+        String str = "";
+
+        for (int i = 0; i < keys.length; i++) {
+            String key = (String) keys[i];
+
+            if (_randomGenerators.contains(_generators.get(key))) {
+                strings.add(key);
+            }
+
+        }
+
+        if (_randomGenerators.contains(_generators.get("float.erc"))) {
+            strings.add("float.erc");
+        }
+        if (_randomGenerators.contains(_generators.get("integer.erc"))) {
+            strings.add("integer.erc");
+        }
+
+        Collections.sort(strings);
+        for (String s : strings) {
+            str += s + " ";
+        }
+
+        return str.substring(0, str.length() - 1);
+    }
+
+    /**
+     * Returns the Instruction whose name is given in instr.
+     *
+     * @param instr
+     * @return the Instruction or null if no such Instruction.
+     */
+    public Instruction GetInstruction(String instr) {
+        return _instructions.get(instr);
+    }
+
+    /**
+     * Returns the number of evaluation executions so far this run.
+     *
+     * @return The number of evaluation executions during this run.
+     */
+    public long GetEvaluationExecutions() {
+        return _evaluationExecutions;
+    }
+
+    public InputPusher getInputPusher() {
+        return _inputPusher;
+    }
+
+    public void setInputPusher(InputPusher _inputPusher) {
+        this._inputPusher = _inputPusher;
+    }
+
+    /**
+     * Generates a single random Push atom (instruction name, integer, float,
+     * etc) for use in random code generation algorithms.
+     *
+     * @return A random atom based on the interpreter's current active
+     * instruction set.
+     */
+
+    public Object RandomAtom() {
+        int index = _RNG.nextInt(_randomGenerators.size());
+
+        return _randomGenerators.get(index).Generate(this);
+    }
+
+    /**
+     * Generates a random Push program of a given size.
+     *
+     * @param inSize The requested size for the program to be generated.
+     * @return A random Push program of the given size.
+     */
+
+    public Program RandomCode(int inSize) {
+        Program p = new Program(this);
+
+        List<Integer> distribution = RandomCodeDistribution(inSize - 1,
+                inSize - 1);
+
+        for (int i = 0; i < distribution.size(); i++) {
+            int count = distribution.get(i);
+
+            if (count == 1) {
+                p.push(RandomAtom());
+            } else {
+                p.push(RandomCode(count));
+            }
+        }
+
+        return p;
+    }
+
+    /**
+     * Generates a list specifying a size distribution to be used for random
+     * code.
+     * <p>
+     * Note: This method is called "decompose" in the lisp implementation.
+     *
+     * @param inCount       The desired resulting program size.
+     * @param inMaxElements The maxmimum number of elements at this level.
+     * @return A list of integers representing the size distribution.
+     */
+
+    public List<Integer> RandomCodeDistribution(int inCount, int inMaxElements) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+
+        RandomCodeDistribution(result, inCount, inMaxElements);
+
+        Collections.shuffle(result);
+
+        return result;
+    }
+
+    /**
+     * The recursive worker function for the public RandomCodeDistribution.
+     *
+     * @param ioList        The working list of distribution values to append to.
+     * @param inCount       The desired resulting program size.
+     * @param inMaxElements The maxmimum number of elements at this level.
+     */
+
+    private void RandomCodeDistribution(List<Integer> ioList, int inCount,
+            int inMaxElements) {
+        if (inCount < 1)
+            return;
+
+        int thisSize = inCount < 2 ? 1 : (_RNG.nextInt(inCount) + 1);
+
+        ioList.add(thisSize);
+
+        RandomCodeDistribution(ioList, inCount - thisSize, inMaxElements - 1);
+    }
+
+    abstract class AtomGenerator implements Serializable {
+        private static final long serialVersionUID = 1L;
+
+        abstract Object Generate(Interpreter inInterpreter);
+    }
+
+    private class InstructionAtomGenerator extends AtomGenerator {
+        private static final long serialVersionUID = 1L;
+
+        String _instruction;
+
+        InstructionAtomGenerator(String inInstructionName) {
+            _instruction = inInstructionName;
+        }
+
+        Object Generate(Interpreter inInterpreter) {
+            return _instruction;
+        }
+    }
+
+    private class FloatAtomGenerator extends AtomGenerator {
+        private static final long serialVersionUID = 1L;
+
+        Object Generate(Interpreter inInterpreter) {
+            float r = _RNG.nextFloat() * (_maxRandomFloat - _minRandomFloat);
+
+            r -= (r % _randomFloatResolution);
+
+            return r + _minRandomFloat;
+        }
+    }
+
+    private class IntAtomGenerator extends AtomGenerator {
+        private static final long serialVersionUID = 1L;
+
+        Object Generate(Interpreter inInterpreter) {
+            int r = _RNG.nextInt(_maxRandomInt - _minRandomInt);
+
+            r -= (r % _randomIntResolution);
+
+            return r + _minRandomInt;
+        }
+    }
 
 }

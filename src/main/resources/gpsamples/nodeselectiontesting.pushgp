@@ -2,9 +2,6 @@
 # A sample PushGP file for a simple test symbolic regression problem.
 # In this demo, the system solves the equation y = 12x^2 + 5.
 #
-# Tom Helmuth
-# 11/20/2010
-#
 
 ### Setup required parameters
 

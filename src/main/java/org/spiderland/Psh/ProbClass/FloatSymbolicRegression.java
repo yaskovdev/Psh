@@ -1,5 +1,6 @@
 package org.spiderland.Psh.ProbClass;
 
+import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.GAIndividual;
 import org.spiderland.Psh.GATestCase;
 import org.spiderland.Psh.Interpreter;
@@ -7,7 +8,6 @@ import org.spiderland.Psh.ObjectPair;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.TestCase.TestCaseGenerator;
 
 /**
@@ -15,121 +15,120 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
  * See also IntSymbolicRegression for integer symbolic regression.
  */
 public class FloatSymbolicRegression extends PushGP {
-	private static final long serialVersionUID = 1L;
-	
-	private final float _noResultPenalty = 10000;
+    private static final long serialVersionUID = 1L;
 
-	protected void InitFromParameters() throws Exception {
-		super.InitFromParameters();
+    private final float _noResultPenalty = 10000;
 
-		String cases = GetParam("test-cases", true);
-		String casesClass = GetParam("test-case-class", true);
-		if (cases == null && casesClass == null) {
-			throw new Exception("No acceptable test-case parameter.");
-		}
+    protected void InitFromParameters() throws Exception {
+        super.InitFromParameters();
 
-		if (casesClass != null) {
-			// Get test cases from the TestCasesClass.
-			Class<?> iclass = Class.forName(casesClass);
-			Object iObject = iclass.newInstance();
-			if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
-				throw (new Exception(
-						"test-case-class must inherit from class TestCaseGenerator"));
-			}
+        String cases = GetParam("test-cases", true);
+        String casesClass = GetParam("test-case-class", true);
+        if (cases == null && casesClass == null) {
+            throw new Exception("No acceptable test-case parameter.");
+        }
 
-            int numTestCases = testCaseGenerator.TestCaseCount();
+        if (casesClass != null) {
+            // Get test cases from the TestCasesClass.
+            Class<?> iclass = Class.forName(casesClass);
+            Object iObject = iclass.newInstance();
+            if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
+                throw (new Exception(
+                        "test-case-class must inherit from class TestCaseGenerator"));
+            }
 
-			for (int i = 0; i < numTestCases; i++) {
-				ObjectPair testCase = testCaseGenerator.TestCase(i);
+            int numTestCases = testCaseGenerator.testCaseCount();
 
-				Float in = (Float) testCase._first;
-				Float out = (Float) testCase._second;
+            for (int i = 0; i < numTestCases; i++) {
+                ObjectPair testCase = testCaseGenerator.testCase(i);
 
-				Print(";; Fitness case #" + i + " input: " + in + " output: "
-						+ out + "\n");
+                Float in = (Float) testCase._first;
+                Float out = (Float) testCase._second;
 
-				_testCases.add(new GATestCase(in, out));
-			}
-		} else {
-			// Get test cases from test-cases.
-			Program caselist = new Program(_interpreter, cases);
+                Print(";; Fitness case #" + i + " input: " + in + " output: "
+                        + out + "\n");
 
-			for (int i = 0; i < caselist.size(); i++) {
-				Program p = (Program) caselist.peek(i);
+                _testCases.add(new GATestCase(in, out));
+            }
+        } else {
+            // Get test cases from test-cases.
+            Program caselist = new Program(_interpreter, cases);
 
-				if (p.size() < 2)
-					throw new Exception(
-							"Not enough elements for fitness case \"" + p
-									+ "\"");
+            for (int i = 0; i < caselist.size(); i++) {
+                Program p = (Program) caselist.peek(i);
 
-				Float in = new Float(p.peek(0).toString());
-				Float out = new Float(p.peek(1).toString());
+                if (p.size() < 2)
+                    throw new Exception(
+                            "Not enough elements for fitness case \"" + p
+                                    + "\"");
 
-				Print(";; Fitness case #" + i + " input: " + in + " output: "
-						+ out + "\n");
+                Float in = Float.valueOf(p.peek(0).toString());
+                Float out = Float.valueOf(p.peek(1).toString());
 
-				_testCases.add(new GATestCase(in, out));
-			}
-		}
+                Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
-	}
+                _testCases.add(new GATestCase(in, out));
+            }
+        }
 
-	protected void InitInterpreter(Interpreter inInterpreter) {
-	}
+    }
 
-	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
-			Object inOutput) {
-		_interpreter.clearStacks();
+    protected void InitInterpreter(Interpreter inInterpreter) {
+    }
 
-		float currentInput = (Float) inInput;
+    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+            Object inOutput) {
+        _interpreter.clearStacks();
 
-		FloatStack stack = _interpreter.floatStack();
+        float currentInput = (Float) inInput;
 
-		stack.push(currentInput);
+        FloatStack stack = _interpreter.floatStack();
 
-		// Must be included in order to use the input stack.
-		_interpreter.inputStack().push(currentInput);
+        stack.push(currentInput);
 
-		_interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-				_executionLimit);
+        // Must be included in order to use the input stack.
+        _interpreter.inputStack().push(currentInput);
 
-		float result = stack.top();
-		
-		// Penalize individual if there is no result on the stack.
-		if(stack.size() == 0){
-			return _noResultPenalty;
-		}
-		
-		return result - ((Float) inOutput);
-	}
-	
-	public float GetIndividualTestCaseResult(GAIndividual inIndividual, GATestCase inTestCase){
-		_interpreter.clearStacks();
+        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
+                _executionLimit);
 
-		float currentInput = (Float) inTestCase._input;
+        float result = stack.top();
 
-		FloatStack stack = _interpreter.floatStack();
+        // Penalize individual if there is no result on the stack.
+        if (stack.size() == 0) {
+            return _noResultPenalty;
+        }
 
-		stack.push(currentInput);
+        return result - ((Float) inOutput);
+    }
 
-		// Must be included in order to use the input stack.
-		_interpreter.inputStack().push(currentInput);
+    public float GetIndividualTestCaseResult(GAIndividual inIndividual, GATestCase inTestCase) {
+        _interpreter.clearStacks();
 
-		_interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-				_executionLimit);
+        float currentInput = (Float) inTestCase._input;
 
-		float result = stack.top();
-		
-		// If no result, return 0
-		if(stack.size() == 0){
-			return 0;
-		}
-		
-		return result;
-	}
+        FloatStack stack = _interpreter.floatStack();
 
-	protected boolean Success() {
-		return _bestMeanFitness <= 0.1;
-	}
+        stack.push(currentInput);
+
+        // Must be included in order to use the input stack.
+        _interpreter.inputStack().push(currentInput);
+
+        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
+                _executionLimit);
+
+        float result = stack.top();
+
+        // If no result, return 0
+        if (stack.size() == 0) {
+            return 0;
+        }
+
+        return result;
+    }
+
+    protected boolean Success() {
+        return _bestMeanFitness <= 0.1;
+    }
 
 }

@@ -1,7 +1,7 @@
 package org.spiderland.Psh;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * An abstract GP individual class containing a fitness value. The fitness value
@@ -11,33 +11,33 @@ import java.util.*;
  */
 
 public abstract class GAIndividual implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	float _fitness;
-	ArrayList<Float> _errors;
-	
-	boolean _fitnessSet;
+    float _fitness;
+    ArrayList<Float> _errors;
 
-	public boolean FitnessIsSet(){
-		return _fitnessSet;
-	}
-	
-	public float GetFitness() {
-		return _fitness;
-	}
+    boolean _fitnessSet;
 
-	public void SetFitness(float inFitness) {
-		_fitness = inFitness;
-		_fitnessSet = true;
-	}
+    public boolean FitnessIsSet() {
+        return _fitnessSet;
+    }
 
-	public ArrayList<Float> GetErrors() {
-		return _errors;
-	}
+    public float GetFitness() {
+        return _fitness;
+    }
 
-	public void SetErrors(ArrayList<Float> inErrors) {
-		_errors = inErrors;
-	}
+    public void SetFitness(float inFitness) {
+        _fitness = inFitness;
+        _fitnessSet = true;
+    }
 
-	public abstract GAIndividual clone();
+    public ArrayList<Float> GetErrors() {
+        return _errors;
+    }
+
+    public void SetErrors(ArrayList<Float> inErrors) {
+        _errors = inErrors;
+    }
+
+    public abstract GAIndividual clone();
 }

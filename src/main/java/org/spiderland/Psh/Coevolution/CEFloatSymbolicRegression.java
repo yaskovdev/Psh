@@ -1,8 +1,6 @@
 package org.spiderland.Psh.Coevolution;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.GAIndividual;
 import org.spiderland.Psh.GATestCase;
 import org.spiderland.Psh.Interpreter;
@@ -10,8 +8,10 @@ import org.spiderland.Psh.ObjectPair;
 import org.spiderland.Psh.Program;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
-import org.spiderland.Psh.FloatStack;
 import org.spiderland.Psh.TestCase.TestCaseGenerator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This problem class implements symbolic regression for floating point numbers
@@ -19,287 +19,284 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
  * effort it takes compared to the effort of the co-evolving predictor
  * population, and use about 95% of the effort. Effort based on the number of
  * evaluation executions thus far, which is tracked by the interpreter.
- * 
  */
 public class CEFloatSymbolicRegression extends PushGP {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected float _currentInput;
+    protected float _currentInput;
 
-	protected long _effort;
-	protected float _predictorEffortPercent;
-	protected PredictionGA _predictorGA;
-	
-	private boolean _success;
-	
-	private final float _noResultPenalty = 1000f;
+    protected long _effort;
+    protected float _predictorEffortPercent;
+    protected PredictionGA _predictorGA;
 
-	protected void InitFromParameters() throws Exception {
-		super.InitFromParameters();
+    private boolean _success;
 
-		_effort = 0;
+    private static final float NO_RESULT_PENALTY = 1000f;
 
-		String cases = GetParam("test-cases", true);
-		String casesClass = GetParam("test-case-class", true);
-		if (cases == null && casesClass == null) {
-			throw new Exception("No acceptable test-case parameter.");
-		}
+    protected void InitFromParameters() throws Exception {
+        super.InitFromParameters();
 
-		if (casesClass != null) {
-			// Get test cases from the TestCasesClass.
-			Class<?> iclass = Class.forName(casesClass);
-			Object iObject = iclass.newInstance();
-			if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
-				throw (new Exception(
-						"test-case-class must inherit from class TestCaseGenerator"));
-			}
+        _effort = 0;
 
-            int numTestCases = testCaseGenerator.TestCaseCount();
+        String cases = GetParam("test-cases", true);
+        String casesClass = GetParam("test-case-class", true);
+        if (cases == null && casesClass == null) {
+            throw new Exception("No acceptable test-case parameter.");
+        }
 
-			for (int i = 0; i < numTestCases; i++) {
-				ObjectPair testCase = testCaseGenerator.TestCase(i);
+        if (casesClass != null) {
+            // Get test cases from the TestCasesClass.
+            Class<?> iclass = Class.forName(casesClass);
+            Object iObject = iclass.newInstance();
+            if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
+                throw (new Exception(
+                        "test-case-class must inherit from class TestCaseGenerator"));
+            }
 
-				Float in = (Float) testCase._first;
-				Float out = (Float) testCase._second;
+            int numTestCases = testCaseGenerator.testCaseCount();
 
-				Print(";; Fitness case #" + i + " input: " + in + " output: "
-						+ out + "\n");
+            for (int i = 0; i < numTestCases; i++) {
+                ObjectPair testCase = testCaseGenerator.testCase(i);
 
-				_testCases.add(new GATestCase(in, out));
-			}
-		} else {
-			// Get test cases from test-cases.
-			Program caselist = new Program(_interpreter, cases);
+                Float in = (Float) testCase._first;
+                Float out = (Float) testCase._second;
 
-			for (int i = 0; i < caselist.size(); i++) {
-				Program p = (Program) caselist.peek(i);
+                Print(";; Fitness case #" + i + " input: " + in + " output: "
+                        + out + "\n");
 
-				if (p.size() < 2)
-					throw new Exception(
-							"Not enough elements for fitness case \"" + p
-									+ "\"");
+                _testCases.add(new GATestCase(in, out));
+            }
+        } else {
+            // Get test cases from test-cases.
+            Program caselist = new Program(_interpreter, cases);
 
-				Float in = new Float(p.peek(0).toString());
-				Float out = new Float(p.peek(1).toString());
+            for (int i = 0; i < caselist.size(); i++) {
+                Program p = (Program) caselist.peek(i);
 
-				Print(";; Fitness case #" + i + " input: " + in + " output: "
-						+ out + "\n");
+                if (p.size() < 2)
+                    throw new Exception(
+                            "Not enough elements for fitness case \"" + p
+                                    + "\"");
 
-				_testCases.add(new GATestCase(in, out));
-			}
-		}
+                Float in = Float.valueOf(p.peek(0).toString());
+                Float out = Float.valueOf(p.peek(1).toString());
 
-		// Create and initialize predictors
-		_predictorEffortPercent = GetFloatParam("PREDICTOR-effort-percent",
-				true);
-		_predictorGA = PredictionGA.PredictionGAWithParameters(this,
-				GetPredictorParameters(_parameters));
+                Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
-	}
+                _testCases.add(new GATestCase(in, out));
+            }
+        }
 
-	protected void InitInterpreter(Interpreter inInterpreter) {
-	}
-	
-	@Override
-	protected void BeginGeneration() throws Exception {
-		//trh Temporary solution, needs to actually use effort info
-		if(_generationCount % 2 == 1){
-			_predictorGA.Run(1);			
-		}	
-	}
-	
-	/**
-	 * Evaluates a solution individual using the best predictor so far.
-	 */
-	protected void PredictIndividual(GAIndividual inIndividual,
-			boolean duringSimplify) {
-		
-		FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) _predictorGA.GetBestPredictor();
-		float fitness = predictor.PredictSolutionFitness((PushGPIndividual) inIndividual);
+        // Create and initialize predictors
+        _predictorEffortPercent = GetFloatParam("PREDICTOR-effort-percent",
+                true);
+        _predictorGA = PredictionGA.PredictionGAWithParameters(this,
+                GetPredictorParameters(_parameters));
 
-		inIndividual.SetFitness(fitness);
-		inIndividual.SetErrors(new ArrayList<Float>());
-	}
+    }
 
-	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
-			Object inOutput) {
-		_effort++;
+    protected void InitInterpreter(Interpreter inInterpreter) {
+    }
 
-		_interpreter.clearStacks();
+    @Override
+    protected void BeginGeneration() throws Exception {
+        //trh Temporary solution, needs to actually use effort info
+        if (_generationCount % 2 == 1) {
+            _predictorGA.Run(1);
+        }
+    }
 
-		_currentInput = (Float) inInput;
+    /**
+     * Evaluates a solution individual using the best predictor so far.
+     */
+    protected void PredictIndividual(GAIndividual inIndividual, boolean duringSimplify) {
 
-		FloatStack fstack = _interpreter.floatStack();
+        FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) _predictorGA.GetBestPredictor();
+        float fitness = predictor.PredictSolutionFitness((PushGPIndividual) inIndividual);
 
-		fstack.push(_currentInput);
+        inIndividual.SetFitness(fitness);
+        inIndividual.SetErrors(new ArrayList<Float>());
+    }
 
-		// Must be included in order to use the input stack.
-		_interpreter.inputStack().push(_currentInput);
+    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+            Object inOutput) {
+        _effort++;
 
-		_interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-				_executionLimit);
-		
-		float result = fstack.top();
+        _interpreter.clearStacks();
 
-		// System.out.println( _interpreter + " " + result );
+        _currentInput = (Float) inInput;
 
-		//trh
-		/*
-		 * System.out.println("\nevaluations according to interpreter " +
-		 * Interpreter.GetEvaluationExecutions());
-		 * System.out.println("evaluations according to effort " + _effort);
-		 */
+        FloatStack fstack = _interpreter.floatStack();
 
-		// Penalize individual if there is no result on the stack.
-		if(fstack.size() == 0){
-			return _noResultPenalty;
-		}
-		
-		return result - ((Float) inOutput);
-	}
-	
-	protected boolean Success() {
-		if(_success){
-			return true;
-		}
-		
-		GAIndividual best = _populations[_currentPopulation][_bestIndividual];
-		float predictedFitness = best.GetFitness();
-		
-		_predictorGA.EvaluateSolutionIndividual((PushGPIndividual) best);
-		
-		_bestMeanFitness = best.GetFitness();
-		
-		if(_bestMeanFitness <= 0.1){
-			_success = true;
-			return true;
-		}
-		
-		best.SetFitness(predictedFitness);
-		return false;
-	}
-	
-	protected String Report() {
-		Success(); // Finds the real fitness of the best individual
-		
-		return super.Report();
-	}
+        fstack.push(_currentInput);
 
-	private HashMap<String, String> GetPredictorParameters(
-			HashMap<String, String> parameters) throws Exception {
+        // Must be included in order to use the input stack.
+        _interpreter.inputStack().push(_currentInput);
 
-		HashMap<String, String> predictorParameters = new HashMap<String, String>();
+        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
+                _executionLimit);
 
-		predictorParameters.put("max-generations", Integer
-				.toString(Integer.MAX_VALUE));
+        float result = fstack.top();
 
-		predictorParameters.put("problem-class",
-				GetParam("PREDICTOR-problem-class"));
-		predictorParameters.put("individual-class",
-				GetParam("PREDICTOR-individual-class"));
-		predictorParameters.put("population-size",
-				GetParam("PREDICTOR-population-size"));
-		predictorParameters.put("mutation-percent",
-				GetParam("PREDICTOR-mutation-percent"));
-		predictorParameters.put("crossover-percent",
-				GetParam("PREDICTOR-crossover-percent"));
-		predictorParameters.put("tournament-size",
-				GetParam("PREDICTOR-tournament-size"));
-		predictorParameters.put("trivial-geography-radius",
-				GetParam("PREDICTOR-trivial-geography-radius"));
-		predictorParameters.put("generations-between-trainers",
-				GetParam("PREDICTOR-generations-between-trainers"));
-		predictorParameters.put("trainer-population-size",
-				GetParam("PREDICTOR-trainer-population-size"));
+        // System.out.println( _interpreter + " " + result );
 
-		return predictorParameters;
-	}
-	
-	/**
-	 * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
-	 * was changed to PredictIndividual, as noted below.
-	 */
-	protected void Evaluate() {
-		float totalFitness = 0;
-		_bestMeanFitness = Float.MAX_VALUE;
+        //trh
+        /*
+         * System.out.println("\nevaluations according to interpreter " +
+         * Interpreter.GetEvaluationExecutions());
+         * System.out.println("evaluations according to effort " + _effort);
+         */
 
-		for (int n = 0; n < _populations[_currentPopulation].length; n++) {
-			GAIndividual i = _populations[_currentPopulation][n];
+        // Penalize individual if there is no result on the stack.
+        if (fstack.size() == 0) {
+            return NO_RESULT_PENALTY;
+        }
 
-			PredictIndividual(i, false);
+        return result - ((Float) inOutput);
+    }
 
-			totalFitness += i.GetFitness();
-			
-			if (i.GetFitness() < _bestMeanFitness) {
-				_bestMeanFitness = i.GetFitness();
-				_bestIndividual = n;
-				_bestSize = ((PushGPIndividual) i)._program.programsize();
-				_bestErrors = i.GetErrors();
-			}
-		}
-		
-		_populationMeanFitness = totalFitness / _populations[_currentPopulation].length;	
-	}
-	
-	/**
-	 * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
-	 * was changed to PredictIndividual, as noted below (twice).
-	 */
-	protected PushGPIndividual Autosimplify(PushGPIndividual inIndividual,
-			int steps) {
+    protected boolean Success() {
+        if (_success) {
+            return true;
+        }
 
-		PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
-		PushGPIndividual trial = (PushGPIndividual) inIndividual.clone();
-		PredictIndividual(simplest, true); // Changed from EvaluateIndividual
-		float bestError = simplest.GetFitness();
+        GAIndividual best = _populations[_currentPopulation][_bestIndividual];
+        float predictedFitness = best.GetFitness();
 
-		boolean madeSimpler = false;
+        _predictorGA.EvaluateSolutionIndividual((PushGPIndividual) best);
 
-		for (int i = 0; i < steps; i++) {
-			madeSimpler = false;
-			float method = _RNG.nextInt(100);
+        _bestMeanFitness = best.GetFitness();
 
-			if (trial._program.programsize() <= 0)
-				break;
-			if (method < _simplifyFlattenPercent) {
-				// Flatten random thing
-				int pointIndex = _RNG.nextInt(trial._program.programsize());
-				Object point = trial._program.Subtree(pointIndex);
+        if (_bestMeanFitness <= 0.1) {
+            _success = true;
+            return true;
+        }
 
-				if (point instanceof Program) {
-					trial._program.Flatten(pointIndex);
-					madeSimpler = true;
-				}
-			} else {
-				// Remove small number of random things
-				int numberToRemove = _RNG.nextInt(3) + 1;
+        best.SetFitness(predictedFitness);
+        return false;
+    }
 
-				for (int j = 0; j < numberToRemove; j++) {
-					int trialSize = trial._program.programsize();
+    protected String Report() {
+        Success(); // Finds the real fitness of the best individual
 
-					if (trialSize > 0) {
-						int pointIndex = _RNG.nextInt(trialSize);
-						trial._program.ReplaceSubtree(pointIndex, new Program(
-								_interpreter));
-						trial._program.Flatten(pointIndex);
-						madeSimpler = true;
-					}
-				}
-			}
+        return super.Report();
+    }
 
-			if (madeSimpler) {
-				PredictIndividual(trial, true); // Changed from EvaluateIndividual
+    private HashMap<String, String> GetPredictorParameters(
+            HashMap<String, String> parameters) throws Exception {
 
-				if (trial.GetFitness() <= bestError) {
-					simplest = (PushGPIndividual) trial.clone();
-					bestError = trial.GetFitness();
-				}
-			}
+        HashMap<String, String> predictorParameters = new HashMap<String, String>();
 
-			trial = (PushGPIndividual) simplest.clone();
-		}
+        predictorParameters.put("max-generations", Integer
+                .toString(Integer.MAX_VALUE));
 
-		return simplest;
-	}
+        predictorParameters.put("problem-class",
+                GetParam("PREDICTOR-problem-class"));
+        predictorParameters.put("individual-class",
+                GetParam("PREDICTOR-individual-class"));
+        predictorParameters.put("population-size",
+                GetParam("PREDICTOR-population-size"));
+        predictorParameters.put("mutation-percent",
+                GetParam("PREDICTOR-mutation-percent"));
+        predictorParameters.put("crossover-percent",
+                GetParam("PREDICTOR-crossover-percent"));
+        predictorParameters.put("tournament-size",
+                GetParam("PREDICTOR-tournament-size"));
+        predictorParameters.put("trivial-geography-radius",
+                GetParam("PREDICTOR-trivial-geography-radius"));
+        predictorParameters.put("generations-between-trainers",
+                GetParam("PREDICTOR-generations-between-trainers"));
+        predictorParameters.put("trainer-population-size",
+                GetParam("PREDICTOR-trainer-population-size"));
+
+        return predictorParameters;
+    }
+
+    /**
+     * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
+     * was changed to PredictIndividual, as noted below.
+     */
+    protected void Evaluate() {
+        float totalFitness = 0;
+        _bestMeanFitness = Float.MAX_VALUE;
+
+        for (int n = 0; n < _populations[_currentPopulation].length; n++) {
+            GAIndividual i = _populations[_currentPopulation][n];
+
+            PredictIndividual(i, false);
+
+            totalFitness += i.GetFitness();
+
+            if (i.GetFitness() < _bestMeanFitness) {
+                _bestMeanFitness = i.GetFitness();
+                _bestIndividual = n;
+                _bestSize = ((PushGPIndividual) i)._program.programsize();
+                _bestErrors = i.GetErrors();
+            }
+        }
+
+        _populationMeanFitness = totalFitness / _populations[_currentPopulation].length;
+    }
+
+    /**
+     * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
+     * was changed to PredictIndividual, as noted below (twice).
+     */
+    protected PushGPIndividual Autosimplify(PushGPIndividual inIndividual,
+            int steps) {
+
+        PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
+        PushGPIndividual trial = (PushGPIndividual) inIndividual.clone();
+        PredictIndividual(simplest, true); // Changed from EvaluateIndividual
+        float bestError = simplest.GetFitness();
+
+        boolean madeSimpler = false;
+
+        for (int i = 0; i < steps; i++) {
+            madeSimpler = false;
+            float method = _RNG.nextInt(100);
+
+            if (trial._program.programsize() <= 0)
+                break;
+            if (method < _simplifyFlattenPercent) {
+                // Flatten random thing
+                int pointIndex = _RNG.nextInt(trial._program.programsize());
+                Object point = trial._program.Subtree(pointIndex);
+
+                if (point instanceof Program) {
+                    trial._program.Flatten(pointIndex);
+                    madeSimpler = true;
+                }
+            } else {
+                // Remove small number of random things
+                int numberToRemove = _RNG.nextInt(3) + 1;
+
+                for (int j = 0; j < numberToRemove; j++) {
+                    int trialSize = trial._program.programsize();
+
+                    if (trialSize > 0) {
+                        int pointIndex = _RNG.nextInt(trialSize);
+                        trial._program.ReplaceSubtree(pointIndex, new Program(
+                                _interpreter));
+                        trial._program.Flatten(pointIndex);
+                        madeSimpler = true;
+                    }
+                }
+            }
+
+            if (madeSimpler) {
+                PredictIndividual(trial, true); // Changed from EvaluateIndividual
+
+                if (trial.GetFitness() <= bestError) {
+                    simplest = (PushGPIndividual) trial.clone();
+                    bestError = trial.GetFitness();
+                }
+            }
+
+            trial = (PushGPIndividual) simplest.clone();
+        }
+
+        return simplest;
+    }
 
 }

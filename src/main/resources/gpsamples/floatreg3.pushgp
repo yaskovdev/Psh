@@ -3,9 +3,6 @@
 # In this demo, the system solves the equation y = 2|x| - 2x^2 + x, using
 # floating point symbolic regression
 #
-# Tom Helmuth <thelmuth (at) cs.umass.edu>
-# 09/03/2010
-#
 
 ### Setup required parameters
 

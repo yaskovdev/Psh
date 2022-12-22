@@ -4,173 +4,173 @@ package org.spiderland.Psh;
  * The Push stack type for object-based data (Strings, Programs, etc.)
  */
 public class FloatStack extends Stack {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	protected float[] _stack;
+    protected float[] _stack;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final FloatStack other = (FloatStack) obj;
-		if (_size != other._size)
-			return false;
-		for (int i = 0; i < _size; i++)
-			if (_stack[i] != other._stack[i])
-				return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final FloatStack other = (FloatStack) obj;
+        if (_size != other._size)
+            return false;
+        for (int i = 0; i < _size; i++)
+            if (_stack[i] != other._stack[i])
+                return false;
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int hash = 7;
-		for (int i = 0; i < _size; i++)
-			hash = 41 * hash + Float.valueOf(_stack[i]).hashCode();
-		return hash;
-	}
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        for (int i = 0; i < _size; i++)
+            hash = 41 * hash + Float.valueOf(_stack[i]).hashCode();
+        return hash;
+    }
 
-	void resize(int inSize) {
-		float[] newstack = new float[inSize];
+    void resize(int inSize) {
+        float[] newstack = new float[inSize];
 
-		if (_stack != null)
-			System.arraycopy(_stack, 0, newstack, 0, _size);
+        if (_stack != null)
+            System.arraycopy(_stack, 0, newstack, 0, _size);
 
-		_stack = newstack;
-		_maxsize = inSize;
-	}
+        _stack = newstack;
+        _maxsize = inSize;
+    }
 
-	public float accumulate() {
-		float f = 0;
+    public float accumulate() {
+        float f = 0;
 
-		for (int n = 0; n < _size; n++) {
-			f += _stack[n];
-		}
+        for (int n = 0; n < _size; n++) {
+            f += _stack[n];
+        }
 
-		return f;
-	}
+        return f;
+    }
 
-	public float top() {
-		return peek(_size - 1);
-	}
+    public float top() {
+        return peek(_size - 1);
+    }
 
-	public float peek(int inIndex) {
-		if (inIndex >= 0 && inIndex < _size)
-			return _stack[inIndex];
+    public float peek(int inIndex) {
+        if (inIndex >= 0 && inIndex < _size)
+            return _stack[inIndex];
 
-		return 0.0f;
-	}
+        return 0.0f;
+    }
 
-	public float pop() {
-		float result = 0.0f;
+    public float pop() {
+        float result = 0.0f;
 
-		if (_size > 0) {
-			result = _stack[_size - 1];
-			_size--;
-		}
+        if (_size > 0) {
+            result = _stack[_size - 1];
+            _size--;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public void push(float inValue) {
-		_stack[_size] = inValue;
-		_size++;
+    public void push(float inValue) {
+        _stack[_size] = inValue;
+        _size++;
 
-		if (_size >= _maxsize)
-			resize(_maxsize * 2);
-	}
+        if (_size >= _maxsize)
+            resize(_maxsize * 2);
+    }
 
-	public void dup() {
-		if (_size > 0)
-			push(_stack[_size - 1]);
-	}
-	
-	public void shove(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
-			
-			float toShove = top();
-			int shovedIndex = _size - inIndex - 1;
+    public void dup() {
+        if (_size > 0)
+            push(_stack[_size - 1]);
+    }
 
-			for (int i = _size - 1; i > shovedIndex; i--) {
-				_stack[i] = _stack[i - 1];
-			}
-			_stack[shovedIndex] = toShove;
-		}
-	}
+    public void shove(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-	public void swap() {
-		if (_size > 1) {
-			float tmp = _stack[_size - 1];
-			_stack[_size - 1] = _stack[_size - 2];
-			_stack[_size - 2] = tmp;
-		}
-	}
+            float toShove = top();
+            int shovedIndex = _size - inIndex - 1;
 
-	public void rot() {
-		if (_size > 2) {
-			float tmp = _stack[_size - 3];
-			_stack[_size - 3] = _stack[_size - 2];
-			_stack[_size - 2] = _stack[_size - 1];
-			_stack[_size - 1] = tmp;
-		}
-	}
+            for (int i = _size - 1; i > shovedIndex; i--) {
+                _stack[i] = _stack[i - 1];
+            }
+            _stack[shovedIndex] = toShove;
+        }
+    }
 
-	public void yank(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
+    public void swap() {
+        if (_size > 1) {
+            float tmp = _stack[_size - 1];
+            _stack[_size - 1] = _stack[_size - 2];
+            _stack[_size - 2] = tmp;
+        }
+    }
 
-			int yankedIndex = _size - inIndex - 1;
-			float toYank = peek(yankedIndex);
+    public void rot() {
+        if (_size > 2) {
+            float tmp = _stack[_size - 3];
+            _stack[_size - 3] = _stack[_size - 2];
+            _stack[_size - 2] = _stack[_size - 1];
+            _stack[_size - 1] = tmp;
+        }
+    }
 
-			for (int i = yankedIndex; i < _size - 1; i++) {
-				_stack[i] = _stack[i + 1];
-			}
-			_stack[_size - 1] = toYank;
-		}
-	}
+    public void yank(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-	public void yankdup(int inIndex) {
-		if (_size > 0) {
-			if(inIndex < 0){
-				inIndex = 0;
-			}
-			if(inIndex > _size - 1){
-				inIndex = _size - 1;
-			}
+            int yankedIndex = _size - inIndex - 1;
+            float toYank = peek(yankedIndex);
 
-			int yankedIndex = _size - inIndex - 1;
-			push(peek(yankedIndex));
-		}
-	}
+            for (int i = yankedIndex; i < _size - 1; i++) {
+                _stack[i] = _stack[i + 1];
+            }
+            _stack[_size - 1] = toYank;
+        }
+    }
 
-	public void set(int inIndex, float inValue){
-		if (inIndex >= 0 && inIndex < _size)
-			_stack[inIndex] = inValue;
-	}
+    public void yankdup(int inIndex) {
+        if (_size > 0) {
+            if (inIndex < 0) {
+                inIndex = 0;
+            }
+            if (inIndex > _size - 1) {
+                inIndex = _size - 1;
+            }
 
-	public String toString() {
-		String result = "[";
+            int yankedIndex = _size - inIndex - 1;
+            push(peek(yankedIndex));
+        }
+    }
 
-		for (int n = _size - 1; n >= 0; n--) {
-			if (n == _size - 1)
-				result += _stack[n];
-			else
-				result += " " + _stack[n];
-		}
-		result += "]";
+    public void set(int inIndex, float inValue) {
+        if (inIndex >= 0 && inIndex < _size)
+            _stack[inIndex] = inValue;
+    }
 
-		return result;
-	}
+    public String toString() {
+        String result = "[";
+
+        for (int n = _size - 1; n >= 0; n--) {
+            if (n == _size - 1)
+                result += _stack[n];
+            else
+                result += " " + _stack[n];
+        }
+        result += "]";
+
+        return result;
+    }
 }

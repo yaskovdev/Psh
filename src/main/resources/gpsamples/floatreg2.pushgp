@@ -3,9 +3,6 @@
 # In this demo, the system solves the equation y = 1.72x^2 - 0.68x^3, using
 # floating point symbolic regression
 #
-# Tom Helmuth <thelmuth (at) cs.umass.edu>
-# 06/08/2010
-#
 
 ### Setup required parameters
 

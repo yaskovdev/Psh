@@ -148,7 +148,7 @@ public class GenericStackTest {
         assertEquals("value 4", stringStack.peek(2));
         assertEquals("value 3", stringStack.peek(1));
         assertEquals("value 1", stringStack.peek(0));
-   }
+    }
 
     @Test
     public void testShove() {

@@ -2,9 +2,6 @@
 # First trials of co-evolved predictors for float symbolic regression. Evolving
 # symbolic regression for y = 3x^2 + 4x
 #
-# Tom Helmuth
-# 8/3/10
-#
 
 ### Setup solution GP parameters
 

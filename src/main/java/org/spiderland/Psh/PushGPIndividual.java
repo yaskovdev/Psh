@@ -6,28 +6,28 @@ package org.spiderland.Psh;
  */
 
 public class PushGPIndividual extends GAIndividual {
-	private static final long serialVersionUID = 1L;
-	
-	public Program _program;
+    private static final long serialVersionUID = 1L;
 
-	public PushGPIndividual() {
-	}
+    public Program _program;
 
-	PushGPIndividual(Program inProgram) {
-		SetProgram(inProgram);
-		_fitnessSet = false;
-	}
+    public PushGPIndividual() {
+    }
 
-	void SetProgram(Program inProgram) {
-		if (inProgram != null)
-			_program = new Program(inProgram);
-	}
+    PushGPIndividual(Program inProgram) {
+        SetProgram(inProgram);
+        _fitnessSet = false;
+    }
 
-	public String toString() {
-		return _program.toString();
-	}
+    void SetProgram(Program inProgram) {
+        if (inProgram != null)
+            _program = new Program(inProgram);
+    }
 
-	public GAIndividual clone() {
-		return new PushGPIndividual(_program);
-	}
+    public String toString() {
+        return _program.toString();
+    }
+
+    public GAIndividual clone() {
+        return new PushGPIndividual(_program);
+    }
 }

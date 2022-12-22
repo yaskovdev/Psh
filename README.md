@@ -106,8 +106,8 @@ The following parameters are optional. If not specified, the default values belo
     fair-mutation-range = .3
     
     node-selection-mode = unbiased  (others available are leaf-probability and size-tournament)
-	node-selection-leaf-probability = 10  (only used if node-selection-mode = leaf-probability)
-	node-selection-tournament-size = 2  (only used if node-selection-mode = size-tournament)
+    node-selection-leaf-probability = 10  (only used if node-selection-mode = leaf-probability)
+    node-selection-tournament-size = 2  (only used if node-selection-mode = size-tournament)
     
     min-random-integer = -10
     max-random-integer = 10
