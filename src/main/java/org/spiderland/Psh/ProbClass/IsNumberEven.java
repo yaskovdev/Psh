@@ -10,13 +10,15 @@ import org.spiderland.Psh.PushGPIndividual;
 
 public class IsNumberEven extends PushGP {
 
+    public static final int MAX_ERROR = 1000;
+
     @Override
     protected void InitInterpreter(final Interpreter interpreter) {
     }
 
     protected void InitFromParameters() throws Exception {
         super.InitFromParameters();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 100; i++) {
             _testCases.add(new GATestCase(i, i % 2 == 0));
         }
     }
@@ -28,8 +30,12 @@ public class IsNumberEven extends PushGP {
         intStack.push((Integer) input);
         _interpreter.Execute(((PushGPIndividual) individual)._program, _executionLimit);
         final BooleanStack booleanStack = _interpreter.boolStack();
-        final boolean expected = (boolean) output;
-        final boolean actual = booleanStack.pop();
-        return expected == actual ? 0 : 1000;
+        if (booleanStack.size() == 0) {
+            return MAX_ERROR;
+        } else {
+            final boolean expected = (boolean) output;
+            final boolean actual = booleanStack.pop();
+            return expected == actual ? 0 : MAX_ERROR;
+        }
     }
 }

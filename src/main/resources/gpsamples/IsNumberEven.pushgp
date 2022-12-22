@@ -3,10 +3,10 @@ inputpusher-class = org.spiderland.Psh.InputPusher
 individual-class = org.spiderland.Psh.PushGPIndividual
 
 population-size = 700
-max-generations = 1000
+max-generations = 10000
 execution-limit = 150
 
-mutation-percent = 20
+mutation-percent = 30
 crossover-percent = 70
 simplification-percent = 5
 
