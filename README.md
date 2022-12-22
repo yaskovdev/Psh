@@ -1,4 +1,4 @@
-Psh
+Psh [![Build Status](https://github.com/yaskovdev/psh/actions/workflows/maven.yml/badge.svg)](https://github.com/yaskovdev/Psh/actions/workflows/maven.yml)
 ===
 
 Psh is a Java implementation of the Push programming language and of PushGP. Push is a stack-based language designed for evolutionary computation, specifically genetic programming. PushGP is a genetic programming system that evolves programs in Push. More information about Push and PushGP can be found [here](http://hampshire.edu/lspector/push.html).
