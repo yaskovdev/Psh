@@ -50,11 +50,10 @@ public class FloatClassification extends PushGP {
 				throw new Exception(
 						"Wrong number of inputs for fitness case \"" + p + "\"");
 
-			Float in = new Float(p.peek(0).toString());
-			Float out = new Float(p.peek(1).toString());
+			Float in = Float.valueOf(p.peek(0).toString());
+			Float out = Float.valueOf(p.peek(1).toString());
 
-			Print(";; Fitness case #" + i + " input: " + in + " output: " + out
-					+ "\n");
+            Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
 			_testCases.add(new GATestCase(in, out));
 		}
@@ -63,9 +62,8 @@ public class FloatClassification extends PushGP {
 	protected void InitInterpreter(Interpreter inInterpreter) {
 	}
 
-	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
-			Object inOutput) {
-		_interpreter.ClearStacks();
+	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput, Object inOutput) {
+		_interpreter.clearStacks();
 
 		_currentInput = (Float) inInput;
 
@@ -73,12 +71,9 @@ public class FloatClassification extends PushGP {
 
 		stack.push(_currentInput);
 
-		_interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-				_executionLimit);
+		_interpreter.Execute(((PushGPIndividual) inIndividual)._program, _executionLimit);
 
 		float result = stack.top();
-		// System.out.println( _interpreter + " " + result );
-
 		return result - ((Float) inOutput);
 	}
 

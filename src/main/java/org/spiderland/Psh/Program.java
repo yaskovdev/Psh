@@ -102,14 +102,14 @@ public class Program extends ObjectStack implements Serializable {
 		inString = inString.replace("(", " ( ");
 		inString = inString.replace(")", " ) ");
 
-		String tokens[] = inString.split("\\s+");
+		String[] tokens = inString.split("\\s+");
 
 		Parse(tokens, 0);
 
 		return programsize();
 	}
 
-	private int Parse(String inTokens[], int inStart) throws Exception {
+	private int Parse(String[] inTokens, int inStart) throws Exception {
 		boolean first = (inStart == 0);
 
 		for (int n = inStart; n < inTokens.length; n++) {
@@ -224,9 +224,8 @@ public class Program extends ObjectStack implements Serializable {
 			for (int n = 0; n < _size; n++) {
 				Object o = _stack[n];
 
-				if (o instanceof Program) {
-					Program sub = (Program) o;
-					int length = sub.programsize();
+				if (o instanceof Program sub) {
+                    int length = sub.programsize();
 
 					if (inIndex - startIndex < length)
 						return sub.Subtree(inIndex - startIndex);
@@ -259,9 +258,8 @@ public class Program extends ObjectStack implements Serializable {
 			for (int n = 0; n < _size; n++) {
 				Object o = _stack[n];
 
-				if (o instanceof Program) {
-					Program sub = (Program) o;
-					int length = sub.programsize();
+				if (o instanceof Program sub) {
+                    int length = sub.programsize();
 
 					if (inIndex - startIndex < length)
 						return sub.ReplaceSubtree(inIndex - startIndex,
@@ -287,9 +285,8 @@ public class Program extends ObjectStack implements Serializable {
 			for (int i = 0; i < replacement._size; i++) {
 				if (inIndex == i) {
 
-					if (replacement._stack[i] instanceof Program) {
-						Program p = (Program) replacement._stack[i];
-						for (int j = 0; j < p._size; j++)
+					if (replacement._stack[i] instanceof Program p) {
+                        for (int j = 0; j < p._size; j++)
 							this.push(p._stack[j]);
 					} else {
 						this.push(replacement._stack[i]);
@@ -304,9 +301,8 @@ public class Program extends ObjectStack implements Serializable {
 			for (int n = 0; n < _size; n++) {
 				Object o = _stack[n];
 
-				if (o instanceof Program) {
-					Program sub = (Program) o;
-					int length = sub.programsize();
+				if (o instanceof Program sub) {
+                    int length = sub.programsize();
 
 					if (inIndex - startIndex < length) {
 						sub.Flatten(inIndex - startIndex);
@@ -332,18 +328,18 @@ public class Program extends ObjectStack implements Serializable {
 	}
 
 	public String toString() {
-		String result = "(";
+		StringBuilder result = new StringBuilder("(");
 
 		for (int n = 0; n < _size; n++) {
 			if (result.charAt(result.length() - 1) == '(')
-				result += _stack[n];
+				result.append(_stack[n]);
 			else
-				result += " " + _stack[n];
+				result.append(" ").append(_stack[n]);
 		}
 
-		result += ")";
+		result.append(")");
 
-		return result;
+		return result.toString();
 	}
 
 	/**
@@ -355,13 +351,13 @@ public class Program extends ObjectStack implements Serializable {
 		// Java clone() is useless :(
 
 		if (inObject instanceof String)
-			return new String((String) inObject);
+			return inObject;
 
 		if (inObject instanceof Integer)
-			return new Integer((Integer) inObject);
+			return inObject;
 
 		if (inObject instanceof Float)
-			return new Float((Float) inObject);
+			return inObject;
 
 		if (inObject instanceof Program)
 			return new Program((Program) inObject);

@@ -16,10 +16,13 @@
 
 package org.spiderland.Psh;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
@@ -33,7 +36,7 @@ public class InstructionTest {
 
     // Sets things up before each and every test in the test case
     
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
         interpreter = new Interpreter();
@@ -49,17 +52,17 @@ public class InstructionTest {
     {
         Program p = new Program(interpreter, "( 1 false 1.0 0 0.0 x true )");
         interpreter.Execute(p);
-        Assert.assertEquals(2, interpreter.intStack().size());
-        Assert.assertEquals(2, interpreter.floatStack().size());
-        Assert.assertEquals(1, interpreter.nameStack().size());
-        Assert.assertEquals(2, interpreter.boolStack().size());
-        Assert.assertEquals(0, interpreter.intStack().pop());
-        Assert.assertEquals(1, interpreter.intStack().pop());
-        Assert.assertEquals(0.0, interpreter.floatStack().pop(), Float.MIN_VALUE);
-        Assert.assertEquals(1.0, interpreter.floatStack().pop(), Float.MAX_VALUE);
-        Assert.assertEquals("x", interpreter.nameStack().pop());
-        Assert.assertEquals(true, interpreter.boolStack().pop());
-        Assert.assertEquals(false, interpreter.boolStack().pop());
+        assertEquals(2, interpreter.intStack().size());
+        assertEquals(2, interpreter.floatStack().size());
+        assertEquals(1, interpreter.nameStack().size());
+        assertEquals(2, interpreter.boolStack().size());
+        assertEquals(0, interpreter.intStack().pop());
+        assertEquals(1, interpreter.intStack().pop());
+        assertEquals(0.0, interpreter.floatStack().pop(), Float.MIN_VALUE);
+        assertEquals(1.0, interpreter.floatStack().pop(), Float.MAX_VALUE);
+        assertEquals("x", interpreter.nameStack().pop());
+        assertTrue(interpreter.boolStack().pop());
+        assertFalse(interpreter.boolStack().pop());
         
     }
 
@@ -77,9 +80,9 @@ public class InstructionTest {
 
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -102,9 +105,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -124,9 +127,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -148,9 +151,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -160,9 +163,9 @@ public class InstructionTest {
                 "boolean.flush integer.flush float.flush )");
         interpreter.Execute(p);
 
-        Assert.assertEquals(0, interpreter.intStack().size());
-        Assert.assertEquals(0, interpreter.floatStack().size());
-        Assert.assertEquals(0, interpreter.boolStack().size());
+        assertEquals(0, interpreter.intStack().size());
+        assertEquals(0, interpreter.floatStack().size());
+        assertEquals(0, interpreter.boolStack().size());
     }
 
     @Test
@@ -179,7 +182,7 @@ public class InstructionTest {
         istack.push(4);
         istack.push(2);
 
-        Assert.assertEquals(istack, interpreter.intStack());
+        assertEquals(istack, interpreter.intStack());
     }
 
     @Test
@@ -197,9 +200,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -217,9 +220,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -237,9 +240,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -257,9 +260,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -277,9 +280,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -298,9 +301,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -317,9 +320,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -336,9 +339,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -353,9 +356,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -385,10 +388,10 @@ public class InstructionTest {
         inputs.push(3);
         inputs.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
-        Assert.assertEquals(inputs, interpreter.inputStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(inputs, interpreter.inputStack());
     }
 
     @Test
@@ -404,9 +407,9 @@ public class InstructionTest {
 
         istack.push(4);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -427,9 +430,9 @@ public class InstructionTest {
 
         bstack.push(true);
         
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -450,13 +453,13 @@ public class InstructionTest {
 
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
-    @Ignore
+    @Disabled
     public void testCodeQuote() throws Exception
     {
         Program p = new Program(interpreter, "( 1 code.quote integer.pop code.quote code.quote)");
@@ -464,11 +467,11 @@ public class InstructionTest {
 
         istack.push(1);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
-        Assert.assertEquals(interpreter.GetInstruction("code.quote"), interpreter.codeStack().pop());
-        Assert.assertEquals(interpreter.GetInstruction("integer.pop"), interpreter.codeStack().pop());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(interpreter.GetInstruction("code.quote"), interpreter.codeStack().pop());
+        assertEquals(interpreter.GetInstruction("integer.pop"), interpreter.codeStack().pop());
     }
 
     @Test
@@ -484,9 +487,9 @@ public class InstructionTest {
         bstack.push(true);
         bstack.push(false);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -502,9 +505,9 @@ public class InstructionTest {
         bstack.push(false);
         bstack.push(true);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -519,9 +522,9 @@ public class InstructionTest {
 
         fstack.push(1.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -536,9 +539,9 @@ public class InstructionTest {
 
         fstack.push(1.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -556,9 +559,9 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -574,9 +577,9 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -595,9 +598,9 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -615,9 +618,9 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -633,9 +636,9 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 
     @Test
@@ -654,8 +657,8 @@ public class InstructionTest {
         fstack.push(2.0f);
         fstack.push(2.0f);
 
-        Assert.assertEquals(istack, interpreter.intStack());
-        Assert.assertEquals(fstack, interpreter.floatStack());
-        Assert.assertEquals(bstack, interpreter.boolStack());
+        assertEquals(istack, interpreter.intStack());
+        assertEquals(fstack, interpreter.floatStack());
+        assertEquals(bstack, interpreter.boolStack());
     }
 }

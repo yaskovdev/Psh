@@ -200,8 +200,7 @@ public class Interpreter implements Serializable {
 	 *            be placed in the instruction set.
 	 */
 
-	public void SetInstructions(Program inInstructionList)
-			throws RuntimeException {
+	public void SetInstructions(Program inInstructionList) {
 		_randomGenerators.clear();
 
 		for (int n = 0; n < inInstructionList.size(); n++) {
@@ -209,8 +208,7 @@ public class Interpreter implements Serializable {
 			String name = null;
 
 			if (o instanceof Instruction) {
-				String keys[] = _instructions.keySet().toArray(
-						new String[_instructions.size()]);
+				String[] keys = _instructions.keySet().toArray(new String[0]);
 
 				for (String key : keys)
 					if (_instructions.get(key) == o) {
@@ -240,15 +238,15 @@ public class Interpreter implements Serializable {
 				} else {
 					// Legal stack type, so add all generators matching
 					// registeredType to _randomGenerators.
-					Object keys[] = _instructions.keySet().toArray();
+					Object[] keys = _instructions.keySet().toArray();
 
-					for (int i = 0; i < keys.length; i++) {
-						String key = (String) keys[i];
-						if (key.indexOf(registeredType) == 0) {
-							AtomGenerator g = _generators.get(key);
-							_randomGenerators.add(g);
-						}
-					}
+                    for (Object value : keys) {
+                        String key = (String) value;
+                        if (key.indexOf(registeredType) == 0) {
+                            AtomGenerator g = _generators.get(key);
+                            _randomGenerators.add(g);
+                        }
+                    }
 
 					if (registeredType.equals("boolean")) {
 						AtomGenerator t = _generators.get("true");
@@ -401,10 +399,9 @@ public class Interpreter implements Serializable {
 
 	public int ExecuteInstruction(Object inObject) {
 
-		if (inObject instanceof Program) {
-			Program p = (Program) inObject;
+		if (inObject instanceof Program p) {
 
-			if (_useFrames) {
+            if (_useFrames) {
 				_execStack.push("frame.pop");
 			}
 
@@ -617,7 +614,7 @@ public class Interpreter implements Serializable {
 	 * Resets the Push interpreter state by clearing all of the stacks.
 	 */
 
-	public void ClearStacks() {
+	public void clearStacks() {
 		_intStack.clear();
 		_floatStack.clear();
 		_execStack.clear();
@@ -636,7 +633,7 @@ public class Interpreter implements Serializable {
 	 * Returns a string list of all instructions enabled in the interpreter.
 	 */
 	public String GetRegisteredInstructionsString() {
-		Object keys[] = _instructions.keySet().toArray();
+		Object[] keys = _instructions.keySet().toArray();
 		Arrays.sort(keys);
 		String list = "";
 
@@ -651,7 +648,7 @@ public class Interpreter implements Serializable {
 	 * @return
 	 */
 	public String GetInstructionsString(){
-		Object keys[] = _instructions.keySet().toArray();
+		Object[] keys = _instructions.keySet().toArray();
 		ArrayList<String> strings = new ArrayList<String>();
 		String str = "";
 

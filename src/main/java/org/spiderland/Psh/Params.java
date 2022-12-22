@@ -57,15 +57,15 @@ public class Params {
 
 			while ((line = reader.readLine()) != null) {
 				linenumber += 1;
-				int comment = line.indexOf('#', 0);
+				int comment = line.indexOf('#');
 
 				if (comment != -1)
 					line = line.substring(0, comment);
 
 				if (line.startsWith("include")) {
 					int startIndex = "include".length();
-					String includefile = line.substring(startIndex,
-							line.length()).trim();
+					String includefile = line.substring(startIndex
+                    ).trim();
 
 					try {
 						File f = new File(parent, includefile);
@@ -81,11 +81,11 @@ public class Params {
 								+ " of file \"" + filename + "\"");
 					}
 				} else {
-					int split = line.indexOf('=', 0);
+					int split = line.indexOf('=');
 
 					if (split != -1) {
 						String name = line.substring(0, split).trim();
-						String value = line.substring(split + 1, line.length())
+						String value = line.substring(split + 1)
 								.trim();
 
 						while (value.endsWith("\\")) {

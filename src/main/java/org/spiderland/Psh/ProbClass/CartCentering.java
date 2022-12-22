@@ -84,7 +84,7 @@ public class CartCentering extends PushGP {
 		float velocity = (Float) xv._second;
 		
 		for(int step = 1; step <= timeSteps; step++){
-			_interpreter.ClearStacks();
+			_interpreter.clearStacks();
 
 			FloatStack fStack = _interpreter.floatStack();
 			BooleanStack bStack = _interpreter.boolStack();

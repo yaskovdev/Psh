@@ -12,7 +12,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 	private static final long serialVersionUID = 1L;
 
 	// The sample test cases used for fitness prediction.
-	private int _sampleIndices[];
+	private int[] _sampleIndices;
 	protected static int _sampleSize = 8;
 	
 	protected PushGP _solutionGA;
@@ -29,9 +29,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 	
 	public FloatRegFitPredictionIndividual(PushGP inSolutionGA, int[] inSamples) {
 		_sampleIndices = new int[_sampleSize];
-		for(int i = 0; i < _sampleSize; i++){
-			_sampleIndices[i] = inSamples[i];
-		}
+        System.arraycopy(inSamples, 0, _sampleIndices, 0, _sampleSize);
 		_solutionGA = inSolutionGA;
 	}
 	
@@ -58,9 +56,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 	
 	public void SetSampleIndicesAndSolutionGA(PushGP inSolutionGA, int[] inSamples){
 		_sampleIndices = new int[_sampleSize];
-		for(int i = 0; i < _sampleSize; i++){
-			_sampleIndices[i] = inSamples[i];
-		}
+        System.arraycopy(inSamples, 0, _sampleIndices, 0, _sampleSize);
 		_solutionGA = inSolutionGA;
 	}
 	
@@ -103,19 +99,13 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 		
 		Arrays.sort(a);
 		Arrays.sort(b);
-		if(Arrays.equals(a, b)){
-			return true;
-		}
-		
-		return false;
-	}
+        return Arrays.equals(a, b);
+    }
 	
 	private int[] copyArray(int[] inArray){
 		int[] newArray = new int[inArray.length];
-		
-		for(int i = 0; i < inArray.length; i++){
-			newArray[i] = inArray[i];
-		}
+
+        System.arraycopy(inArray, 0, newArray, 0, inArray.length);
 		
 		return newArray;
 	}

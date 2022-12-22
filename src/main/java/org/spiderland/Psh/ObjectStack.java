@@ -23,7 +23,7 @@ package org.spiderland.Psh;
 public class ObjectStack extends Stack {
 	private static final long serialVersionUID = 1L;
 
-	protected Object _stack[];
+	protected Object[] _stack;
 	final static int _blocksize = 16;
 
 	public void PushAllReverse(ObjectStack inOther) {
@@ -41,7 +41,7 @@ public class ObjectStack extends Stack {
 		return ((ObjectStack) inOther).comparestack(_stack, _size);
 	}
 
-	boolean comparestack(Object inOther[], int inOtherSize) {
+	boolean comparestack(Object[] inOther, int inOtherSize) {
 		if (inOtherSize != _size)
 			return false;
 
@@ -54,7 +54,7 @@ public class ObjectStack extends Stack {
 	}
 
 	void resize(int inSize) {
-		Object newstack[] = new Object[inSize];
+		Object[] newstack = new Object[inSize];
 
 		if (_stack != null)
 			System.arraycopy(_stack, 0, newstack, 0, _size);

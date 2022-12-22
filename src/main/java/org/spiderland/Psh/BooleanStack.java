@@ -23,7 +23,7 @@ package org.spiderland.Psh;
 public class BooleanStack extends Stack {
 	private static final long serialVersionUID = 1L;
 
-	protected boolean _stack[];
+	protected boolean[] _stack;
 
 	@Override
 	public boolean equals(Object obj) {
@@ -49,7 +49,7 @@ public class BooleanStack extends Stack {
 	}
 
 	void resize(int inSize) {
-		boolean newstack[] = new boolean[inSize];
+		boolean[] newstack = new boolean[inSize];
 
 		if (_stack != null)
 			System.arraycopy(_stack, 0, newstack, 0, _size);

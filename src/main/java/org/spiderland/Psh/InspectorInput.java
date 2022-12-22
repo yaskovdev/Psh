@@ -146,33 +146,30 @@ public class InspectorInput {
 	}
 
 	private void parseAndLoadInputs(String inputs) throws Exception {
-		String inputTokens[] = inputs.split("\\s+");
+		String[] inputTokens = inputs.split("\\s+");
 
-		for (int i = 0; i < inputTokens.length; i++) {
-			String token = inputTokens[i];
-
-			if (token.equals("")) {
-				continue;
-			} else if (token.equals("true")) {
-				_interpreter.boolStack().push(true);
-				_interpreter.inputStack().push(true);
-			} else if (token.equals("false")) {
-				_interpreter.boolStack().push(false);
-				_interpreter.inputStack().push(false);
-			} else if (token.matches("((-|\\+)?[0-9]+(\\.[0-9]+)?)+")) {
-				if (token.indexOf('.') != -1) {
-					_interpreter.floatStack().push(Float.parseFloat(token));
-					_interpreter.inputStack().push(Float.parseFloat(token));
-				} else {
-					_interpreter.intStack().push(Integer.parseInt(token));
-					_interpreter.inputStack().push(Integer.parseInt(token));
-				}
-			} else {
-				throw new Exception(
-						"Inputs must be of type int, float, or boolean. \""
-								+ token + "\" is none of these.");
-			}
-		}
+        for (String token : inputTokens) {
+            if (token.equals("")) {
+            } else if (token.equals("true")) {
+                _interpreter.boolStack().push(true);
+                _interpreter.inputStack().push(true);
+            } else if (token.equals("false")) {
+                _interpreter.boolStack().push(false);
+                _interpreter.inputStack().push(false);
+            } else if (token.matches("(([-+])?[0-9]+(\\.[0-9]+)?)+")) {
+                if (token.indexOf('.') != -1) {
+                    _interpreter.floatStack().push(Float.parseFloat(token));
+                    _interpreter.inputStack().push(Float.parseFloat(token));
+                } else {
+                    _interpreter.intStack().push(Integer.parseInt(token));
+                    _interpreter.inputStack().push(Integer.parseInt(token));
+                }
+            } else {
+                throw new Exception(
+                        "Inputs must be of type int, float, or boolean. \""
+                                + token + "\" is none of these.");
+            }
+        }
 	}
 
 	private void checkForInputIn(String programString) {

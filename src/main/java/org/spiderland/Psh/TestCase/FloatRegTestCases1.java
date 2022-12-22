@@ -4,9 +4,9 @@ import org.spiderland.Psh.ObjectPair;
 
 public class FloatRegTestCases1 extends TestCaseGenerator {
 
-	private static int _testCaseCount = 200;
-	private static float _firstSample = -10;
-	private static float _lastSample = 10;
+	private static final int _testCaseCount = 200;
+	private static final float _firstSample = -10;
+	private static final float _lastSample = 10;
 	
 	private float[] _testCasesX = null;
 	private float[] _testCasesY = null;
@@ -32,7 +32,7 @@ public class FloatRegTestCases1 extends TestCaseGenerator {
 	}
 
 	private float XValue(float i) {
-		return (float) _firstSample
+		return _firstSample
 				+ (((_lastSample - _firstSample) / (_testCaseCount - 1)) * i);
 	}
 

@@ -23,7 +23,7 @@ import org.spiderland.Psh.*;
  * Used to print equations from Psh programs
  */
 public class PshEquationBuilder {
-	public static void main(String args[]) throws Exception {		
+	public static void main(String[] args) throws Exception {
 
 		if (args.length != 1) {
 			System.out.println("Usage: PshEquationBuilder inputfile");
@@ -50,7 +50,7 @@ public class PshEquationBuilder {
 		programString = programString.replace('(', ' ');
 		programString = programString.replace(')', ' ').trim();
 		
-		String instructions[] = programString.split("\\s+");
+		String[] instructions = programString.split("\\s+");
 		
 		ArrayList<String> stringStack = new ArrayList<String>();
 		stringStack.add("x");

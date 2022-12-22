@@ -1,0 +1,26 @@
+interpreter-class = org.spiderland.Psh.Interpreter
+inputpusher-class = org.spiderland.Psh.InputPusher
+individual-class = org.spiderland.Psh.PushGPIndividual
+
+population-size = 700
+max-generations = 1000
+execution-limit = 150
+
+mutation-percent = 20
+crossover-percent = 70
+simplification-percent = 5
+
+tournament-size = 7
+trivial-geography-radius = 10
+max-points-in-program = 100
+mutation-mode = fair
+
+max-random-code-size = 40
+simplify-flatten-percent = 20
+
+reproduction-simplifications = 25
+report-simplifications = 100
+final-simplifications = 1000
+
+problem-class = org.spiderland.Psh.ProbClass.IsNumberEven
+instruction-set = (integer.+ integer.- integer./ integer.% integer.* integer.pow integer.log integer.= integer.> integer.< integer.min integer.max integer.abs integer.neg integer.ln integer.fromfloat integer.fromboolean integer.rand float.+ float.- float./ float.% float.* float.pow float.log float.= float.> float.< float.min float.max float.sin float.cos float.tan float.exp float.abs float.neg float.ln float.frominteger float.fromboolean float.rand boolean.= boolean.not boolean.and boolean.or boolean.xor boolean.frominteger boolean.fromfloat boolean.rand code.quote code.fromboolean code.frominteger code.fromfloat code.noop exec.k exec.s exec.y exec.noop exec.do*times code.do*times exec.do*count code.do*count exec.do*range code.do*range code.= exec.= code.if exec.if code.rand exec.rand true false input.index input.inall input.inallrev input.stackdepth integer.pop integer.swap integer.rot integer.flush integer.dup integer.stackdepth integer.shove integer.yank integer.yankdup float.pop float.swap float.rot float.flush float.dup float.stackdepth float.shove float.yank float.yankdup boolean.pop boolean.swap boolean.rot boolean.flush boolean.dup boolean.stackdepth boolean.shove boolean.yank boolean.yankdup name.pop name.swap name.rot name.flush name.dup name.stackdepth name.shove name.yank name.yankdup code.pop code.swap code.rot code.flush code.dup code.stackdepth code.shove code.yank code.yankdup exec.pop exec.swap exec.rot exec.flush exec.dup exec.stackdepth exec.shove exec.yank exec.yankdup frame.push frame.pop)

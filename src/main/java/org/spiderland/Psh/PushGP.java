@@ -541,8 +541,8 @@ abstract public class PushGP extends GA {
 	 * @return Index of the node to use for reproduction.
 	 */
 	protected int ReproductionNodeSelection(PushGPIndividual inInd) {
-		int totalSize = inInd._program.programsize();;
-		int selectedNode = 0;
+		int totalSize = inInd._program.programsize();
+        int selectedNode = 0;
 		
 		if(totalSize <= 1){
 			selectedNode = 0;

@@ -311,8 +311,8 @@ class IntegerAdd extends BinaryIntegerInstruction {
 		// Test for overflow
 		if((Math.abs(inA) > Integer.MAX_VALUE / 10) ||
 				(Math.abs(inB) > Integer.MAX_VALUE / 10)){
-			long lA = (long) inA;
-			long lB = (long) inB;
+			long lA = inA;
+			long lB = inB;
 			if(lA + lB != inA + inB){
 				if(inA > 0){
 					return Integer.MAX_VALUE;
@@ -335,8 +335,8 @@ class IntegerSub extends BinaryIntegerInstruction {
 		// Test for overflow
 		if((Math.abs(inA) > Integer.MAX_VALUE / 10) ||
 				(Math.abs(inB) > Integer.MAX_VALUE / 10)){
-			long lA = (long) inA;
-			long lB = (long) inB;
+			long lA = inA;
+			long lB = inB;
 			if(lA - lB != inA - inB){
 				if(inA > 0){
 					return Integer.MAX_VALUE;
@@ -368,9 +368,9 @@ class IntegerMul extends BinaryIntegerInstruction {
 		// Test for overflow
 		if((Math.abs(inA) > Math.sqrt(Integer.MAX_VALUE - 1)) ||
 				(Math.abs(inB) > Math.sqrt(Integer.MAX_VALUE - 1))){
-			long lA = (long) inA;
-			long lB = (long) inB;
-			if(lA * lB != inA * inB){
+			long lA = inA;
+			long lB = inB;
+			if(lA * lB != (long) inA * inB){
 				if((inA > 0 && inB > 0) || (inA < 0 && inB < 0)){
 					return Integer.MAX_VALUE;
 				}
@@ -873,7 +873,7 @@ class FloatAbs extends UnaryFloatInstruction {
 	
 	@Override
 	float UnaryOperator(float inValue) {
-		return (float) Math.abs(inValue);
+		return Math.abs(inValue);
 	}
 }
 

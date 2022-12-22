@@ -32,7 +32,7 @@ import org.spiderland.Psh.*;
  *                    boolean inputs are accepted.
  */
 public class PshInspector {
-	public static void main(String args[]) throws Exception {		
+	public static void main(String[] args) throws Exception {
 
 		if (args.length != 1) {
 			System.out.println("Usage: PshInspector inputfile");

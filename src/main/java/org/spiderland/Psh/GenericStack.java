@@ -25,7 +25,7 @@ import java.util.Arrays;
 public class GenericStack<T> extends Stack {
 	private static final long serialVersionUID = 1L;
 	
-	protected T _stack[];
+	protected T[] _stack;
 	final static int _blocksize = 16;
 
 	public void PushAllReverse(GenericStack<T> inOther) {
@@ -60,7 +60,7 @@ public class GenericStack<T> extends Stack {
 		return hash;
 	}
 
-	boolean comparestack(T inOther[], int inOtherSize) {
+	boolean comparestack(T[] inOther, int inOtherSize) {
 		if (inOtherSize != _size)
 			return false;
 
@@ -75,7 +75,7 @@ public class GenericStack<T> extends Stack {
 	@SuppressWarnings("unchecked")
 	@Override
 	void resize(int inSize) {
-		T newstack[] = (T[]) new Object[inSize];
+		T[] newstack = (T[]) new Object[inSize];
 
 		if (_stack != null)
 			System.arraycopy(_stack, 0, newstack, 0, _size);

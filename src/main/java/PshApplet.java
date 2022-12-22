@@ -27,11 +27,11 @@ public class PshApplet extends Applet {
 	public void init() {
 		try {
 			System.out.println( Run( getParameter( "program" ) ) );
-		} catch( Exception e ) {};
-	}
+		} catch( Exception e ) {}
+    }
 
 	public String Run( String inValue ) {
-		_interpreter.ClearStacks();
+		_interpreter.clearStacks();
 
 		try {
 			Program p;
@@ -41,9 +41,9 @@ public class PshApplet extends Applet {
 
 		} catch( Exception e ) {
 
-		};
+		}
 
-		return _interpreter.toString();
+        return _interpreter.toString();
 	}
 
 	public String GetInstructionString() {

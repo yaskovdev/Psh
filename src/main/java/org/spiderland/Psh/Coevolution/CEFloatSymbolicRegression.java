@@ -48,7 +48,7 @@ public class CEFloatSymbolicRegression extends PushGP {
 	
 	private boolean _success;
 	
-	private float _noResultPenalty = 1000f;
+	private final float _noResultPenalty = 1000f;
 
 	protected void InitFromParameters() throws Exception {
 		super.InitFromParameters();
@@ -65,13 +65,12 @@ public class CEFloatSymbolicRegression extends PushGP {
 			// Get test cases from the TestCasesClass.
 			Class<?> iclass = Class.forName(casesClass);
 			Object iObject = iclass.newInstance();
-			if (!(iObject instanceof TestCaseGenerator)) {
+			if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
 				throw (new Exception(
 						"test-case-class must inherit from class TestCaseGenerator"));
 			}
 
-			TestCaseGenerator testCaseGenerator = (TestCaseGenerator) iObject;
-			int numTestCases = testCaseGenerator.TestCaseCount();
+            int numTestCases = testCaseGenerator.TestCaseCount();
 
 			for (int i = 0; i < numTestCases; i++) {
 				ObjectPair testCase = testCaseGenerator.TestCase(i);
@@ -142,7 +141,7 @@ public class CEFloatSymbolicRegression extends PushGP {
 			Object inOutput) {
 		_effort++;
 
-		_interpreter.ClearStacks();
+		_interpreter.clearStacks();
 
 		_currentInput = (Float) inInput;
 

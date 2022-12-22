@@ -28,7 +28,7 @@ import java.util.zip.GZIPOutputStream;
 public abstract class GA implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	protected GAIndividual _populations[][];
+	protected GAIndividual[][] _populations;
 	protected int _currentPopulation;
 	protected int _generationCount;
 
@@ -70,12 +70,10 @@ public abstract class GA implements Serializable {
 		
 		Object gaObject = cls.newInstance();
 
-		if (!(gaObject instanceof GA))
+		if (!(gaObject instanceof GA ga))
 			throw (new Exception("problem-class must inherit from class GA"));
 
-		GA ga = (GA) gaObject;
-
-		ga.SetParams(inParams);
+        ga.SetParams(inParams);
 		ga.InitFromParameters();
 
 		return ga;
@@ -257,13 +255,11 @@ public abstract class GA implements Serializable {
 
 		Object iObject = _individualClass.newInstance();
 
-		if (!(iObject instanceof GAIndividual))
+		if (!(iObject instanceof GAIndividual individual))
 			throw new Exception(
 					"individual-class must inherit from class GAIndividual");
 
-		GAIndividual individual = (GAIndividual) iObject;
-
-		for (int i = 0; i < inSize; i++) {
+        for (int i = 0; i < inSize; i++) {
 			_populations[0][i] = individual.clone();
 			InitIndividual(_populations[0][i]);
 		}
@@ -579,9 +575,9 @@ public abstract class GA implements Serializable {
 	 * subclasses to customize GA behavior.
 	 */
 	protected void EndGeneration() {
-	};
+	}
 
-	abstract protected void InitIndividual(GAIndividual inIndividual);
+    abstract protected void InitIndividual(GAIndividual inIndividual);
 
 	abstract protected void EvaluateIndividual(GAIndividual inIndividual);
 

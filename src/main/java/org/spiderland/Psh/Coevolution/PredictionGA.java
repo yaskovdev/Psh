@@ -57,13 +57,11 @@ public abstract class PredictionGA extends GA {
 
 		Class<?> cls = Class.forName(inParams.get("problem-class"));
 		Object gaObject = cls.newInstance();
-		if (!(gaObject instanceof PredictionGA))
+		if (!(gaObject instanceof PredictionGA ga))
 			throw (new Exception("Predictor problem-class must inherit from"
 					+ " class PredictorGA"));
 
-		PredictionGA ga = (PredictionGA) gaObject;
-
-		// Must set the solution GA before InitFromParameters, since the latter
+        // Must set the solution GA before InitFromParameters, since the latter
 		// uses _solutionGA while creating the predictor population.
 		ga.SetSolutionGA(inSolutionGA);
 		ga.SetParams(inParams);

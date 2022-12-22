@@ -4,12 +4,12 @@ import org.spiderland.Psh.ObjectPair;
 
 public class IntRegTestCases1 extends TestCaseGenerator {
 
-	private static int _testCaseCount = 200;
+	private static final int _testCaseCount = 200;
 	private int[] _testCasesX = null;
 	private int[] _testCasesY = null;
 
-	private static int _firstSample = -99;
-	private static int _stepSize = 1;
+	private static final int _firstSample = -99;
+	private static final int _stepSize = 1;
 
 	@Override
 	public int TestCaseCount() {

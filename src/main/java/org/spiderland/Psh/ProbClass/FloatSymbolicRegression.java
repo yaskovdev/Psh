@@ -33,7 +33,7 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
 public class FloatSymbolicRegression extends PushGP {
 	private static final long serialVersionUID = 1L;
 	
-	private float _noResultPenalty = 10000;
+	private final float _noResultPenalty = 10000;
 
 	protected void InitFromParameters() throws Exception {
 		super.InitFromParameters();
@@ -48,13 +48,12 @@ public class FloatSymbolicRegression extends PushGP {
 			// Get test cases from the TestCasesClass.
 			Class<?> iclass = Class.forName(casesClass);
 			Object iObject = iclass.newInstance();
-			if (!(iObject instanceof TestCaseGenerator)) {
+			if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
 				throw (new Exception(
 						"test-case-class must inherit from class TestCaseGenerator"));
 			}
 
-			TestCaseGenerator testCaseGenerator = (TestCaseGenerator) iObject;
-			int numTestCases = testCaseGenerator.TestCaseCount();
+            int numTestCases = testCaseGenerator.TestCaseCount();
 
 			for (int i = 0; i < numTestCases; i++) {
 				ObjectPair testCase = testCaseGenerator.TestCase(i);
@@ -96,7 +95,7 @@ public class FloatSymbolicRegression extends PushGP {
 
 	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
 			Object inOutput) {
-		_interpreter.ClearStacks();
+		_interpreter.clearStacks();
 
 		float currentInput = (Float) inInput;
 
@@ -121,7 +120,7 @@ public class FloatSymbolicRegression extends PushGP {
 	}
 	
 	public float GetIndividualTestCaseResult(GAIndividual inIndividual, GATestCase inTestCase){
-		_interpreter.ClearStacks();
+		_interpreter.clearStacks();
 
 		float currentInput = (Float) inTestCase._input;
 

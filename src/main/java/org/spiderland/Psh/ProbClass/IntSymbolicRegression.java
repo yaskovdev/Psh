@@ -48,13 +48,12 @@ public class IntSymbolicRegression extends PushGP {
 			// Get test cases from the TestCasesClass.
 			Class<?> iclass = Class.forName(casesClass);
 			Object iObject = iclass.newInstance();
-			if (!(iObject instanceof TestCaseGenerator)) {
+			if (!(iObject instanceof TestCaseGenerator testCaseGenerator)) {
 				throw (new Exception(
 						"test-case-class must inherit from class TestCaseGenerator"));
 			}
 
-			TestCaseGenerator testCaseGenerator = (TestCaseGenerator) iObject;
-			int numTestCases = testCaseGenerator.TestCaseCount();
+            int numTestCases = testCaseGenerator.TestCaseCount();
 
 			for (int i = 0; i < numTestCases; i++) {
 				ObjectPair testCase = testCaseGenerator.TestCase(i);
@@ -78,8 +77,8 @@ public class IntSymbolicRegression extends PushGP {
 					throw new Exception("Not enough elements for fitness case \""
 							+ p + "\"");
 	
-				Integer in = new Integer(p.peek(0).toString());
-				Integer out = new Integer(p.peek(1).toString());
+				Integer in = Integer.valueOf(p.peek(0).toString());
+				Integer out = Integer.valueOf(p.peek(1).toString());
 	
 				Print(";; Fitness case #" + i + " input: " + in + " output: " + out
 						+ "\n");
@@ -95,7 +94,7 @@ public class IntSymbolicRegression extends PushGP {
 
 	public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
 			Object inOutput) {
-		_interpreter.ClearStacks();
+		_interpreter.clearStacks();
 
 		int currentInput = (Integer) inInput;
 
