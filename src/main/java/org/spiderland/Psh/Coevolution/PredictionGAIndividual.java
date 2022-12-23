@@ -19,7 +19,7 @@ public abstract class PredictionGAIndividual extends GAIndividual {
      * @param individual to predict the fitness of
      * @return predicted fitness
      */
-    public abstract float PredictSolutionFitness(PushGPIndividual pgpIndividual);
+    public abstract float PredictSolutionFitness(PushGPIndividual individual);
 
     /**
      * Computes the absolute-average-of-errors fitness from an error vector.
@@ -37,5 +37,4 @@ public abstract class PredictionGAIndividual extends GAIndividual {
 
         return (total / inArray.size());
     }
-
 }

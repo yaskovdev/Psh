@@ -8,6 +8,8 @@ import org.spiderland.Psh.Interpreter;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
 
+import static java.util.stream.IntStream.range;
+
 public class IsNumberEven extends PushGP {
 
     public static final int MAX_ERROR = 1000;
@@ -18,9 +20,9 @@ public class IsNumberEven extends PushGP {
 
     protected void InitFromParameters() throws Exception {
         super.InitFromParameters();
-        for (int i = 0; i < 100; i++) {
-            _testCases.add(new GATestCase(i, i % 2 == 0));
-        }
+        _testCases = range(0, 100)
+                .mapToObj(it -> new GATestCase(it, it % 2 == 0))
+                .toList();
     }
 
     @Override

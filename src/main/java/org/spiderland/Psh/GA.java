@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -40,7 +41,7 @@ public abstract class GA implements Serializable {
     protected Random _RNG;
 
     protected HashMap<String, String> _parameters;
-    public ArrayList<GATestCase> _testCases;
+    public List<GATestCase> _testCases;
 
     protected Class<?> _individualClass;
 

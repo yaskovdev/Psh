@@ -48,10 +48,7 @@ public class ObjectStack extends Stack {
     }
 
     public Object peek(int inIndex) {
-        if (inIndex >= 0 && inIndex < _size)
-            return _stack[inIndex];
-
-        return null;
+        return inIndex >= 0 && inIndex < _size ? _stack[inIndex] : null;
     }
 
     public Object top() {
