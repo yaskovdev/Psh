@@ -4,6 +4,7 @@ package org.spiderland.Psh;
  * The Push stack type for object-based data (Strings, Programs, etc.)
  */
 public class FloatStack extends Stack {
+    private static final long serialVersionUID = 1L;
 
     protected float[] _stack;
 

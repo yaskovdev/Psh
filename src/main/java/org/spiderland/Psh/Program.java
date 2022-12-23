@@ -1,9 +1,13 @@
 package org.spiderland.Psh;
 
+import java.io.Serializable;
+
 /**
  * A Push program.
  */
-public class Program extends ObjectStack {
+
+public class Program extends ObjectStack implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     Interpreter _interpreter = null;
 

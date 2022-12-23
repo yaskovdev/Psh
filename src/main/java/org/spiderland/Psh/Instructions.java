@@ -12,6 +12,7 @@ import java.util.Random;
  */
 
 abstract class StackInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     protected Stack _stack;
 
@@ -26,6 +27,7 @@ abstract class StackInstruction extends Instruction {
  */
 
 abstract class ObjectStackInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     protected ObjectStack _stack;
 
@@ -35,6 +37,7 @@ abstract class ObjectStackInstruction extends Instruction {
 }
 
 class Quote extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     Quote() {
     }
@@ -50,6 +53,7 @@ class Quote extends Instruction {
 }
 
 class Pop extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Pop(Stack inStack) {
         super(inStack);
@@ -63,6 +67,7 @@ class Pop extends StackInstruction {
 }
 
 class Flush extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Flush(Stack inStack) {
         super(inStack);
@@ -75,6 +80,7 @@ class Flush extends StackInstruction {
 }
 
 class Dup extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Dup(Stack inStack) {
         super(inStack);
@@ -87,6 +93,7 @@ class Dup extends StackInstruction {
 }
 
 class Rot extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Rot(Stack inStack) {
         super(inStack);
@@ -100,6 +107,7 @@ class Rot extends StackInstruction {
 }
 
 class Shove extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Shove(Stack inStack) {
         super(inStack);
@@ -121,6 +129,7 @@ class Shove extends StackInstruction {
 }
 
 class Swap extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Swap(Stack inStack) {
         super(inStack);
@@ -134,6 +143,7 @@ class Swap extends StackInstruction {
 }
 
 class Yank extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Yank(Stack inStack) {
         super(inStack);
@@ -155,6 +165,7 @@ class Yank extends StackInstruction {
 }
 
 class YankDup extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     YankDup(Stack inStack) {
         super(inStack);
@@ -176,6 +187,7 @@ class YankDup extends StackInstruction {
 }
 
 class Depth extends StackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Depth(Stack inStack) {
         super(inStack);
@@ -189,6 +201,7 @@ class Depth extends StackInstruction {
 }
 
 class IntegerConstant extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     int _value;
 
@@ -203,6 +216,7 @@ class IntegerConstant extends Instruction {
 }
 
 class FloatConstant extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     float _value;
 
@@ -217,6 +231,7 @@ class FloatConstant extends Instruction {
 }
 
 class BooleanConstant extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     boolean _value;
 
@@ -231,6 +246,7 @@ class BooleanConstant extends Instruction {
 }
 
 class ObjectConstant extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Object _value;
 
@@ -251,6 +267,7 @@ class ObjectConstant extends ObjectStackInstruction {
 //
 
 abstract class BinaryIntegerInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract int BinaryOperator(int inA, int inB);
 
@@ -268,6 +285,7 @@ abstract class BinaryIntegerInstruction extends Instruction {
 }
 
 class IntegerAdd extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -290,6 +308,7 @@ class IntegerAdd extends BinaryIntegerInstruction {
 }
 
 class IntegerSub extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -312,6 +331,7 @@ class IntegerSub extends BinaryIntegerInstruction {
 }
 
 class IntegerDiv extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -320,6 +340,7 @@ class IntegerDiv extends BinaryIntegerInstruction {
 }
 
 class IntegerMul extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -342,6 +363,7 @@ class IntegerMul extends BinaryIntegerInstruction {
 }
 
 class IntegerMod extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -350,6 +372,7 @@ class IntegerMod extends BinaryIntegerInstruction {
 }
 
 class IntegerPow extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -370,6 +393,7 @@ class IntegerPow extends BinaryIntegerInstruction {
 }
 
 class IntegerLog extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -390,6 +414,7 @@ class IntegerLog extends BinaryIntegerInstruction {
 }
 
 class IntegerMin extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -398,6 +423,7 @@ class IntegerMin extends BinaryIntegerInstruction {
 }
 
 class IntegerMax extends BinaryIntegerInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int BinaryOperator(int inA, int inB) {
@@ -410,6 +436,7 @@ class IntegerMax extends BinaryIntegerInstruction {
 //
 
 abstract class UnaryIntInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract int UnaryOperator(int inValue);
 
@@ -423,6 +450,7 @@ abstract class UnaryIntInstruction extends Instruction {
 }
 
 class IntegerAbs extends UnaryIntInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int UnaryOperator(int inValue) {
@@ -431,6 +459,7 @@ class IntegerAbs extends UnaryIntInstruction {
 }
 
 class IntegerNeg extends UnaryIntInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int UnaryOperator(int inValue) {
@@ -443,6 +472,7 @@ class IntegerNeg extends UnaryIntInstruction {
 }
 
 class IntegerLn extends UnaryIntInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     int UnaryOperator(int inA) {
@@ -463,6 +493,7 @@ class IntegerLn extends UnaryIntInstruction {
 }
 
 class IntegerRand extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     Random _RNG;
 
@@ -485,6 +516,7 @@ class IntegerRand extends Instruction {
 //
 
 class IntegerFromFloat extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -498,6 +530,7 @@ class IntegerFromFloat extends Instruction {
 }
 
 class IntegerFromBoolean extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -519,6 +552,7 @@ class IntegerFromBoolean extends Instruction {
 //
 
 abstract class BinaryIntegerBoolInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract boolean BinaryOperator(int inA, int inB);
 
@@ -537,6 +571,7 @@ abstract class BinaryIntegerBoolInstruction extends Instruction {
 }
 
 class IntegerGreaterThan extends BinaryIntegerBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(int inA, int inB) {
@@ -545,6 +580,7 @@ class IntegerGreaterThan extends BinaryIntegerBoolInstruction {
 }
 
 class IntegerLessThan extends BinaryIntegerBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(int inA, int inB) {
@@ -553,6 +589,7 @@ class IntegerLessThan extends BinaryIntegerBoolInstruction {
 }
 
 class IntegerEquals extends BinaryIntegerBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(int inA, int inB) {
@@ -565,6 +602,7 @@ class IntegerEquals extends BinaryIntegerBoolInstruction {
 //
 
 abstract class BinaryFloatInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract float BinaryOperator(float inA, float inB);
 
@@ -582,6 +620,7 @@ abstract class BinaryFloatInstruction extends Instruction {
 }
 
 class FloatAdd extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -599,6 +638,7 @@ class FloatAdd extends BinaryFloatInstruction {
 }
 
 class FloatSub extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -616,6 +656,7 @@ class FloatSub extends BinaryFloatInstruction {
 }
 
 class FloatMul extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -636,6 +677,7 @@ class FloatMul extends BinaryFloatInstruction {
 }
 
 class FloatDiv extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -656,6 +698,7 @@ class FloatDiv extends BinaryFloatInstruction {
 }
 
 class FloatMod extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -664,6 +707,7 @@ class FloatMod extends BinaryFloatInstruction {
 }
 
 class FloatPow extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -684,6 +728,7 @@ class FloatPow extends BinaryFloatInstruction {
 }
 
 class FloatLog extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -704,6 +749,7 @@ class FloatLog extends BinaryFloatInstruction {
 }
 
 class FloatMin extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -712,6 +758,7 @@ class FloatMin extends BinaryFloatInstruction {
 }
 
 class FloatMax extends BinaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float BinaryOperator(float inA, float inB) {
@@ -725,6 +772,7 @@ class FloatMax extends BinaryFloatInstruction {
 //
 
 abstract class UnaryFloatInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract float UnaryOperator(float inValue);
 
@@ -738,6 +786,7 @@ abstract class UnaryFloatInstruction extends Instruction {
 }
 
 class FloatSin extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -746,6 +795,7 @@ class FloatSin extends UnaryFloatInstruction {
 }
 
 class FloatCos extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -754,6 +804,7 @@ class FloatCos extends UnaryFloatInstruction {
 }
 
 class FloatTan extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -774,6 +825,7 @@ class FloatTan extends UnaryFloatInstruction {
 }
 
 class FloatExp extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -794,6 +846,7 @@ class FloatExp extends UnaryFloatInstruction {
 }
 
 class FloatAbs extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -802,6 +855,7 @@ class FloatAbs extends UnaryFloatInstruction {
 }
 
 class FloatNeg extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inValue) {
@@ -810,6 +864,7 @@ class FloatNeg extends UnaryFloatInstruction {
 }
 
 class FloatLn extends UnaryFloatInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     float UnaryOperator(float inA) {
@@ -830,6 +885,7 @@ class FloatLn extends UnaryFloatInstruction {
 }
 
 class FloatRand extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     Random _RNG;
 
@@ -854,6 +910,7 @@ class FloatRand extends Instruction {
 //
 
 class FloatFromInteger extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -867,6 +924,7 @@ class FloatFromInteger extends Instruction {
 }
 
 class FloatFromBoolean extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -888,6 +946,7 @@ class FloatFromBoolean extends Instruction {
 //
 
 abstract class BinaryFloatBoolInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract boolean BinaryOperator(float inA, float inB);
 
@@ -906,6 +965,7 @@ abstract class BinaryFloatBoolInstruction extends Instruction {
 }
 
 class FloatGreaterThan extends BinaryFloatBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(float inA, float inB) {
@@ -914,6 +974,7 @@ class FloatGreaterThan extends BinaryFloatBoolInstruction {
 }
 
 class FloatLessThan extends BinaryFloatBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(float inA, float inB) {
@@ -922,6 +983,7 @@ class FloatLessThan extends BinaryFloatBoolInstruction {
 }
 
 class FloatEquals extends BinaryFloatBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(float inA, float inB) {
@@ -935,6 +997,7 @@ class FloatEquals extends BinaryFloatBoolInstruction {
 //
 
 abstract class BinaryBoolInstruction extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     abstract boolean BinaryOperator(boolean inA, boolean inB);
 
@@ -952,6 +1015,7 @@ abstract class BinaryBoolInstruction extends Instruction {
 }
 
 class BoolEquals extends BinaryBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(boolean inA, boolean inB) {
@@ -960,6 +1024,7 @@ class BoolEquals extends BinaryBoolInstruction {
 }
 
 class BoolAnd extends BinaryBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(boolean inA, boolean inB) {
@@ -968,6 +1033,7 @@ class BoolAnd extends BinaryBoolInstruction {
 }
 
 class BoolOr extends BinaryBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(boolean inA, boolean inB) {
@@ -976,6 +1042,7 @@ class BoolOr extends BinaryBoolInstruction {
 }
 
 class BoolXor extends BinaryBoolInstruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     boolean BinaryOperator(boolean inA, boolean inB) {
@@ -984,6 +1051,7 @@ class BoolXor extends BinaryBoolInstruction {
 }
 
 class BoolNot extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -993,6 +1061,7 @@ class BoolNot extends Instruction {
 }
 
 class BoolRand extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     Random _RNG;
 
@@ -1011,6 +1080,7 @@ class BoolRand extends Instruction {
 //
 
 class BooleanFromInteger extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1024,6 +1094,7 @@ class BooleanFromInteger extends Instruction {
 }
 
 class BooleanFromFloat extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1041,6 +1112,7 @@ class BooleanFromFloat extends Instruction {
 //
 
 class InputInN extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     protected int index;
 
@@ -1055,6 +1127,7 @@ class InputInN extends Instruction {
 }
 
 class InputInAll extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     InputInAll(ObjectStack inStack) {
         super(inStack);
@@ -1072,6 +1145,7 @@ class InputInAll extends ObjectStackInstruction {
 }
 
 class InputInRev extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     InputInRev(ObjectStack inStack) {
         super(inStack);
@@ -1089,6 +1163,7 @@ class InputInRev extends ObjectStackInstruction {
 }
 
 class InputIndex extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     InputIndex(ObjectStack inStack) {
         super(inStack);
@@ -1120,6 +1195,7 @@ class InputIndex extends ObjectStackInstruction {
 
 // Begin code iteration functions
 class CodeDoRange extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     CodeDoRange(Interpreter inI) {
         super(inI.codeStack());
@@ -1161,6 +1237,7 @@ class CodeDoRange extends ObjectStackInstruction {
 }
 
 class CodeDoTimes extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     CodeDoTimes(Interpreter inI) {
         super(inI.codeStack());
@@ -1208,6 +1285,7 @@ class CodeDoTimes extends ObjectStackInstruction {
 }
 
 class CodeDoCount extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     CodeDoCount(Interpreter inI) {
         super(inI.codeStack());
@@ -1249,6 +1327,7 @@ class CodeDoCount extends ObjectStackInstruction {
 //
 
 class CodeFromBoolean extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1262,6 +1341,7 @@ class CodeFromBoolean extends Instruction {
 }
 
 class CodeFromInteger extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1275,6 +1355,7 @@ class CodeFromInteger extends Instruction {
 }
 
 class CodeFromFloat extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1290,6 +1371,7 @@ class CodeFromFloat extends Instruction {
 // Begin exec iteration functions
 
 class ExecDoRange extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ExecDoRange(Interpreter inI) {
         super(inI.execStack());
@@ -1332,6 +1414,7 @@ class ExecDoRange extends ObjectStackInstruction {
 }
 
 class ExecDoTimes extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ExecDoTimes(Interpreter inI) {
         super(inI.execStack());
@@ -1378,6 +1461,7 @@ class ExecDoTimes extends ObjectStackInstruction {
 }
 
 class ExecDoCount extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ExecDoCount(Interpreter inI) {
         super(inI.execStack());
@@ -1412,6 +1496,7 @@ class ExecDoCount extends ObjectStackInstruction {
 // End exec iteration functions.
 
 class ExecK extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ExecK(ObjectStack inStack) {
         super(inStack);
@@ -1428,6 +1513,7 @@ class ExecK extends ObjectStackInstruction {
 }
 
 class ExecS extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     int _maxPointsInProgram;
 
@@ -1465,6 +1551,7 @@ class ExecS extends ObjectStackInstruction {
 }
 
 class ExecY extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ExecY(ObjectStack inStack) {
         super(inStack);
@@ -1487,6 +1574,7 @@ class ExecY extends ObjectStackInstruction {
 }
 
 class ExecNoop extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void Execute(Interpreter inI) {
@@ -1495,6 +1583,7 @@ class ExecNoop extends Instruction {
 }
 
 class RandomPushCode extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     Random _RNG;
 
@@ -1527,6 +1616,7 @@ class RandomPushCode extends ObjectStackInstruction {
 
 
 class ObjectEquals extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     ObjectEquals(ObjectStack inStack) {
         super(inStack);
@@ -1546,6 +1636,7 @@ class ObjectEquals extends ObjectStackInstruction {
 }
 
 class If extends ObjectStackInstruction {
+    private static final long serialVersionUID = 1L;
 
     If(ObjectStack inStack) {
         super(inStack);
@@ -1575,6 +1666,7 @@ class If extends ObjectStackInstruction {
 //
 
 class PopFrame extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     PopFrame() {
     }
@@ -1595,6 +1687,7 @@ class PopFrame extends Instruction {
 }
 
 class PushFrame extends Instruction {
+    private static final long serialVersionUID = 1L;
 
     PushFrame() {
     }

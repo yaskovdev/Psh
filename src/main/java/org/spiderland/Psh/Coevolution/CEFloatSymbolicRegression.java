@@ -21,6 +21,7 @@ import java.util.HashMap;
  * evaluation executions thus far, which is tracked by the interpreter.
  */
 public class CEFloatSymbolicRegression extends PushGP {
+    private static final long serialVersionUID = 1L;
 
     protected float _currentInput;
 
@@ -57,8 +58,8 @@ public class CEFloatSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Float in = (Float) testCase.first();
-                Float out = (Float) testCase.second();
+                Float in = (Float) testCase._first;
+                Float out = (Float) testCase._second;
 
                 Print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");

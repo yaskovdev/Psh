@@ -3,7 +3,9 @@ package org.spiderland.Psh;
 /**
  * The Push stack type for integers.
  */
+
 public class IntStack extends Stack {
+    private static final long serialVersionUID = 1L;
 
     protected int[] _stack;
 

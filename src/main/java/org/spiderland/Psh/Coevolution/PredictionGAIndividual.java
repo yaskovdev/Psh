@@ -11,6 +11,7 @@ import java.util.ArrayList;
  */
 
 public abstract class PredictionGAIndividual extends GAIndividual {
+    private static final long serialVersionUID = 1L;
 
     /**
      * Predicts the fitness of the input PushGPIndividual

@@ -3,7 +3,9 @@ package org.spiderland.Psh;
 /**
  * The Push stack type for object-based data (Strings, Programs, etc.)
  */
+
 public class ObjectStack extends Stack {
+    private static final long serialVersionUID = 1L;
 
     protected Object[] _stack;
     final static int _blocksize = 16;

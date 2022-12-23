@@ -1,6 +1,9 @@
 package org.spiderland.Psh;
 
-public class InputPusher {
+import java.io.Serializable;
+
+public class InputPusher implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     public void pushInput(Interpreter inI, int n) {
         ObjectStack _stack = inI.inputStack();

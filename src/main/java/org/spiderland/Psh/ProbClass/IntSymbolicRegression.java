@@ -15,6 +15,7 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
  * IntSymbolicRegression for integer symbolic regression.
  */
 public class IntSymbolicRegression extends PushGP {
+    private static final long serialVersionUID = 1L;
 
     protected float _noResultPenalty = 1000;
 
@@ -41,8 +42,8 @@ public class IntSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Integer in = (Integer) testCase.first();
-                Integer out = (Integer) testCase.second();
+                Integer in = (Integer) testCase._first;
+                Integer out = (Integer) testCase._second;
 
                 Print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");

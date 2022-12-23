@@ -7,6 +7,7 @@ import java.util.Arrays;
  */
 
 public class GenericStack<T> extends Stack {
+    private static final long serialVersionUID = 1L;
 
     protected T[] _stack;
     final static int _blocksize = 16;

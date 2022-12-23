@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.zip.GZIPOutputStream;
  * An abstract class for running genetic algorithms.
  */
 
-public abstract class GA {
+public abstract class GA implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     protected GAIndividual[][] _populations;
     protected int _currentPopulation;

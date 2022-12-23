@@ -6,6 +6,7 @@ import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
 
 public class GenericPredictionIndividual extends PredictionGAIndividual {
+    private static final long serialVersionUID = 1L;
 
     protected Program _program;
 

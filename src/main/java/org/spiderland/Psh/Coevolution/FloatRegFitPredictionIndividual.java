@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
+    private static final long serialVersionUID = 1L;
 
     // The sample test cases used for fitness prediction.
     private int[] _sampleIndices;

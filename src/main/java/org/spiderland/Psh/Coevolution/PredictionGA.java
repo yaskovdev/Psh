@@ -16,8 +16,10 @@ import java.util.HashMap;
  * individual's rank.
  */
 public abstract class PredictionGA extends GA {
+    private static final long serialVersionUID = 1L;
 
-    // Note: Oldest trainer has the lowest index; newest trainer has the highest index.
+    // Note: Oldest trainer has the lowest index; newest trainer has the highest
+    // index.
     protected ArrayList<PushGPIndividual> _trainerPopulation;
     protected int _generationsBetweenTrainers;
     protected int _trainerPopulationSize;
