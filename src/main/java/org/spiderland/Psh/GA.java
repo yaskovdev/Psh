@@ -17,7 +17,6 @@ import java.util.zip.GZIPOutputStream;
 /**
  * An abstract class for running genetic algorithms.
  */
-
 public abstract class GA implements Serializable {
     private static final long serialVersionUID = 1L;
 
