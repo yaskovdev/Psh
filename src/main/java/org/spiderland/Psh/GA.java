@@ -221,7 +221,7 @@ public abstract class GA {
         _outputfile = GetParam("output-file", true);
 
         if (_outputfile != null)
-            _outputStream = new FileOutputStream(new File(_outputfile));
+            _outputStream = new FileOutputStream(_outputfile);
     }
 
     /**
@@ -575,8 +575,7 @@ public abstract class GA {
 
         File file = new File(_checkpointPrefix + _checkpoint.checkpointNumber
                 + ".gz");
-        ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(
-                new FileOutputStream(file)));
+        ObjectOutputStream out = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(file)));
 
         out.writeObject(_checkpoint);
         out.flush();

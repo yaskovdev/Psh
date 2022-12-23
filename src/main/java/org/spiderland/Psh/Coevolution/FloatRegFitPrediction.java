@@ -22,7 +22,7 @@ public class FloatRegFitPrediction extends PredictionGA {
     protected void EvaluateIndividual(GAIndividual inIndividual) {
 
         FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) inIndividual;
-        ArrayList<Float> errors = new ArrayList<Float>();
+        ArrayList<Float> errors = new ArrayList<>();
 
         for (int i = 0; i < _trainerPopulationSize; i++) {
             float predictedError = predictor.PredictSolutionFitness(_trainerPopulation.get(i));

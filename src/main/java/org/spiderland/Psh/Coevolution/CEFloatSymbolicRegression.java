@@ -114,7 +114,7 @@ public class CEFloatSymbolicRegression extends PushGP {
         float fitness = predictor.PredictSolutionFitness((PushGPIndividual) inIndividual);
 
         inIndividual.SetFitness(fitness);
-        inIndividual.SetErrors(new ArrayList<Float>());
+        inIndividual.SetErrors(new ArrayList<>());
     }
 
     public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,

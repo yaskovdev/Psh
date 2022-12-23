@@ -271,7 +271,7 @@ abstract public class PushGP extends GA {
 
     protected void EvaluateIndividual(GAIndividual inIndividual,
             boolean duringSimplify) {
-        ArrayList<Float> errors = new ArrayList<Float>();
+        ArrayList<Float> errors = new ArrayList<>();
 
         if (!duringSimplify)
             _averageSize += ((PushGPIndividual) inIndividual)._program
@@ -288,9 +288,6 @@ abstract public class PushGP extends GA {
 
         inIndividual.SetFitness(AbsoluteAverageOfErrors(errors));
         inIndividual.SetErrors(errors);
-
-        // System.out.println("Evaluated individual in " + t + " msec: fitness "
-        // + inIndividual.GetFitness());
     }
 
     abstract protected void InitInterpreter(Interpreter inInterpreter)

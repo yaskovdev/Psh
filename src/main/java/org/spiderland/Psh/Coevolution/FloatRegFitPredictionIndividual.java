@@ -61,7 +61,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 
     @Override
     public float PredictSolutionFitness(PushGPIndividual pgpIndividual) {
-        ArrayList<Float> errors = new ArrayList<Float>();
+        ArrayList<Float> errors = new ArrayList<>();
 
         for (int n = 0; n < _sampleSize; n++) {
             GATestCase test = _solutionGA._testCases.get(_sampleIndices[n]);

@@ -101,13 +101,13 @@ public abstract class PredictionGA extends GA {
      * of the predictions from the current predictor population.
      */
     protected PushGPIndividual ChooseNewTrainer() {
-        ArrayList<Float> individualVariances = new ArrayList<Float>();
+        ArrayList<Float> individualVariances = new ArrayList<>();
 
         for (int i = 0; i < _solutionGA.GetPopulationSize(); i++) {
             PushGPIndividual individual = (PushGPIndividual) _solutionGA
                     .GetIndividualFromPopulation(i);
 
-            ArrayList<Float> predictions = new ArrayList<Float>();
+            ArrayList<Float> predictions = new ArrayList<>();
             for (int j = 0; j < _populations[_currentPopulation].length; j++) {
                 PredictionGAIndividual predictor = (PredictionGAIndividual) _populations[_currentPopulation][j];
                 predictions.add(predictor.PredictSolutionFitness(individual));
