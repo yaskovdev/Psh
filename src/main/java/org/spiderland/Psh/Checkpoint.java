@@ -1,9 +1,7 @@
 package org.spiderland.Psh;
 
-import java.io.Serializable;
+public class Checkpoint {
 
-public class Checkpoint implements Serializable {
-    private static final long serialVersionUID = 1L;
     int checkpointNumber;
     GA ga;
     StringBuffer report;

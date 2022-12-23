@@ -5,7 +5,6 @@ package org.spiderland.Psh;
  */
 
 public class BooleanStack extends Stack {
-    private static final long serialVersionUID = 1L;
 
     protected boolean[] _stack;
 

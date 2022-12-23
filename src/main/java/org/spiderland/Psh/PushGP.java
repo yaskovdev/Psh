@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * The Push Genetic Programming core class.
  */
 abstract public class PushGP extends GA {
-    private static final long serialVersionUID = 1L;
 
     protected Interpreter _interpreter;
     protected int _maxRandomCodeSize;

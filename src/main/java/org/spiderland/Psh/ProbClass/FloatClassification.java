@@ -9,7 +9,6 @@ import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
 
 public class FloatClassification extends PushGP {
-    private static final long serialVersionUID = 1L;
 
     float _currentInput;
     int _inputCount;

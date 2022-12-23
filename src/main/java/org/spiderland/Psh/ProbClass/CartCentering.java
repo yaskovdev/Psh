@@ -23,7 +23,6 @@ import org.spiderland.Psh.PushGPIndividual;
  * Note: Cart centering does not yet support test case generators.
  */
 public class CartCentering extends PushGP {
-    private static final long serialVersionUID = 1L;
 
     protected void InitFromParameters() throws Exception {
         super.InitFromParameters();
@@ -64,8 +63,8 @@ public class CartCentering extends PushGP {
         float captureRadius = 0.01f;
 
         ObjectPair xv = (ObjectPair) inInput;
-        float position = (Float) xv._first;
-        float velocity = (Float) xv._second;
+        float position = (Float) xv.first();
+        float velocity = (Float) xv.second();
 
         for (int step = 1; step <= timeSteps; step++) {
             _interpreter.clearStacks();

@@ -1,6 +1,5 @@
 package org.spiderland.Psh;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,8 +9,7 @@ import java.util.ArrayList;
  * perfect solution.
  */
 
-public abstract class GAIndividual implements Serializable {
-    private static final long serialVersionUID = 1L;
+public abstract class GAIndividual {
 
     float _fitness;
     ArrayList<Float> _errors;

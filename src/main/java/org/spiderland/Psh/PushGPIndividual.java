@@ -4,9 +4,7 @@ package org.spiderland.Psh;
  * A PushGA individual class which is a simple wrapper around a Push Program
  * object.
  */
-
 public class PushGPIndividual extends GAIndividual {
-    private static final long serialVersionUID = 1L;
 
     public Program _program;
 

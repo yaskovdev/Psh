@@ -1,12 +1,9 @@
 package org.spiderland.Psh;
 
-import java.io.Serializable;
-
 /**
  * Abstract class for implementing stacks.
  */
-abstract class Stack implements Serializable {
-    private static final long serialVersionUID = 1L;
+abstract class Stack {
 
     protected int _size;
     protected int _maxsize;

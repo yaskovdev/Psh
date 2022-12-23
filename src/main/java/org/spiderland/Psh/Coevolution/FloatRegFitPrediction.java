@@ -6,7 +6,6 @@ import org.spiderland.Psh.PushGPIndividual;
 import java.util.ArrayList;
 
 public class FloatRegFitPrediction extends PredictionGA {
-    private static final long serialVersionUID = 1L;
 
     @Override
     protected void InitIndividual(GAIndividual inIndividual) {

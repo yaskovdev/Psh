@@ -1,6 +1,5 @@
 package org.spiderland.Psh;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,9 +11,7 @@ import java.util.Random;
  * The Push language interpreter.
  */
 
-public class Interpreter implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Interpreter {
     protected HashMap<String, Instruction> _instructions = new HashMap<String, Instruction>();
 
     // All generators
@@ -770,14 +767,12 @@ public class Interpreter implements Serializable {
         RandomCodeDistribution(ioList, inCount - thisSize, inMaxElements - 1);
     }
 
-    abstract class AtomGenerator implements Serializable {
-        private static final long serialVersionUID = 1L;
+    abstract static class AtomGenerator {
 
         abstract Object Generate(Interpreter inInterpreter);
     }
 
-    private class InstructionAtomGenerator extends AtomGenerator {
-        private static final long serialVersionUID = 1L;
+    private static class InstructionAtomGenerator extends AtomGenerator {
 
         String _instruction;
 
@@ -791,7 +786,6 @@ public class Interpreter implements Serializable {
     }
 
     private class FloatAtomGenerator extends AtomGenerator {
-        private static final long serialVersionUID = 1L;
 
         Object Generate(Interpreter inInterpreter) {
             float r = _RNG.nextFloat() * (_maxRandomFloat - _minRandomFloat);
@@ -803,7 +797,6 @@ public class Interpreter implements Serializable {
     }
 
     private class IntAtomGenerator extends AtomGenerator {
-        private static final long serialVersionUID = 1L;
 
         Object Generate(Interpreter inInterpreter) {
             int r = _RNG.nextInt(_maxRandomInt - _minRandomInt);
@@ -813,5 +806,4 @@ public class Interpreter implements Serializable {
             return r + _minRandomInt;
         }
     }
-
 }
