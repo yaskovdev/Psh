@@ -21,14 +21,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+
     - name: Set up JDK 18
       uses: actions/setup-java@v3
       with:
         java-version: '18'
         distribution: 'temurin'
         cache: maven
-    - name: Build with Maven
+
+    - name: Build and test with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Benchmark with Maven
+      run: mvn -B package -DtestGroups=BenchmarkTest --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
