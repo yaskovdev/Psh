@@ -19,12 +19,12 @@ public class FloatClassification extends PushGP {
 
         String cases = GetParam("test-cases");
 
-        Program caselist = new Program(_interpreter, cases);
+        Program testCases = new Program(cases);
 
-        _inputCount = ((Program) caselist.peek(0)).size() - 1;
+        _inputCount = ((Program) testCases.peek(0)).size() - 1;
 
-        for (int i = 0; i < caselist.size(); i++) {
-            Program p = (Program) caselist.peek(i);
+        for (int i = 0; i < testCases.size(); i++) {
+            Program p = (Program) testCases.peek(i);
 
             if (p.size() < 2)
                 throw new Exception("Not enough entries for fitness case \""

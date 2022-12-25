@@ -82,7 +82,7 @@ public class InspectorInput {
         // Get the available instructions for random code generation
         indexNewline = fileString.indexOf("\n");
         if (!fileString.trim().equals("")) {
-            _interpreter.SetInstructions(new Program(_interpreter, fileString.trim()));
+            _interpreter.SetInstructions(new Program(fileString.trim()));
         }
 
         // Check for input.inN instructions
@@ -99,7 +99,7 @@ public class InspectorInput {
         _interpreter._maxRandomCodeSize = 50;
 
         // Load the program
-        _program = new Program(_interpreter, programString);
+        _program = new Program(programString);
         _interpreter.LoadProgram(_program); // Initializes program
     }
 

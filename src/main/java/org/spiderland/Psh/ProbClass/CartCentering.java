@@ -30,10 +30,10 @@ public class CartCentering extends PushGP {
 
         String cases = GetParam("test-cases");
 
-        Program caselist = new Program(_interpreter, cases);
+        Program testCases = new Program(cases);
 
-        for (int i = 0; i < caselist.size(); i++) {
-            Program singleCase = (Program) caselist.peek(i);
+        for (int i = 0; i < testCases.size(); i++) {
+            Program singleCase = (Program) testCases.peek(i);
 
             if (singleCase.size() < 2)
                 throw new Exception("Not enough elements for fitness case \""

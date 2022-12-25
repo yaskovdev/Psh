@@ -1219,7 +1219,7 @@ class CodeDoRange extends ObjectStackInstruction {
                 start = (start < stop) ? (start + 1) : (start - 1);
 
                 try {
-                    Program recursiveCallProgram = new Program(inI);
+                    Program recursiveCallProgram = new Program();
                     recursiveCallProgram.push(Integer.valueOf(start));
                     recursiveCallProgram.push(Integer.valueOf(stop));
                     recursiveCallProgram.push("code.quote");
@@ -1258,7 +1258,7 @@ class CodeDoTimes extends ObjectStackInstruction {
                 } else {
                     // create a new program with integer.pop in front of
                     // the popped object
-                    Program newProgram = new Program(inI);
+                    Program newProgram = new Program();
                     newProgram.push("integer.pop");
                     newProgram.push(bodyObj);
                     bodyObj = newProgram;
@@ -1267,7 +1267,7 @@ class CodeDoTimes extends ObjectStackInstruction {
                 int stop = istack.pop() - 1;
 
                 try {
-                    Program doRangeMacroProgram = new Program(inI);
+                    Program doRangeMacroProgram = new Program();
                     doRangeMacroProgram.push(Integer.valueOf(0));
                     doRangeMacroProgram.push(Integer.valueOf(stop));
                     doRangeMacroProgram.push("code.quote");
@@ -1302,7 +1302,7 @@ class CodeDoCount extends ObjectStackInstruction {
                 Object bodyObj = _stack.pop();
 
                 try {
-                    Program doRangeMacroProgram = new Program(inI);
+                    Program doRangeMacroProgram = new Program();
                     doRangeMacroProgram.push(Integer.valueOf(0));
                     doRangeMacroProgram.push(Integer.valueOf(stop));
                     doRangeMacroProgram.push("code.quote");
@@ -1397,7 +1397,7 @@ class ExecDoRange extends ObjectStackInstruction {
                 // trh//Made changes to correct errors with code.do*range
 
                 try {
-                    Program recursiveCallProgram = new Program(inI);
+                    Program recursiveCallProgram = new Program();
                     recursiveCallProgram.push(Integer.valueOf(start));
                     recursiveCallProgram.push(Integer.valueOf(stop));
                     recursiveCallProgram.push("exec.do*range");
@@ -1435,7 +1435,7 @@ class ExecDoTimes extends ObjectStackInstruction {
                 } else {
                     // create a new program with integer.pop in front of
                     // the popped object
-                    Program newProgram = new Program(inI);
+                    Program newProgram = new Program();
                     newProgram.push("integer.pop");
                     newProgram.push(bodyObj);
                     bodyObj = newProgram;
@@ -1444,7 +1444,7 @@ class ExecDoTimes extends ObjectStackInstruction {
                 int stop = istack.pop() - 1;
 
                 try {
-                    Program doRangeMacroProgram = new Program(inI);
+                    Program doRangeMacroProgram = new Program();
                     doRangeMacroProgram.push(Integer.valueOf(0));
                     doRangeMacroProgram.push(Integer.valueOf(stop));
                     doRangeMacroProgram.push("exec.do*range");
@@ -1478,7 +1478,7 @@ class ExecDoCount extends ObjectStackInstruction {
                 Object bodyObj = _stack.pop();
 
                 try {
-                    Program doRangeMacroProgram = new Program(inI);
+                    Program doRangeMacroProgram = new Program();
                     doRangeMacroProgram.push(Integer.valueOf(0));
                     doRangeMacroProgram.push(Integer.valueOf(stop));
                     doRangeMacroProgram.push("exec.do*range");
@@ -1529,7 +1529,7 @@ class ExecS extends ObjectStackInstruction {
             Object a = _stack.pop();
             Object b = _stack.pop();
             Object c = _stack.pop();
-            Program listBC = new Program(inI);
+            Program listBC = new Program();
 
             listBC.push(b);
             listBC.push(c);
@@ -1562,7 +1562,7 @@ class ExecY extends ObjectStackInstruction {
         // Removes the second item on the stack
         if (_stack.size() > 0) {
             Object a = _stack.pop();
-            Program listExecYA = new Program(inI);
+            Program listExecYA = new Program();
 
             listExecYA.push("exec.y");
             listExecYA.push(a);

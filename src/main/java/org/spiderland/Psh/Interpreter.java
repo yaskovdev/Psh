@@ -711,7 +711,7 @@ public class Interpreter implements Serializable {
      */
 
     public Program RandomCode(int inSize) {
-        Program p = new Program(this);
+        Program p = new Program();
 
         List<Integer> distribution = RandomCodeDistribution(inSize - 1,
                 inSize - 1);

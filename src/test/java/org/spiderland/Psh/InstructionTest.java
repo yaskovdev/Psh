@@ -17,7 +17,7 @@ public class InstructionTest {
     @BeforeEach
     public void setUp() throws Exception {
         interpreter = new Interpreter();
-        Program instructionList = new Program(interpreter, "( )");
+        Program instructionList = new Program("( )");
         interpreter.SetInstructions(instructionList);
         istack = new IntStack();
         fstack = new FloatStack();
@@ -26,7 +26,7 @@ public class InstructionTest {
 
     @Test
     public void testNumberName() throws Exception {
-        Program p = new Program(interpreter, "( 1 false 1.0 0 0.0 x true )");
+        Program p = new Program("( 1 false 1.0 0 0.0 x true )");
         interpreter.Execute(p);
         assertEquals(2, interpreter.intStack().size());
         assertEquals(2, interpreter.floatStack().size());
@@ -44,7 +44,7 @@ public class InstructionTest {
 
     @Test
     public void testPop() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.pop integer.pop float.pop )");
         interpreter.Execute(p);
 
@@ -62,7 +62,7 @@ public class InstructionTest {
 
     @Test
     public void testDup() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.dup integer.dup float.dup )");
         interpreter.Execute(p);
 
@@ -86,7 +86,7 @@ public class InstructionTest {
 
     @Test
     public void testSwap() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.swap integer.swap float.swap )");
         interpreter.Execute(p);
 
@@ -107,7 +107,7 @@ public class InstructionTest {
 
     @Test
     public void testRot() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 6.0 true false true " +
+        Program p = new Program("( 1 2 3 4.0 5.0 6.0 true false true " +
                 "boolean.rot integer.rot float.rot )");
         interpreter.Execute(p);
 
@@ -130,7 +130,7 @@ public class InstructionTest {
 
     @Test
     public void testFlush() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.flush integer.flush float.flush )");
         interpreter.Execute(p);
 
@@ -141,7 +141,7 @@ public class InstructionTest {
 
     @Test
     public void testStackDepth() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.stackdepth integer.stackdepth float.stackdepth )");
         interpreter.Execute(p);
 
@@ -157,7 +157,7 @@ public class InstructionTest {
 
     @Test
     public void testAdd() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.+ float.+ )");
         interpreter.Execute(p);
 
@@ -176,7 +176,7 @@ public class InstructionTest {
 
     @Test
     public void testSub() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.- float.- )");
         interpreter.Execute(p);
 
@@ -195,7 +195,7 @@ public class InstructionTest {
 
     @Test
     public void testMul() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.* float.* )");
         interpreter.Execute(p);
 
@@ -214,7 +214,7 @@ public class InstructionTest {
 
     @Test
     public void testDiv() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 3 4.0 5.0 true false " +
+        Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer./ float./ )");
         interpreter.Execute(p);
 
@@ -233,7 +233,7 @@ public class InstructionTest {
 
     @Test
     public void testMod() throws Exception {
-        Program p = new Program(interpreter, "( 1 5 3 7.0 5.0 true false " +
+        Program p = new Program("( 1 5 3 7.0 5.0 true false " +
                 "integer.% float.% )");
         interpreter.Execute(p);
 
@@ -252,7 +252,7 @@ public class InstructionTest {
 
     @Test
     public void testEq() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 3 7.0 5.0 true false " +
+        Program p = new Program("( 1 3 3 7.0 5.0 true false " +
                 "integer.= float.= true false boolean.= false false boolean.=)");
         interpreter.Execute(p);
 
@@ -272,7 +272,7 @@ public class InstructionTest {
 
     @Test
     public void testLt() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 3 5.0 6.0 true false " +
+        Program p = new Program("( 1 3 3 5.0 6.0 true false " +
                 "integer.< float.< )");
         interpreter.Execute(p);
 
@@ -290,7 +290,7 @@ public class InstructionTest {
 
     @Test
     public void testGt() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 3 5.0 6.0 true false " +
+        Program p = new Program("( 1 3 3 5.0 6.0 true false " +
                 "integer.> float.> )");
         interpreter.Execute(p);
 
@@ -308,7 +308,7 @@ public class InstructionTest {
 
     @Test
     public void testBoolOps() throws Exception {
-        Program p = new Program(interpreter, "( true false boolean.or " +
+        Program p = new Program("( true false boolean.or " +
                 "true false boolean.and true false boolean.xor true boolean.not )");
         interpreter.Execute(p);
 
@@ -324,7 +324,7 @@ public class InstructionTest {
 
     @Test
     public void testInputIndex() throws Exception {
-        Program p = new Program(interpreter, "( 1 input.index 1 input.index 0 input.index " +
+        Program p = new Program("( 1 input.index 1 input.index 0 input.index " +
                 "0 input.index 2 input.index 2 input.index 1000 input.index -1 input.index)");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
@@ -356,7 +356,7 @@ public class InstructionTest {
 
     @Test
     public void testInputStackDepth() throws Exception {
-        Program p = new Program(interpreter, "( input.stackdepth )");
+        Program p = new Program("( input.stackdepth )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
         interpreter.inputStack().push(2.0f);
@@ -373,7 +373,7 @@ public class InstructionTest {
 
     @Test
     public void testInputInAll() throws Exception {
-        Program p = new Program(interpreter, "( input.inall )");
+        Program p = new Program("( input.inall )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
         interpreter.inputStack().push(2.0f);
@@ -395,7 +395,7 @@ public class InstructionTest {
 
     @Test
     public void testInputInAllRev() throws Exception {
-        Program p = new Program(interpreter, "( input.inallrev )");
+        Program p = new Program("( input.inallrev )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
         interpreter.inputStack().push(2.0f);
@@ -418,7 +418,7 @@ public class InstructionTest {
     @Test
     @Disabled
     public void testCodeQuote() throws Exception {
-        Program p = new Program(interpreter, "( 1 code.quote integer.pop code.quote code.quote)");
+        Program p = new Program("( 1 code.quote integer.pop code.quote code.quote)");
         interpreter.Execute(p);
 
         istack.push(1);
@@ -432,7 +432,7 @@ public class InstructionTest {
 
     @Test
     public void testCodeEquals() throws Exception {
-        Program p = new Program(interpreter, "( 1 " +
+        Program p = new Program("( 1 " +
                 "code.quote integer.pop code.quote integer.pop code.= " +
                 "code.quote integer.pop code.quote integer.+ code.= )");
         interpreter.Execute(p);
@@ -449,7 +449,7 @@ public class InstructionTest {
 
     @Test
     public void testExecEquals() throws Exception {
-        Program p = new Program(interpreter, "( 1 " +
+        Program p = new Program("( 1 " +
                 "exec.= code.quote integer.pop " +
                 "exec.= integer.pop integer.pop )");
         interpreter.Execute(p);
@@ -466,7 +466,7 @@ public class InstructionTest {
 
     @Test
     public void testCodeIf() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 1.0 2.0 " +
+        Program p = new Program("( 1 2 1.0 2.0 " +
                 "code.quote integer.pop code.quote float.pop true code.if " +
                 "code.quote integer.pop code.quote float.pop false code.if )");
         interpreter.Execute(p);
@@ -482,7 +482,7 @@ public class InstructionTest {
 
     @Test
     public void testExecIf() throws Exception {
-        Program p = new Program(interpreter, "( 1 2 1.0 2.0 " +
+        Program p = new Program("( 1 2 1.0 2.0 " +
                 "true exec.if integer.pop float.pop " +
                 "false exec.if integer.pop float.pop )");
         interpreter.Execute(p);
@@ -498,7 +498,7 @@ public class InstructionTest {
 
     @Test
     public void testExecDoRange() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "exec.do*range 2.0 )");
         interpreter.Execute(p);
 
@@ -517,7 +517,7 @@ public class InstructionTest {
 
     @Test
     public void testExecDoTimes() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "exec.do*times 2.0 )");
         interpreter.Execute(p);
 
@@ -534,7 +534,7 @@ public class InstructionTest {
 
     @Test
     public void testExecDoCount() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "exec.do*count 2.0 )");
         interpreter.Execute(p);
 
@@ -554,7 +554,7 @@ public class InstructionTest {
 
     @Test
     public void testCodeDoRange() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*range )");
         interpreter.Execute(p);
 
@@ -573,7 +573,7 @@ public class InstructionTest {
 
     @Test
     public void testCodeDoTimes() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*times )");
         interpreter.Execute(p);
 
@@ -590,7 +590,7 @@ public class InstructionTest {
 
     @Test
     public void testCodeDoCount() throws Exception {
-        Program p = new Program(interpreter, "( 1 3 " +
+        Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*count )");
         interpreter.Execute(p);
 

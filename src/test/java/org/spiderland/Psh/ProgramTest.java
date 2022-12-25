@@ -12,11 +12,9 @@ public class ProgramTest {
     public void testEquals() throws Exception {
         // Equality testing of nested programs
 
-        Program p = new Program(), q = new Program(), r = new Program();
-
-        p.Parse("( 1.0 ( TEST 2 ( 3 ) ) )");
-        q.Parse("( 1.0 ( TEST 2 ( 3 ) ) )");
-        r.Parse("( 2.0 ( TEST 2 ( 3 ) ) )");
+        Program p = new Program("( 1.0 ( TEST 2 ( 3 ) ) )");
+        Program q = new Program("( 1.0 ( TEST 2 ( 3 ) ) )");
+        Program r = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
 
         assertNotEquals(p, r);
         assertEquals(p, q);
@@ -25,14 +23,12 @@ public class ProgramTest {
     @Test
     @SuppressWarnings("deprecation")
     public void testParse() throws Exception {
-        // Parse a program, and then re-parse its string representation.
+        // Parse a program, and then reparse its string representation.
         // They should be equal.
 
-        Program p = new Program(), q = new Program();
         String program = "(1(2) (3) TEST TEST (2 TEST))";
-
-        p.Parse(program);
-        q.Parse(p.toString());
+        Program p = new Program(program);
+        Program q = new Program(p.toString());
 
         assertEquals(p, q);
     }
@@ -40,8 +36,7 @@ public class ProgramTest {
     @Test
     @SuppressWarnings("deprecation")
     public void testSubtreeFetch() throws Exception {
-        Program p = new Program();
-        p.Parse("( 2.0 ( TEST 2 ( 3 ) ) )");
+        Program p = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
 
         assertTrue(true);
     }
@@ -49,18 +44,13 @@ public class ProgramTest {
     @Test
     @SuppressWarnings("deprecation")
     public void testSubtreeReplace() throws Exception {
-        Program p = new Program();
-        Program q = new Program();
-
-        p.Parse("( 2.0 ( TEST 2 ( 3 ) ) )");
+        Program p = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
 
         p.ReplaceSubtree(0, 3);
         p.ReplaceSubtree(2, "TEST2");
         p.ReplaceSubtree(3, new Program("( X )"));
 
-        System.out.println(p);
-
-        q.Parse("( 3 ( TEST2 ( X ) ( 3 ) ) )");
+        Program q = new Program("( 3 ( TEST2 ( X ) ( 3 ) ) )");
 
         assertEquals(q, p);
     }

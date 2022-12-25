@@ -9,31 +9,10 @@ import java.io.Serializable;
 public class Program extends ObjectStack implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    Interpreter _interpreter = null;
-
-    public Interpreter getInterpreter() {
-        return _interpreter;
-    }
-
-    public void setInterpreter(Interpreter _interpreter) {
-        this._interpreter = _interpreter;
-    }
-
     /**
      * Constructs an empty Program.
-     *
-     * @deprecated
      */
-
     public Program() {
-    }
-
-    /**
-     * Constructs an empty Program with an associated Interpreter.
-     */
-
-    public Program(Interpreter inInterpreter) {
-        _interpreter = inInterpreter;
     }
 
     /**
@@ -41,10 +20,8 @@ public class Program extends ObjectStack implements Serializable {
      *
      * @param inOther The Push program to copy.
      */
-
     public Program(Program inOther) {
         inOther.CopyTo(this);
-        _interpreter = inOther._interpreter;
     }
 
     /**
@@ -52,19 +29,7 @@ public class Program extends ObjectStack implements Serializable {
      *
      * @param inString The Push program string to parse.
      */
-
     public Program(String inString) throws Exception {
-        Parse(inString);
-    }
-
-    /**
-     * Constructs a Push program by parsing a String.
-     *
-     * @param inString The Push program string to parse.
-     */
-
-    public Program(Interpreter _interpreter, String inString) throws Exception {
-        this._interpreter = _interpreter;
         Parse(inString);
     }
 
@@ -72,10 +37,8 @@ public class Program extends ObjectStack implements Serializable {
      * Sets this program to the parsed program string.
      *
      * @param inString The Push program string to parse.
-     * @return The point size of the new program.
      */
-
-    public int Parse(String inString) throws Exception {
+    private void Parse(String inString) throws Exception {
         clear();
 
         inString = inString.replace("(", " ( ");
@@ -84,8 +47,6 @@ public class Program extends ObjectStack implements Serializable {
         String[] tokens = inString.split("\\s+");
 
         Parse(tokens, 0);
-
-        return programsize();
     }
 
     private int Parse(String[] inTokens, int inStart) throws Exception {
@@ -103,7 +64,7 @@ public class Program extends ObjectStack implements Serializable {
                     // a sub-program
 
                     if (!first) {
-                        Program p = new Program(_interpreter);
+                        Program p = new Program();
 
                         n = p.Parse(inTokens, n + 1);
 
@@ -116,19 +77,7 @@ public class Program extends ObjectStack implements Serializable {
                     return n;
 
                 } else if (Character.isLetter(token.charAt(0))) {
-
                     push(token);
-
-                    // This makes printing stacks very ugly. For now, will store
-                    // program instructions as strings, as was done before.
-					/*
-					Instruction i = _interpreter._instructions.get(token);
-					if (i != null)
-						push(i);
-					else
-						push(token);
-					*/
-
                 } else {
                     Object number;
 

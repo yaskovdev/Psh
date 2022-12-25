@@ -154,8 +154,7 @@ abstract public class PushGP extends GA {
                     "interpreter-class must inherit from class Interpreter"));
 
         _interpreter = (Interpreter) iObject;
-        _interpreter.SetInstructions(new Program(_interpreter,
-                GetParam("instruction-set")));
+        _interpreter.SetInstructions(new Program(GetParam("instruction-set")));
         _interpreter.SetRandomParameters(minRandomInt, maxRandomInt,
                 randomIntResolution, minRandomFloat, maxRandomFloat,
                 randomFloatResolution, _maxRandomCodeSize, _maxPointsInProgram);
@@ -419,8 +418,7 @@ abstract public class PushGP extends GA {
 
                     if (trialSize > 0) {
                         int pointIndex = _RNG.nextInt(trialSize);
-                        trial._program.ReplaceSubtree(pointIndex, new Program(
-                                _interpreter));
+                        trial._program.ReplaceSubtree(pointIndex, new Program());
                         trial._program.Flatten(pointIndex);
                         madeSimpler = true;
                     }
