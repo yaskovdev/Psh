@@ -1,40 +1,40 @@
-Psh [![Build Status](https://github.com/yaskovdev/psh/actions/workflows/maven.yml/badge.svg)](https://github.com/yaskovdev/Psh/actions/workflows/maven.yml)
-===
+# Psh [![Build Status](https://github.com/yaskovdev/psh/actions/workflows/maven.yml/badge.svg)](https://github.com/yaskovdev/Psh/actions/workflows/maven.yml)
 
 Psh is a Java implementation of the Push programming language and of PushGP. Push is a stack-based language designed for evolutionary computation, specifically genetic programming. PushGP is a genetic programming system that evolves programs in Push. More information about Push and PushGP can be found [here](http://pushlanguage.org).
 
 This is v1.0 of Psh.
 
-Getting Started with Psh
-========================
+# Getting Started with Psh
 
-Building Psh
-------------
-After getting Psh with get, build the package:
+## Building Psh
 
-    $ make
+Use the next Maven command to build the package:
 
-Using PshGP
-----------
+    $ mvn clean compile assembly:single
+
+The resulting jar file will be in the `target` folder.
+
+## Using PshGP
+
 To run PshGP on a sample problem:
 
-    $ java PshGP gpsamples/intreg1.pushgp
+    $ java -jar psh.jar gpsamples/intreg1.pushgp
 
 This problem uses integer symbolic regression to solve the equation y = 12x^2 + 5. Other sample problems are available, with descriptions, in `gpsamples/`. For example, `intreg2.pushgp` uses integer symbolic regression to solve the factorial function, and `regression1.pushgp` uses float symbolic regression to solve y = 12x^2 + 5.
 
-Using PshInspector
-------------------
+## Using PshInspector
+
 PshInspector allows you to examine every step of a Psh program as it executes. To run PshInspector on a sample psh program:
 
-    $ java PshInspector pushsamples/exampleProgram1.push
+    $ java -jar psh.jar pushsamples/exampleProgram1.push
 
 This push file runs the psh program `(2994 5 integer.+)` for 100 steps after pushing the inputs `44, 22, true, 17.76`. Other sample psh programs are available in `pushsamples/`.
 
-Psh In More Detail
-==================
+## Psh In More Detail
 
-Configuration Files
--------------------
+
+### Configuration Files
+
 PshGP runs are setup using configuration files which have the extension `.pushgp`. These files contain a list of parameters in the form of 
 
     param-name = value
@@ -88,16 +88,16 @@ The following parameters are optional. If not specified, the default values belo
     output-file = out.txt
     push-frame-mode = pushstacks
 
-PshInspector Files
-------------------
+### PshInspector Files
+
 In order to inspect the execution of a program, PshInspector takes a push program file with the extension `.push`. After every step of the program, the stacks of the interpreter are displayed. The input file contains the following, separated by new lines:
 
 - Program: The Psh program to run
 - ExecutionLimit: Maximum execution steps
 - Input(optional): Any inputs to be pushed before execution, separated by spaces. The inputs are pushed in the order in which they are given. Note: Only int, float, and boolean inputs are accepted.
 
-Problem Classes
----------------
+### Problem Classes
+
 PshGP uses problem classes, implemented as Java classes, to determine certain aspects of the run, such as how to compute fitness values. The choice of problem class determines how test case data is interpreted, and which stacks are used for test case input and output. In addition, certain inherited methods in both GA.java and PushGP.java may be overwritten for further customization.
 
 Psh comes with a few standard problem classes. The following problem classes are currently implemented, and are in the ProbClass subpackage:
@@ -113,11 +113,10 @@ In order to perform runs for other types of problems, you can implement your own
 - The InitInterpreter method must be implemented by all problem classes though many times this method is simply left empty.
 - There are other optional methods that can be overwritten or extended in the GA.java and PushGP.java classes. For example, the CartCentering.java problem class implements the Success method in order to override the conditions that GA uses to identify a successful run.
 
-Changelog
-=========
+# Changelog
 
-Major Changes since v1.0:
--------------------------
+## Major Changes since v1.0:
+
 - The parameters that affect Ephemeral Random Constant creation, such as the minimum random integer, are now available as optional configuration parameters. See Configuration Files above for more details.
 - Implement new instructions: integer.pow, integer.min, integer.max, float.exp, float.pow. Also, fixed a bug in float.max.
 - Moved problem classes and test cases to their own packages to reduce clutter.
@@ -128,8 +127,8 @@ Major Changes since v1.0:
 - Added many instructions that were missing from the Push 3.0 specification.
 - Added node-selection-mode as an optional parameter, as well as node size tournaments for node selection.
 
-Major Changes since v0.3:
--------------------------
+## Major Changes since v0.3:
+
 - Added new integer and float instructions: abs, neg, sin, cos, tan, max, min.
 - Added new boolean instructions: and, or, xor, not.
 - Added problem class for the cart centering problem (CartCentering.java), an optimal control problem.
@@ -137,8 +136,8 @@ Major Changes since v0.3:
 - Change Psh over to Apache 2.0 license.
 - The number of fitness evaluations is now displayed during reports.
 
-Major Changes since v0.2:
--------------------------
+## Major Changes since v0.2:
+
 - All instructions have been converted into lower case to match Schush and other implementations.
 - An input stack was added, which holds all inputs. It has the following instructions:
     1. input.index - Pops n off of the integer stack and pushes input[n] onto corresponding stack. If integer stack is empty, acts as a no-op.
@@ -149,13 +148,13 @@ Major Changes since v0.2:
 - In config files, you can now include all instructions for a certain type using 'registered.type' (e.g. 'registered.integer' or 'registered.stack').
 - Implemented auto-simplification, which is used during generation and final reports. Auto-simplification may also be used as a genetic operator along with mutation and crossover.
 
-Major Changes since v0.1:
--------------------------
+## Major Changes since v0.1:
+
 - Added problem classes for integer symbolic regression (IntSymbolicRegression.java) and integer symbolic regression without an input instruction (IntSymbolicRegressionNoInput.java).
 - Fixed 'code' and 'exec' stack iteration functions, which were not executing correctly according to Push 3.0 standards.
 - PshGP now displays the error values for the best program during the generation report.
 - PshInspector was created to inspect interpreter stacks of push programs as they execute. This can be used to catch errors and trace executions. To run, see Using PshInspector section above.
 
-Acknowledgement
-===============
+# Acknowledgement
+
 This material is based upon work supported by the National Science Foundation under Grant No. 1017817. Any opinions, findings, and conclusions or recommendations expressed in this publication are those of the authors and do not necessarily reflect the views of the National Science Foundation.
