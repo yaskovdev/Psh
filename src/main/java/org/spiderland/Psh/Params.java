@@ -2,9 +2,9 @@ package org.spiderland.Psh;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.HashMap;
 
 /**
@@ -15,7 +15,7 @@ public class Params {
     public static HashMap<String, String> ReadFromFile(File inFile)
             throws Exception {
         HashMap<String, String> map = new HashMap<String, String>();
-        return Read(ReadFileString(inFile), map, inFile);
+        return Read(Files.readString(inFile.toPath(), StandardCharsets.UTF_8), map, inFile);
     }
 
     public static HashMap<String, String> Read(String inParams)
@@ -57,7 +57,7 @@ public class Params {
 
                     try {
                         File f = new File(parent, includefile);
-                        Read(ReadFileString(f), inMap, f);
+                        Read(Files.readString(f.toPath(), StandardCharsets.UTF_8), inMap, f);
                     } catch (IncludeException e) {
                         // A previous include exception should bubble up to the
                         // top
@@ -100,36 +100,5 @@ public class Params {
         }
 
         return inMap;
-    }
-
-    /**
-     * Utility function to read a file in its entirety to a string.
-     *
-     * @param inPath The file path to be read.
-     * @return The contents of a file represented as a string.
-     */
-
-    static String ReadFileString(String inPath) throws Exception {
-        return ReadFileString(new File(inPath));
-    }
-
-    /**
-     * Utility function to read a file in its entirety to a string.
-     *
-     * @param inFile The file to be read.
-     * @return The contents of a file represented as a string.
-     */
-
-    public static String ReadFileString(File inFile) throws Exception {
-        InputStream s = new FileInputStream(inFile);
-        byte[] tmp = new byte[1024];
-        int read;
-        String result = "";
-
-        while ((read = s.read(tmp)) > 0) {
-            result += new String(tmp, 0, read);
-        }
-
-        return result;
     }
 }

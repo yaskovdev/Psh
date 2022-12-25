@@ -1,6 +1,8 @@
 package org.spiderland.Psh;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 /**
  * A utility class to help read PshInspector input files.
@@ -45,7 +47,7 @@ public class InspectorInput {
         _interpreter = new Interpreter();
 
         // Read fileString
-        String fileString = Params.ReadFileString(inFile);
+        String fileString = Files.readString(inFile.toPath(), StandardCharsets.UTF_8);
 
         // Get programString
         int indexNewline = fileString.indexOf("\n");

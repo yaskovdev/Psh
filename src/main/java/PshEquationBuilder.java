@@ -1,6 +1,8 @@
 import org.spiderland.Psh.Params;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +19,7 @@ public class PshEquationBuilder {
         File inFile = new File(args[0]);
 
         // Read fileString
-        String fileString = Params.ReadFileString(inFile);
+        String fileString = Files.readString(inFile.toPath(), StandardCharsets.UTF_8);
 
         // Get programString
         String programString;
