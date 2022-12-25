@@ -269,8 +269,7 @@ abstract public class PushGP extends GA {
         EvaluateIndividual(inIndividual, false);
     }
 
-    protected void EvaluateIndividual(GAIndividual inIndividual,
-            boolean duringSimplify) {
+    protected void EvaluateIndividual(GAIndividual inIndividual, boolean duringSimplify) {
         ArrayList<Float> errors = new ArrayList<>();
 
         if (!duringSimplify)
@@ -279,9 +278,8 @@ abstract public class PushGP extends GA {
 
         long t = System.currentTimeMillis();
 
-        for (int n = 0; n < _testCases.size(); n++) {
-            GATestCase test = _testCases.get(n);
-            float e = EvaluateTestCase(inIndividual, test._input, test._output);
+        for (final GATestCase testCase : _testCases) {
+            float e = EvaluateTestCase(inIndividual, testCase.input(), testCase.output());
             errors.add(e);
         }
         t = System.currentTimeMillis() - t;
@@ -308,7 +306,7 @@ abstract public class PushGP extends GA {
             for (int i = 0; i < _testCases.size(); i++) {
                 if (i != 0)
                     report += " ";
-                report += "(" + _testCases.get(i)._input + " ";
+                report += "(" + _testCases.get(i).input() + " ";
                 report += Math.abs(_bestErrors.get(i)) + ")";
             }
             report += ")\n";
@@ -364,7 +362,7 @@ abstract public class PushGP extends GA {
             for (int i = 0; i < _testCases.size(); i++) {
                 if (i != 0)
                     report += " ";
-                report += "(" + _testCases.get(i)._input + " ";
+                report += "(" + _testCases.get(i).input() + " ";
                 report += Math.abs(_bestErrors.get(i)) + ")";
             }
             report += ")\n";
@@ -568,7 +566,7 @@ abstract public class PushGP extends GA {
 
         System.out.println("Executing program: " + p);
 
-        EvaluateTestCase(i, test._input, test._output);
+        EvaluateTestCase(i, test.input(), test.output());
 
         System.out.println(_interpreter);
     }

@@ -105,7 +105,7 @@ public class FloatSymbolicRegression extends PushGP {
     public float GetIndividualTestCaseResult(GAIndividual inIndividual, GATestCase inTestCase) {
         _interpreter.clearStacks();
 
-        float currentInput = (Float) inTestCase._input;
+        float currentInput = (Float) inTestCase.input();
 
         FloatStack stack = _interpreter.floatStack();
 

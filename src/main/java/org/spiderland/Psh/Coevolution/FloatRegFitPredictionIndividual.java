@@ -50,8 +50,8 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
      * @param index
      * @param sample
      */
-    public void SetSampleIndex(int inIndex, int inSample) {
-        _sampleIndices[inIndex] = inSample;
+    public void SetSampleIndex(int index, int sample) {
+        _sampleIndices[index] = sample;
     }
 
     public void SetSampleIndicesAndSolutionGA(PushGP inSolutionGA, int[] inSamples) {
@@ -66,8 +66,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 
         for (int n = 0; n < _sampleSize; n++) {
             GATestCase test = _solutionGA._testCases.get(_sampleIndices[n]);
-            float e = _solutionGA.EvaluateTestCase(pgpIndividual, test._input,
-                    test._output);
+            float e = _solutionGA.EvaluateTestCase(pgpIndividual, test.input(), test.output());
             errors.add(e);
         }
 
@@ -91,12 +90,6 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
     public boolean equalPredictors(GAIndividual inB) {
         int[] a = copyArray(_sampleIndices);
         int[] b = copyArray(((FloatRegFitPredictionIndividual) inB)._sampleIndices);
-
-		/*
-		a = Arrays.copyOf(_sampleIndices, _sampleSize);
-		b = Arrays.copyOf(((FloatRegFitPredictionIndividual)inB)._sampleIndices, _sampleSize);
-		*/
-
         Arrays.sort(a);
         Arrays.sort(b);
         return Arrays.equals(a, b);
