@@ -93,11 +93,7 @@ public class Main {
      * information about parameter files can be found in the README.
      */
     private static void runGeneticProgramming(final String[] args) throws Exception {
-        GA ga = null;
-        if (args[0].endsWith(".gz"))
-            ga = GA.gaWithCheckpoint(args[0]);
-        else
-            ga = GA.gaWithParameters(Params.readFromFile(new File(args[0])));
+        GA ga = args[0].endsWith(".gz") ? GA.gaWithCheckpoint(args[0]) : GA.gaWithParameters(Params.readFromFile(new File(args[0])));
 
         if (args.length == 3) {
             // Execute a test program
