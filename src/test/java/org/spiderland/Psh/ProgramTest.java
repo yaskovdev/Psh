@@ -46,9 +46,9 @@ public class ProgramTest {
     public void testSubtreeReplace() throws Exception {
         Program p = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
 
-        p.ReplaceSubtree(0, 3);
-        p.ReplaceSubtree(2, "TEST2");
-        p.ReplaceSubtree(3, new Program("( X )"));
+        p.replaceSubtree(0, 3);
+        p.replaceSubtree(2, "TEST2");
+        p.replaceSubtree(3, new Program("( X )"));
 
         Program q = new Program("( 3 ( TEST2 ( X ) ( 3 ) ) )");
 

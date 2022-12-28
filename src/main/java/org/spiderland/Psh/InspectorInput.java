@@ -84,25 +84,25 @@ public class InspectorInput {
         // Get the available instructions for random code generation
         indexNewline = fileString.indexOf("\n");
         if (!fileString.trim().equals("")) {
-            _interpreter.SetInstructions(new Program(fileString.trim()));
+            _interpreter.setInstructions(new Program(fileString.trim()));
         }
 
         // Check for input.inN instructions
         checkForInputIn(programString);
 
         // Add random integer and float parameters
-        _interpreter._minRandomInt = -10;
-        _interpreter._maxRandomInt = 10;
-        _interpreter._randomIntResolution = 1;
-        _interpreter._minRandomFloat = -10.0f;
-        _interpreter._maxRandomFloat = 10.0f;
-        _interpreter._randomFloatResolution = 0.01f;
+        _interpreter.minRandomInt = -10;
+        _interpreter.maxRandomInt = 10;
+        _interpreter.randomIntResolution = 1;
+        _interpreter.minRandomFloat = -10.0f;
+        _interpreter.maxRandomFloat = 10.0f;
+        _interpreter.randomFloatResolution = 0.01f;
 
-        _interpreter._maxRandomCodeSize = 50;
+        _interpreter.maxRandomCodeSize = 50;
 
         // Load the program
         _program = new Program(programString);
-        _interpreter.LoadProgram(_program); // Initializes program
+        _interpreter.loadProgram(_program); // Initializes program
     }
 
     /**
@@ -191,7 +191,7 @@ public class InspectorInput {
             // Check for doubles in added
             if (added.indexOf(" " + numstr + " ") == -1) {
                 added = added + " " + numstr + " ";
-                _interpreter.AddInstruction("input.in" + numstr, new InputInN(
+                _interpreter.addInstruction("input.in" + numstr, new InputInN(
                         Integer.parseInt(numstr)));
             }
 

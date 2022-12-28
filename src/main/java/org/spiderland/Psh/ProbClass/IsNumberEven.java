@@ -15,23 +15,23 @@ public class IsNumberEven extends PushGP {
     public static final int MAX_ERROR = 1000;
 
     @Override
-    protected void InitInterpreter(final Interpreter interpreter) {
+    protected void initInterpreter(final Interpreter interpreter) {
     }
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
-        _testCases = range(0, 100)
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
+        testCases = range(0, 100)
                 .mapToObj(it -> new GATestCase(it, it % 2 == 0))
                 .toList();
     }
 
     @Override
-    public float EvaluateTestCase(final GAIndividual individual, final Object input, final Object output) {
-        _interpreter.clearStacks();
-        final IntStack intStack = _interpreter.intStack();
+    public float evaluateTestCase(final GAIndividual individual, final Object input, final Object output) {
+        interpreter.clearStacks();
+        final IntStack intStack = interpreter.intStack();
         intStack.push((Integer) input);
-        _interpreter.Execute(((PushGPIndividual) individual)._program, _executionLimit);
-        final BooleanStack booleanStack = _interpreter.boolStack();
+        interpreter.execute(((PushGPIndividual) individual)._program, executionLimit);
+        final BooleanStack booleanStack = interpreter.boolStack();
         if (booleanStack.size() == 0) {
             return MAX_ERROR;
         } else {

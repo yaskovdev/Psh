@@ -25,10 +25,10 @@ import org.spiderland.Psh.PushGPIndividual;
 public class CartCentering extends PushGP {
     private static final long serialVersionUID = 1L;
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
 
-        String cases = GetParam("test-cases");
+        String cases = getParam("test-cases");
 
         Program testCases = new Program(cases);
 
@@ -42,19 +42,19 @@ public class CartCentering extends PushGP {
             Float x = Float.valueOf(singleCase.peek(0).toString());
             Float v = Float.valueOf(singleCase.peek(1).toString());
 
-            Print(";; Fitness case #" + i + " position: " + x + " velocity: " + v
+            print(";; Fitness case #" + i + " position: " + x + " velocity: " + v
                     + "\n");
 
             ObjectPair xv = new ObjectPair(x, v);
 
-            _testCases.add(new GATestCase(xv, null));
+            this.testCases.add(new GATestCase(xv, null));
         }
     }
 
-    protected void InitInterpreter(Interpreter inInterpreter) {
+    protected void initInterpreter(Interpreter inInterpreter) {
     }
 
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
 
         int timeSteps = 1000;
@@ -68,11 +68,11 @@ public class CartCentering extends PushGP {
         float velocity = (Float) xv._second;
 
         for (int step = 1; step <= timeSteps; step++) {
-            _interpreter.clearStacks();
+            interpreter.clearStacks();
 
-            FloatStack fStack = _interpreter.floatStack();
-            BooleanStack bStack = _interpreter.boolStack();
-            ObjectStack iStack = _interpreter.inputStack();
+            FloatStack fStack = interpreter.floatStack();
+            BooleanStack bStack = interpreter.boolStack();
+            ObjectStack iStack = interpreter.inputStack();
 
             // Position will be on the top of the stack, and velocity will be
             // second.
@@ -84,8 +84,8 @@ public class CartCentering extends PushGP {
             iStack.push(position);
             iStack.push(velocity);
 
-            _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-                    _executionLimit);
+            interpreter.execute(((PushGPIndividual) inIndividual)._program,
+                    executionLimit);
 
             // If there is no boolean on the stack, the program has failed to
             // return a reasonable output. So, return a penalty fitness of
@@ -126,8 +126,8 @@ public class CartCentering extends PushGP {
         return maxTime;
     }
 
-    protected boolean Success() {
-        return _generationCount >= _maxGenerations;
+    protected boolean success() {
+        return generationCount >= maxGenerations;
     }
 
 }

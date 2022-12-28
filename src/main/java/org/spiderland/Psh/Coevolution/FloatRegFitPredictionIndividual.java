@@ -65,8 +65,8 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
         ArrayList<Float> errors = new ArrayList<>();
 
         for (int n = 0; n < _sampleSize; n++) {
-            GATestCase test = _solutionGA._testCases.get(_sampleIndices[n]);
-            float e = _solutionGA.EvaluateTestCase(pgpIndividual, test.input(), test.output());
+            GATestCase test = _solutionGA.testCases.get(_sampleIndices[n]);
+            float e = _solutionGA.evaluateTestCase(pgpIndividual, test.input(), test.output());
             errors.add(e);
         }
 

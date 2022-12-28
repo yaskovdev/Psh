@@ -19,11 +19,11 @@ public class FloatSymbolicRegression extends PushGP {
 
     private final float _noResultPenalty = 10000;
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
 
-        String cases = GetParam("test-cases", true);
-        String casesClass = GetParam("test-case-class", true);
+        String cases = getParam("test-cases", true);
+        String casesClass = getParam("test-case-class", true);
         if (cases == null && casesClass == null) {
             throw new Exception("No acceptable test-case parameter.");
         }
@@ -45,10 +45,10 @@ public class FloatSymbolicRegression extends PushGP {
                 Float in = (Float) testCase._first;
                 Float out = (Float) testCase._second;
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: "
+                print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                testCases.add(new GATestCase(in, out));
             }
         } else {
             // Get test cases from test-cases.
@@ -65,32 +65,32 @@ public class FloatSymbolicRegression extends PushGP {
                 Float in = Float.valueOf(p.peek(0).toString());
                 Float out = Float.valueOf(p.peek(1).toString());
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
+                print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                this.testCases.add(new GATestCase(in, out));
             }
         }
 
     }
 
-    protected void InitInterpreter(Interpreter inInterpreter) {
+    protected void initInterpreter(Interpreter inInterpreter) {
     }
 
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
-        _interpreter.clearStacks();
+        interpreter.clearStacks();
 
         float currentInput = (Float) inInput;
 
-        FloatStack stack = _interpreter.floatStack();
+        FloatStack stack = interpreter.floatStack();
 
         stack.push(currentInput);
 
         // Must be included in order to use the input stack.
-        _interpreter.inputStack().push(currentInput);
+        interpreter.inputStack().push(currentInput);
 
-        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-                _executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+                executionLimit);
 
         float result = stack.top();
 
@@ -103,19 +103,19 @@ public class FloatSymbolicRegression extends PushGP {
     }
 
     public float GetIndividualTestCaseResult(GAIndividual inIndividual, GATestCase inTestCase) {
-        _interpreter.clearStacks();
+        interpreter.clearStacks();
 
         float currentInput = (Float) inTestCase.input();
 
-        FloatStack stack = _interpreter.floatStack();
+        FloatStack stack = interpreter.floatStack();
 
         stack.push(currentInput);
 
         // Must be included in order to use the input stack.
-        _interpreter.inputStack().push(currentInput);
+        interpreter.inputStack().push(currentInput);
 
-        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-                _executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+                executionLimit);
 
         float result = stack.top();
 
@@ -127,8 +127,8 @@ public class FloatSymbolicRegression extends PushGP {
         return result;
     }
 
-    protected boolean Success() {
-        return _bestMeanFitness <= 0.1;
+    protected boolean success() {
+        return bestMeanFitness <= 0.1;
     }
 
 }

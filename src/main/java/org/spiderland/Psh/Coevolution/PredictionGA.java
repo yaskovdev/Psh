@@ -47,20 +47,20 @@ public abstract class PredictionGA extends GA {
         // Must set the solution GA before InitFromParameters, since the latter
         // uses _solutionGA while creating the predictor population.
         ga.SetSolutionGA(inSolutionGA);
-        ga.SetParams(inParams);
-        ga.InitFromParameters();
+        ga.setParams(inParams);
+        ga.initFromParameters();
 
         return ga;
     }
 
     @Override
-    protected void InitFromParameters() throws Exception {
-        _generationsBetweenTrainers = (int) GetFloatParam("generations-between-trainers");
-        _trainerPopulationSize = (int) GetFloatParam("trainer-population-size");
+    protected void initFromParameters() throws Exception {
+        _generationsBetweenTrainers = (int) getFloatParam("generations-between-trainers");
+        _trainerPopulationSize = (int) getFloatParam("trainer-population-size");
 
         InitTrainerPopulation();
 
-        super.InitFromParameters();
+        super.initFromParameters();
     }
 
     /**
@@ -69,12 +69,12 @@ public abstract class PredictionGA extends GA {
      * @throws Exception
      */
     public void RunGeneration() throws Exception {
-        Run(1);
+        run(1);
     }
 
     @Override
-    protected void BeginGeneration() {
-        if (_generationCount % _generationsBetweenTrainers == _generationsBetweenTrainers - 1) {
+    protected void beginGeneration() {
+        if (generationCount % _generationsBetweenTrainers == _generationsBetweenTrainers - 1) {
             // Time to add a new trainer
             PushGPIndividual newTrainer = (PushGPIndividual) ChooseNewTrainer().clone();
             EvaluateSolutionIndividual(newTrainer);
@@ -88,12 +88,12 @@ public abstract class PredictionGA extends GA {
     }
 
     @Override
-    public boolean Terminate() {
+    public boolean terminate() {
         return false;
     }
 
     @Override
-    protected boolean Success() {
+    protected boolean success() {
         return false;
     }
 
@@ -107,11 +107,11 @@ public abstract class PredictionGA extends GA {
 
         for (int i = 0; i < _solutionGA.GetPopulationSize(); i++) {
             PushGPIndividual individual = (PushGPIndividual) _solutionGA
-                    .GetIndividualFromPopulation(i);
+                    .getIndividualFromPopulation(i);
 
             ArrayList<Float> predictions = new ArrayList<>();
-            for (int j = 0; j < _populations[_currentPopulation].length; j++) {
-                PredictionGAIndividual predictor = (PredictionGAIndividual) _populations[_currentPopulation][j];
+            for (int j = 0; j < populations[currentPopulation].length; j++) {
+                PredictionGAIndividual predictor = (PredictionGAIndividual) populations[currentPopulation][j];
                 predictions.add(predictor.PredictSolutionFitness(individual));
             }
 
@@ -130,14 +130,14 @@ public abstract class PredictionGA extends GA {
         }
 
         return (PushGPIndividual) _solutionGA
-                .GetIndividualFromPopulation(highestVarianceIndividual);
+                .getIndividualFromPopulation(highestVarianceIndividual);
     }
 
     protected PredictionGAIndividual GetBestPredictor() {
         float bestFitness = Float.MAX_VALUE;
-        GAIndividual bestPredictor = _populations[_currentPopulation][0];
+        GAIndividual bestPredictor = populations[currentPopulation][0];
 
-        for (GAIndividual ind : _populations[_currentPopulation]) {
+        for (GAIndividual ind : populations[currentPopulation]) {
             if (ind.GetFitness() < bestFitness) {
                 bestPredictor = ind;
                 bestFitness = ind.GetFitness();
@@ -154,7 +154,7 @@ public abstract class PredictionGA extends GA {
      * @param inIndividual
      */
     protected void EvaluateSolutionIndividual(PushGPIndividual inIndividual) {
-        _solutionGA.EvaluateIndividual(inIndividual);
+        _solutionGA.evaluateIndividual(inIndividual);
     }
 
     protected void SetSolutionGA(PushGP inGA) {
@@ -172,29 +172,29 @@ public abstract class PredictionGA extends GA {
 
         for (int i = 0; i < _trainerPopulationSize; i++) {
             _trainerPopulation.add((PushGPIndividual) individual.clone());
-            _solutionGA.InitIndividual(_trainerPopulation.get(i));
+            _solutionGA.initIndividual(_trainerPopulation.get(i));
         }
 
         EvaluateTrainerFitnesses();
     }
 
-    protected String Report() {
-        String report = super.Report();
+    protected String report() {
+        String report = super.report();
         report = report.replace('-', '#');
         report = report.replaceFirst("Report for", " Predictor");
 
         report += ";; Best Predictor: "
-                + _populations[_currentPopulation][_bestIndividual] + "\n";
-        report += ";; Best Predictor Fitness: " + _bestMeanFitness + "\n\n";
+                + populations[currentPopulation][bestIndividual] + "\n";
+        report += ";; Best Predictor Fitness: " + bestMeanFitness + "\n\n";
 
-        report += ";; Mean Predictor Fitness: " + _populationMeanFitness + "\n";
+        report += ";; Mean Predictor Fitness: " + populationMeanFitness + "\n";
 
         report += ";;########################################################;;\n\n";
 
         return report;
     }
 
-    protected String FinalReport() {
+    protected String finalReport() {
         return "";
     }
 
@@ -221,7 +221,7 @@ public abstract class PredictionGA extends GA {
      * Initiates inIndividual as a random predictor individual.
      */
     @Override
-    protected abstract void InitIndividual(GAIndividual inIndividual);
+    protected abstract void initIndividual(GAIndividual inIndividual);
 
     /**
      * Evaluates a PredictionGAIndividual's fitness, based on the difference
@@ -229,7 +229,7 @@ public abstract class PredictionGA extends GA {
      * fitnesses of the trainers.
      */
     @Override
-    protected abstract void EvaluateIndividual(GAIndividual inIndividual);
+    protected abstract void evaluateIndividual(GAIndividual inIndividual);
 
     /**
      * Determines the predictor's fitness on a trainer, where the trainer is the
@@ -239,7 +239,7 @@ public abstract class PredictionGA extends GA {
      * @return Predictor's fitness (or rank, etc.) for the given trainer.
      */
     @Override
-    public abstract float EvaluateTestCase(GAIndividual inIndividual,
+    public abstract float evaluateTestCase(GAIndividual inIndividual,
             Object inInput, Object inOutput);
 
     /**
@@ -254,9 +254,9 @@ public abstract class PredictionGA extends GA {
     protected abstract void EvaluateTrainerFitnesses();
 
     @Override
-    protected abstract GAIndividual ReproduceByMutation(int inIndex);
+    protected abstract GAIndividual reproduceByMutation(int inIndex);
 
     @Override
-    protected abstract GAIndividual ReproduceByCrossover(int inIndex);
+    protected abstract GAIndividual reproduceByCrossover(int inIndex);
 
 }

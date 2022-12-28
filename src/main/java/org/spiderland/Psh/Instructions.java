@@ -503,10 +503,10 @@ class IntegerRand extends Instruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        int range = (inI._maxRandomInt - inI._minRandomInt)
-                / inI._randomIntResolution;
-        int randInt = (_RNG.nextInt(range) * inI._randomIntResolution)
-                + inI._minRandomInt;
+        int range = (inI.maxRandomInt - inI.minRandomInt)
+                / inI.randomIntResolution;
+        int randInt = (_RNG.nextInt(range) * inI.randomIntResolution)
+                + inI.minRandomInt;
         inI.intStack().push(randInt);
     }
 }
@@ -897,10 +897,10 @@ class FloatRand extends Instruction {
     public void Execute(Interpreter inI) {
 
 
-        float range = (inI._maxRandomFloat - inI._minRandomFloat)
-                / inI._randomFloatResolution;
-        float randFloat = (_RNG.nextFloat() * range * inI._randomFloatResolution)
-                + inI._minRandomFloat;
+        float range = (inI.maxRandomFloat - inI.minRandomFloat)
+                / inI.randomFloatResolution;
+        float randFloat = (_RNG.nextFloat() * range * inI.randomFloatResolution)
+                + inI.minRandomFloat;
         inI.floatStack().push(randFloat);
     }
 }
@@ -1534,7 +1534,7 @@ class ExecS extends ObjectStackInstruction {
             listBC.push(b);
             listBC.push(c);
 
-            if (listBC.programsize() > _maxPointsInProgram) {
+            if (listBC.programSize() > _maxPointsInProgram) {
                 // If the new list is too large, turn into a noop by re-pushing
                 // the popped instructions
                 _stack.push(c);
@@ -1599,7 +1599,7 @@ class RandomPushCode extends ObjectStackInstruction {
         if (inI.intStack().size() > 0) {
             randCodeMaxPoints = inI.intStack().pop();
             randCodeMaxPoints = Math.min(Math.abs(randCodeMaxPoints),
-                    inI._maxRandomCodeSize);
+                    inI.maxRandomCodeSize);
 
             int randomCodeSize;
             if (randCodeMaxPoints > 0) {
@@ -1607,7 +1607,7 @@ class RandomPushCode extends ObjectStackInstruction {
             } else {
                 randomCodeSize = 2;
             }
-            Program p = inI.RandomCode(randomCodeSize);
+            Program p = inI.randomCode(randomCodeSize);
 
             _stack.push(p);
         }
@@ -1676,7 +1676,7 @@ class PopFrame extends Instruction {
         // floatStack fstack = inI.floatStack();
         // float total = fstack.accumulate();
 
-        inI.PopFrame();
+        inI.popFrame();
 
         // do the activation, and push the result on to the end of the previous
         // frame
@@ -1694,6 +1694,6 @@ class PushFrame extends Instruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        inI.PushFrame();
+        inI.pushFrame();
     }
 }

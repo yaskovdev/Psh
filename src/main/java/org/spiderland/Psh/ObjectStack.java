@@ -3,14 +3,13 @@ package org.spiderland.Psh;
 /**
  * The Push stack type for object-based data (Strings, Programs, etc.)
  */
-
 public class ObjectStack extends Stack {
     private static final long serialVersionUID = 1L;
 
     protected Object[] _stack;
     final static int _blocksize = 16;
 
-    public void PushAllReverse(ObjectStack inOther) {
+    public void pushAllReverse(ObjectStack inOther) {
         for (int n = _size - 1; n >= 0; n--)
             inOther.push(_stack[n]);
     }
@@ -22,10 +21,10 @@ public class ObjectStack extends Stack {
         if (!(inOther instanceof ObjectStack))
             return false;
 
-        return ((ObjectStack) inOther).comparestack(_stack, _size);
+        return ((ObjectStack) inOther).compareStack(_stack, _size);
     }
 
-    boolean comparestack(Object[] inOther, int inOtherSize) {
+    boolean compareStack(Object[] inOther, int inOtherSize) {
         if (inOtherSize != _size)
             return false;
 

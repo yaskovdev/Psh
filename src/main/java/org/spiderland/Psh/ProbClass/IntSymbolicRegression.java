@@ -19,11 +19,11 @@ public class IntSymbolicRegression extends PushGP {
 
     protected float _noResultPenalty = 1000;
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
 
-        String cases = GetParam("test-cases", true);
-        String casesClass = GetParam("test-case-class", true);
+        String cases = getParam("test-cases", true);
+        String casesClass = getParam("test-case-class", true);
         if (cases == null && casesClass == null) {
             throw new Exception("No acceptable test-case parameter.");
         }
@@ -45,10 +45,10 @@ public class IntSymbolicRegression extends PushGP {
                 Integer in = (Integer) testCase._first;
                 Integer out = (Integer) testCase._second;
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: "
+                print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                testCases.add(new GATestCase(in, out));
             }
         } else {
             // Get test cases from test-cases.
@@ -64,33 +64,33 @@ public class IntSymbolicRegression extends PushGP {
                 Integer in = Integer.valueOf(p.peek(0).toString());
                 Integer out = Integer.valueOf(p.peek(1).toString());
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: " + out
+                print(";; Fitness case #" + i + " input: " + in + " output: " + out
                         + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                this.testCases.add(new GATestCase(in, out));
             }
         }
 
     }
 
-    protected void InitInterpreter(Interpreter inInterpreter) {
+    protected void initInterpreter(Interpreter inInterpreter) {
     }
 
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
-        _interpreter.clearStacks();
+        interpreter.clearStacks();
 
         int currentInput = (Integer) inInput;
 
-        IntStack stack = _interpreter.intStack();
+        IntStack stack = interpreter.intStack();
 
         stack.push(currentInput);
 
         // Must be included in order to use the input stack.
-        _interpreter.inputStack().push(currentInput);
+        interpreter.inputStack().push(currentInput);
 
-        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-                _executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+                executionLimit);
 
         int result = stack.top();
         // System.out.println( _interpreter + " " + result );

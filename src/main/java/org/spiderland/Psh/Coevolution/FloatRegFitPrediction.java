@@ -9,18 +9,18 @@ public class FloatRegFitPrediction extends PredictionGA {
     private static final long serialVersionUID = 1L;
 
     @Override
-    protected void InitIndividual(GAIndividual inIndividual) {
+    protected void initIndividual(GAIndividual inIndividual) {
         FloatRegFitPredictionIndividual i = (FloatRegFitPredictionIndividual) inIndividual;
 
         int[] samples = new int[FloatRegFitPredictionIndividual._sampleSize];
         for (int j = 0; j < samples.length; j++) {
-            samples[j] = _RNG.nextInt(_solutionGA._testCases.size());
+            samples[j] = random.nextInt(_solutionGA.testCases.size());
         }
         i.SetSampleIndicesAndSolutionGA(_solutionGA, samples);
     }
 
     @Override
-    protected void EvaluateIndividual(GAIndividual inIndividual) {
+    protected void evaluateIndividual(GAIndividual inIndividual) {
 
         FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) inIndividual;
         ArrayList<Float> errors = new ArrayList<>();
@@ -34,7 +34,7 @@ public class FloatRegFitPrediction extends PredictionGA {
             errors.add(error);
         }
 
-        predictor.SetFitness(AbsoluteAverageOfErrors(errors));
+        predictor.SetFitness(absoluteAverageOfErrors(errors));
         predictor.SetErrors(errors);
     }
 
@@ -48,7 +48,7 @@ public class FloatRegFitPrediction extends PredictionGA {
      * @throws Exception
      */
     @Override
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
 
         PushGPIndividual trainer = (PushGPIndividual) inInput;
@@ -69,34 +69,34 @@ public class FloatRegFitPrediction extends PredictionGA {
         }
     }
 
-    protected void Reproduce() {
-        int nextPopulation = _currentPopulation == 0 ? 1 : 0;
+    protected void reproduce() {
+        int nextPopulation = currentPopulation == 0 ? 1 : 0;
 
-        for (int n = 0; n < _populations[_currentPopulation].length; n++) {
-            float method = _RNG.nextInt(100);
+        for (int n = 0; n < populations[currentPopulation].length; n++) {
+            float method = random.nextInt(100);
             GAIndividual next;
 
-            if (method < _mutationPercent) {
-                next = ReproduceByMutation(n);
-            } else if (method < _crossoverPercent + _mutationPercent) {
-                next = ReproduceByCrossover(n);
+            if (method < mutationPercent) {
+                next = this.reproduceByMutation(n);
+            } else if (method < crossoverPercent + mutationPercent) {
+                next = this.reproduceByCrossover(n);
             } else {
-                next = ReproduceByClone(n);
+                next = reproduceByClone(n);
             }
 
             // Make sure next isn't already in the population, so that all
             // predictors are unique.
             for (int k = 0; k < n; k++) {
                 if (((FloatRegFitPredictionIndividual) next)
-                        .equalPredictors(_populations[nextPopulation][k])) {
-                    int index = _RNG
+                        .equalPredictors(populations[nextPopulation][k])) {
+                    int index = random
                             .nextInt(FloatRegFitPredictionIndividual._sampleSize);
                     ((FloatRegFitPredictionIndividual) next).SetSampleIndex(
-                            index, _RNG.nextInt(_solutionGA._testCases.size()));
+                            index, random.nextInt(_solutionGA.testCases.size()));
                 }
             }
 
-            _populations[nextPopulation][n] = next;
+            populations[nextPopulation][n] = next;
 
         }
     }
@@ -106,24 +106,24 @@ public class FloatRegFitPrediction extends PredictionGA {
      * its training point among possible individuals.
      */
     @Override
-    protected GAIndividual ReproduceByMutation(int inIndex) {
-        FloatRegFitPredictionIndividual i = (FloatRegFitPredictionIndividual) ReproduceByClone(inIndex);
+    protected GAIndividual reproduceByMutation(int inIndex) {
+        FloatRegFitPredictionIndividual i = (FloatRegFitPredictionIndividual) reproduceByClone(inIndex);
 
-        int index = _RNG.nextInt(FloatRegFitPredictionIndividual._sampleSize);
-        i.SetSampleIndex(index, _RNG.nextInt(_solutionGA._testCases.size()));
+        int index = random.nextInt(FloatRegFitPredictionIndividual._sampleSize);
+        i.SetSampleIndex(index, random.nextInt(_solutionGA.testCases.size()));
 
         return i;
     }
 
     @Override
-    protected GAIndividual ReproduceByCrossover(int inIndex) {
-        FloatRegFitPredictionIndividual a = (FloatRegFitPredictionIndividual) ReproduceByClone(inIndex);
-        FloatRegFitPredictionIndividual b = (FloatRegFitPredictionIndividual) TournamentSelect(
-                _tournamentSize, inIndex);
+    protected GAIndividual reproduceByCrossover(int inIndex) {
+        FloatRegFitPredictionIndividual a = (FloatRegFitPredictionIndividual) reproduceByClone(inIndex);
+        FloatRegFitPredictionIndividual b = (FloatRegFitPredictionIndividual) tournamentSelect(
+            tournamentSize, inIndex);
 
         // crossoverPoint is the first index of a that will be changed to the
         // gene from b.
-        int crossoverPoint = _RNG
+        int crossoverPoint = random
                 .nextInt(FloatRegFitPredictionIndividual._sampleSize - 1) + 1;
         for (int i = crossoverPoint; i < FloatRegFitPredictionIndividual._sampleSize; i++) {
             a.SetSampleIndex(i, b.GetSampleIndex(i));

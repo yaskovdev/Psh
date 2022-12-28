@@ -33,13 +33,13 @@ public class CEFloatSymbolicRegression extends PushGP {
 
     private static final float NO_RESULT_PENALTY = 1000f;
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
 
         _effort = 0;
 
-        String cases = GetParam("test-cases", true);
-        String casesClass = GetParam("test-case-class", true);
+        String cases = getParam("test-cases", true);
+        String casesClass = getParam("test-case-class", true);
         if (cases == null && casesClass == null) {
             throw new Exception("No acceptable test-case parameter.");
         }
@@ -61,10 +61,10 @@ public class CEFloatSymbolicRegression extends PushGP {
                 Float in = (Float) testCase._first;
                 Float out = (Float) testCase._second;
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: "
+                print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                testCases.add(new GATestCase(in, out));
             }
         } else {
             // Get test cases from test-cases.
@@ -81,28 +81,28 @@ public class CEFloatSymbolicRegression extends PushGP {
                 Float in = Float.valueOf(p.peek(0).toString());
                 Float out = Float.valueOf(p.peek(1).toString());
 
-                Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
+                print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
-                _testCases.add(new GATestCase(in, out));
+                this.testCases.add(new GATestCase(in, out));
             }
         }
 
         // Create and initialize predictors
-        _predictorEffortPercent = GetFloatParam("PREDICTOR-effort-percent",
+        _predictorEffortPercent = getFloatParam("PREDICTOR-effort-percent",
                 true);
         _predictorGA = PredictionGA.PredictionGAWithParameters(this,
-                GetPredictorParameters(_parameters));
+                GetPredictorParameters(parameters));
 
     }
 
-    protected void InitInterpreter(Interpreter inInterpreter) {
+    protected void initInterpreter(Interpreter inInterpreter) {
     }
 
     @Override
-    protected void BeginGeneration() throws Exception {
+    protected void beginGeneration() throws Exception {
         //trh Temporary solution, needs to actually use effort info
-        if (_generationCount % 2 == 1) {
-            _predictorGA.Run(1);
+        if (generationCount % 2 == 1) {
+            _predictorGA.run(1);
         }
     }
 
@@ -118,23 +118,23 @@ public class CEFloatSymbolicRegression extends PushGP {
         inIndividual.SetErrors(new ArrayList<>());
     }
 
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput,
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
         _effort++;
 
-        _interpreter.clearStacks();
+        interpreter.clearStacks();
 
         _currentInput = (Float) inInput;
 
-        FloatStack fstack = _interpreter.floatStack();
+        FloatStack fstack = interpreter.floatStack();
 
         fstack.push(_currentInput);
 
         // Must be included in order to use the input stack.
-        _interpreter.inputStack().push(_currentInput);
+        interpreter.inputStack().push(_currentInput);
 
-        _interpreter.Execute(((PushGPIndividual) inIndividual)._program,
-                _executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+                executionLimit);
 
         float result = fstack.top();
 
@@ -155,19 +155,19 @@ public class CEFloatSymbolicRegression extends PushGP {
         return result - ((Float) inOutput);
     }
 
-    protected boolean Success() {
+    protected boolean success() {
         if (_success) {
             return true;
         }
 
-        GAIndividual best = _populations[_currentPopulation][_bestIndividual];
+        GAIndividual best = populations[currentPopulation][bestIndividual];
         float predictedFitness = best.GetFitness();
 
         _predictorGA.EvaluateSolutionIndividual((PushGPIndividual) best);
 
-        _bestMeanFitness = best.GetFitness();
+        bestMeanFitness = best.GetFitness();
 
-        if (_bestMeanFitness <= 0.1) {
+        if (bestMeanFitness <= 0.1) {
             _success = true;
             return true;
         }
@@ -176,10 +176,10 @@ public class CEFloatSymbolicRegression extends PushGP {
         return false;
     }
 
-    protected String Report() {
-        Success(); // Finds the real fitness of the best individual
+    protected String report() {
+        success(); // Finds the real fitness of the best individual
 
-        return super.Report();
+        return super.report();
     }
 
     private HashMap<String, String> GetPredictorParameters(
@@ -191,23 +191,23 @@ public class CEFloatSymbolicRegression extends PushGP {
                 .toString(Integer.MAX_VALUE));
 
         predictorParameters.put("problem-class",
-                GetParam("PREDICTOR-problem-class"));
+                getParam("PREDICTOR-problem-class"));
         predictorParameters.put("individual-class",
-                GetParam("PREDICTOR-individual-class"));
+                getParam("PREDICTOR-individual-class"));
         predictorParameters.put("population-size",
-                GetParam("PREDICTOR-population-size"));
+                getParam("PREDICTOR-population-size"));
         predictorParameters.put("mutation-percent",
-                GetParam("PREDICTOR-mutation-percent"));
+                getParam("PREDICTOR-mutation-percent"));
         predictorParameters.put("crossover-percent",
-                GetParam("PREDICTOR-crossover-percent"));
+                getParam("PREDICTOR-crossover-percent"));
         predictorParameters.put("tournament-size",
-                GetParam("PREDICTOR-tournament-size"));
+                getParam("PREDICTOR-tournament-size"));
         predictorParameters.put("trivial-geography-radius",
-                GetParam("PREDICTOR-trivial-geography-radius"));
+                getParam("PREDICTOR-trivial-geography-radius"));
         predictorParameters.put("generations-between-trainers",
-                GetParam("PREDICTOR-generations-between-trainers"));
+                getParam("PREDICTOR-generations-between-trainers"));
         predictorParameters.put("trainer-population-size",
-                GetParam("PREDICTOR-trainer-population-size"));
+                getParam("PREDICTOR-trainer-population-size"));
 
         return predictorParameters;
     }
@@ -216,33 +216,33 @@ public class CEFloatSymbolicRegression extends PushGP {
      * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
      * was changed to PredictIndividual, as noted below.
      */
-    protected void Evaluate() {
+    protected void evaluate() {
         float totalFitness = 0;
-        _bestMeanFitness = Float.MAX_VALUE;
+        bestMeanFitness = Float.MAX_VALUE;
 
-        for (int n = 0; n < _populations[_currentPopulation].length; n++) {
-            GAIndividual i = _populations[_currentPopulation][n];
+        for (int n = 0; n < populations[currentPopulation].length; n++) {
+            GAIndividual i = populations[currentPopulation][n];
 
             PredictIndividual(i, false);
 
             totalFitness += i.GetFitness();
 
-            if (i.GetFitness() < _bestMeanFitness) {
-                _bestMeanFitness = i.GetFitness();
-                _bestIndividual = n;
-                _bestSize = ((PushGPIndividual) i)._program.programsize();
-                _bestErrors = i.GetErrors();
+            if (i.GetFitness() < bestMeanFitness) {
+                bestMeanFitness = i.GetFitness();
+                bestIndividual = n;
+                bestSize = ((PushGPIndividual) i)._program.programSize();
+                bestErrors = i.GetErrors();
             }
         }
 
-        _populationMeanFitness = totalFitness / _populations[_currentPopulation].length;
+        populationMeanFitness = totalFitness / populations[currentPopulation].length;
     }
 
     /**
      * NOTE: This is entirely copied from PushGP, except EvaluateIndividual
      * was changed to PredictIndividual, as noted below (twice).
      */
-    protected PushGPIndividual Autosimplify(PushGPIndividual inIndividual,
+    protected PushGPIndividual autosimplify(PushGPIndividual inIndividual,
             int steps) {
 
         PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
@@ -254,30 +254,30 @@ public class CEFloatSymbolicRegression extends PushGP {
 
         for (int i = 0; i < steps; i++) {
             madeSimpler = false;
-            float method = _RNG.nextInt(100);
+            float method = random.nextInt(100);
 
-            if (trial._program.programsize() <= 0)
+            if (trial._program.programSize() <= 0)
                 break;
-            if (method < _simplifyFlattenPercent) {
+            if (method < simplifyFlattenPercent) {
                 // Flatten random thing
-                int pointIndex = _RNG.nextInt(trial._program.programsize());
-                Object point = trial._program.Subtree(pointIndex);
+                int pointIndex = random.nextInt(trial._program.programSize());
+                Object point = trial._program.subtree(pointIndex);
 
                 if (point instanceof Program) {
-                    trial._program.Flatten(pointIndex);
+                    trial._program.flatten(pointIndex);
                     madeSimpler = true;
                 }
             } else {
                 // Remove small number of random things
-                int numberToRemove = _RNG.nextInt(3) + 1;
+                int numberToRemove = random.nextInt(3) + 1;
 
                 for (int j = 0; j < numberToRemove; j++) {
-                    int trialSize = trial._program.programsize();
+                    int trialSize = trial._program.programSize();
 
                     if (trialSize > 0) {
-                        int pointIndex = _RNG.nextInt(trialSize);
-                        trial._program.ReplaceSubtree(pointIndex, new Program());
-                        trial._program.Flatten(pointIndex);
+                        int pointIndex = random.nextInt(trialSize);
+                        trial._program.replaceSubtree(pointIndex, new Program());
+                        trial._program.flatten(pointIndex);
                         madeSimpler = true;
                     }
                 }

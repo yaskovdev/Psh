@@ -8,29 +8,29 @@ import java.util.ArrayList;
 abstract public class PushGP extends GA {
     private static final long serialVersionUID = 1L;
 
-    protected Interpreter _interpreter;
-    protected int _maxRandomCodeSize;
-    protected int _maxPointsInProgram;
-    protected int _executionLimit;
+    protected Interpreter interpreter;
+    protected int maxRandomCodeSize;
+    protected int maxPointsInProgram;
+    protected int executionLimit;
 
-    protected boolean _useFairMutation;
-    protected float _fairMutationRange;
-    protected String _nodeSelectionMode;
-    protected float _nodeSelectionLeafProbability;
-    protected int _nodeSelectionTournamentSize;
+    protected boolean useFairMutation;
+    protected float fairMutationRange;
+    protected String nodeSelectionMode;
+    protected float nodeSelectionLeafProbability;
+    protected int nodeSelectionTournamentSize;
 
-    protected float _averageSize;
-    protected int _bestSize;
+    protected float averageSize;
+    protected int bestSize;
 
-    protected float _simplificationPercent;
-    protected float _simplifyFlattenPercent;
-    protected int _reproductionSimplifications;
-    protected int _reportSimplifications;
-    protected int _finalSimplifications;
+    protected float simplificationPercent;
+    protected float simplifyFlattenPercent;
+    protected int reproductionSimplifications;
+    protected int reportSimplifications;
+    protected int finalSimplifications;
 
-    protected String _targetFunctionString;
+    protected String targetFunctionString;
 
-    protected void InitFromParameters() throws Exception {
+    protected void initFromParameters() throws Exception {
         // Default parameters to be used when optional parameters are not
         // given.
         float defaultFairMutationRange = 0.3f;
@@ -42,56 +42,56 @@ abstract public class PushGP extends GA {
         int defaultNodeSelectionTournamentSize = 2;
 
         // Limits
-        _maxRandomCodeSize = (int) GetFloatParam("max-random-code-size");
-        _executionLimit = (int) GetFloatParam("execution-limit");
-        _maxPointsInProgram = (int) GetFloatParam("max-points-in-program");
+        maxRandomCodeSize = (int) getFloatParam("max-random-code-size");
+        executionLimit = (int) getFloatParam("execution-limit");
+        maxPointsInProgram = (int) getFloatParam("max-points-in-program");
 
         // Fair mutation parameters
-        _useFairMutation = "fair".equals(GetParam("mutation-mode", true));
-        _fairMutationRange = GetFloatParam("fair-mutation-range", true);
-        if (Float.isNaN(_fairMutationRange)) {
-            _fairMutationRange = defaultFairMutationRange;
+        useFairMutation = "fair".equals(getParam("mutation-mode", true));
+        fairMutationRange = getFloatParam("fair-mutation-range", true);
+        if (Float.isNaN(fairMutationRange)) {
+            fairMutationRange = defaultFairMutationRange;
         }
 
         // Node selection parameters
-        _nodeSelectionMode = GetParam("node-selection-mode", true);
-        if (_nodeSelectionMode != null) {
-            if (!_nodeSelectionMode.equals("unbiased")
-                    && !_nodeSelectionMode.equals("leaf-probability")
-                    && !_nodeSelectionMode.equals("size-tournament")) {
+        nodeSelectionMode = getParam("node-selection-mode", true);
+        if (nodeSelectionMode != null) {
+            if (!nodeSelectionMode.equals("unbiased")
+                    && !nodeSelectionMode.equals("leaf-probability")
+                    && !nodeSelectionMode.equals("size-tournament")) {
                 throw new Exception(
                         "node-selection-mode must be set to unbiased,\n"
                                 + "leaf-probability, or size-tournament. Currently set to "
-                                + _nodeSelectionMode);
+                                + nodeSelectionMode);
             }
 
-            _nodeSelectionLeafProbability = GetFloatParam(
+            nodeSelectionLeafProbability = getFloatParam(
                     "node-selection-leaf-probability", true);
-            if (Float.isNaN(_nodeSelectionLeafProbability)) {
-                _nodeSelectionLeafProbability = defaultNodeSelectionLeafProbability;
+            if (Float.isNaN(nodeSelectionLeafProbability)) {
+                nodeSelectionLeafProbability = defaultNodeSelectionLeafProbability;
             }
 
-            _nodeSelectionTournamentSize = (int) GetFloatParam(
+            nodeSelectionTournamentSize = (int) getFloatParam(
                     "node-selection-tournament-size", true);
-            if (Float.isNaN(GetFloatParam("node-selection-tournament-size", true))) {
-                _nodeSelectionTournamentSize = defaultNodeSelectionTournamentSize;
+            if (Float.isNaN(getFloatParam("node-selection-tournament-size", true))) {
+                nodeSelectionTournamentSize = defaultNodeSelectionTournamentSize;
             }
 
         } else {
-            _nodeSelectionMode = "unbiased";
+            nodeSelectionMode = "unbiased";
         }
 
         // Simplification parameters
-        _simplificationPercent = GetFloatParam("simplification-percent");
-        _simplifyFlattenPercent = GetFloatParam("simplify-flatten-percent",
+        simplificationPercent = getFloatParam("simplification-percent");
+        simplifyFlattenPercent = getFloatParam("simplify-flatten-percent",
                 true);
-        if (Float.isNaN(_simplifyFlattenPercent)) {
-            _simplifyFlattenPercent = defaultsimplifyFlattenPercent;
+        if (Float.isNaN(simplifyFlattenPercent)) {
+            simplifyFlattenPercent = defaultsimplifyFlattenPercent;
         }
 
-        _reproductionSimplifications = (int) GetFloatParam("reproduction-simplifications");
-        _reportSimplifications = (int) GetFloatParam("report-simplifications");
-        _finalSimplifications = (int) GetFloatParam("final-simplifications");
+        reproductionSimplifications = (int) getFloatParam("reproduction-simplifications");
+        reportSimplifications = (int) getFloatParam("report-simplifications");
+        finalSimplifications = (int) getFloatParam("final-simplifications");
 
         // ERC parameters
         int minRandomInt;
@@ -101,20 +101,20 @@ abstract public class PushGP extends GA {
         int randomIntResolution;
         int defaultRandomIntResolution = 1;
 
-        if (Float.isNaN(GetFloatParam("min-random-integer", true))) {
+        if (Float.isNaN(getFloatParam("min-random-integer", true))) {
             minRandomInt = defaultMinRandomInt;
         } else {
-            minRandomInt = (int) GetFloatParam("min-random-integer", true);
+            minRandomInt = (int) getFloatParam("min-random-integer", true);
         }
-        if (Float.isNaN(GetFloatParam("max-random-integer", true))) {
+        if (Float.isNaN(getFloatParam("max-random-integer", true))) {
             maxRandomInt = defaultMaxRandomInt;
         } else {
-            maxRandomInt = (int) GetFloatParam("max-random-integer", true);
+            maxRandomInt = (int) getFloatParam("max-random-integer", true);
         }
-        if (Float.isNaN(GetFloatParam("random-integer-resolution", true))) {
+        if (Float.isNaN(getFloatParam("random-integer-resolution", true))) {
             randomIntResolution = defaultRandomIntResolution;
         } else {
-            randomIntResolution = (int) GetFloatParam(
+            randomIntResolution = (int) getFloatParam(
                     "random-integer-resolution", true);
         }
 
@@ -125,25 +125,25 @@ abstract public class PushGP extends GA {
         float randomFloatResolution;
         float defaultRandomFloatResolution = 0.01f;
 
-        if (Float.isNaN(GetFloatParam("min-random-float", true))) {
+        if (Float.isNaN(getFloatParam("min-random-float", true))) {
             minRandomFloat = defaultMinRandomFloat;
         } else {
-            minRandomFloat = GetFloatParam("min-random-float", true);
+            minRandomFloat = getFloatParam("min-random-float", true);
         }
-        if (Float.isNaN(GetFloatParam("max-random-float", true))) {
+        if (Float.isNaN(getFloatParam("max-random-float", true))) {
             maxRandomFloat = defaultMaxRandomFloat;
         } else {
-            maxRandomFloat = GetFloatParam("max-random-float", true);
+            maxRandomFloat = getFloatParam("max-random-float", true);
         }
-        if (Float.isNaN(GetFloatParam("random-float-resolution", true))) {
+        if (Float.isNaN(getFloatParam("random-float-resolution", true))) {
             randomFloatResolution = defaultRandomFloatResolution;
         } else {
-            randomFloatResolution = GetFloatParam("random-float-resolution",
+            randomFloatResolution = getFloatParam("random-float-resolution",
                     true);
         }
 
         // Setup our custom interpreter class based on the params we're given
-        String interpreterClass = GetParam("interpreter-class", true);
+        String interpreterClass = getParam("interpreter-class", true);
         if (interpreterClass == null) {
             interpreterClass = defaultInterpreterClass;
         }
@@ -153,16 +153,16 @@ abstract public class PushGP extends GA {
             throw (new Exception(
                     "interpreter-class must inherit from class Interpreter"));
 
-        _interpreter = (Interpreter) iObject;
-        _interpreter.SetInstructions(new Program(GetParam("instruction-set")));
-        _interpreter.SetRandomParameters(minRandomInt, maxRandomInt,
+        interpreter = (Interpreter) iObject;
+        interpreter.setInstructions(new Program(getParam("instruction-set")));
+        interpreter.setRandomParameters(minRandomInt, maxRandomInt,
                 randomIntResolution, minRandomFloat, maxRandomFloat,
-                randomFloatResolution, _maxRandomCodeSize, _maxPointsInProgram);
+                randomFloatResolution, maxRandomCodeSize, maxPointsInProgram);
 
         // Frame mode and input pusher class
-        String framemode = GetParam("push-frame-mode", true);
+        String framemode = getParam("push-frame-mode", true);
 
-        String inputpusherClass = GetParam("inputpusher-class", true);
+        String inputpusherClass = getParam("inputpusher-class", true);
         if (inputpusherClass == null) {
             inputpusherClass = defaultInputPusherClass;
         }
@@ -175,153 +175,152 @@ abstract public class PushGP extends GA {
             throw new Exception(
                     "inputpusher-class must inherit from class InputPusher");
 
-        _interpreter.setInputPusher((InputPusher) iObject);
+        interpreter.setInputPusher((InputPusher) iObject);
 
         // Initialize the interpreter
-        InitInterpreter(_interpreter);
+        initInterpreter(interpreter);
 
         if (framemode != null && framemode.equals("pushstacks"))
-            _interpreter.SetUseFrames(true);
+            interpreter.setUseFrames(true);
 
         // Target function string
-        _targetFunctionString = GetParam("target-function-string", true);
-        if (_targetFunctionString == null) {
-            _targetFunctionString = defaultTargetFunctionString;
+        targetFunctionString = getParam("target-function-string", true);
+        if (targetFunctionString == null) {
+            targetFunctionString = defaultTargetFunctionString;
         }
 
         // Init the GA
-        super.InitFromParameters();
+        super.initFromParameters();
 
         // Print important parameters
-        Print("  Important Parameters\n");
-        Print(" ======================\n");
+        print("  Important Parameters\n");
+        print(" ======================\n");
 
-        if (!_targetFunctionString.equals("")) {
-            Print("Target Function: " + _targetFunctionString + "\n\n");
+        if (!targetFunctionString.equals("")) {
+            print("Target Function: " + targetFunctionString + "\n\n");
         }
 
-        Print("Population Size: " + (int) GetFloatParam("population-size")
+        print("Population Size: " + (int) getFloatParam("population-size")
                 + "\n");
-        Print("Generations: " + _maxGenerations + "\n");
-        Print("Execution Limit: " + _executionLimit + "\n\n");
+        print("Generations: " + maxGenerations + "\n");
+        print("Execution Limit: " + executionLimit + "\n\n");
 
-        Print("Crossover Percent: " + _crossoverPercent + "\n");
-        Print("Mutation Percent: " + _mutationPercent + "\n");
-        Print("Simplification Percent: " + _simplificationPercent + "\n");
-        Print("Clone Percent: "
-                + (100 - _crossoverPercent - _mutationPercent - _simplificationPercent)
+        print("Crossover Percent: " + crossoverPercent + "\n");
+        print("Mutation Percent: " + mutationPercent + "\n");
+        print("Simplification Percent: " + simplificationPercent + "\n");
+        print("Clone Percent: "
+                + (100 - crossoverPercent - mutationPercent - simplificationPercent)
                 + "\n\n");
 
-        Print("Tournament Size: " + _tournamentSize + "\n");
-        if (_trivialGeographyRadius != 0) {
-            Print("Trivial Geography Radius: " + _trivialGeographyRadius + "\n");
+        print("Tournament Size: " + tournamentSize + "\n");
+        if (trivialGeographyRadius != 0) {
+            print("Trivial Geography Radius: " + trivialGeographyRadius + "\n");
         }
-        Print("Node Selection Mode: " + _nodeSelectionMode);
-        Print("\n");
+        print("Node Selection Mode: " + nodeSelectionMode);
+        print("\n");
 
-        Print("Instructions: " + _interpreter.GetInstructionsString() + "\n");
+        print("Instructions: " + interpreter.getInstructionsString() + "\n");
 
-        Print("\n");
+        print("\n");
 
     }
 
-    public void InitIndividual(GAIndividual inIndividual) {
+    public void initIndividual(GAIndividual inIndividual) {
         PushGPIndividual i = (PushGPIndividual) inIndividual;
 
-        int randomCodeSize = _RNG.nextInt(_maxRandomCodeSize) + 2;
-        Program p = _interpreter.RandomCode(randomCodeSize);
+        int randomCodeSize = random.nextInt(maxRandomCodeSize) + 2;
+        Program p = interpreter.randomCode(randomCodeSize);
 
         i.SetProgram(p);
     }
 
-    protected void BeginGeneration() throws Exception {
-        _averageSize = 0;
+    protected void beginGeneration() throws Exception {
+        averageSize = 0;
     }
 
-    protected void EndGeneration() {
-        _averageSize /= _populations[0].length;
+    protected void endGeneration() {
+        averageSize /= populations[0].length;
     }
 
-    protected void Evaluate() {
+    protected void evaluate() {
         float totalFitness = 0;
-        _bestMeanFitness = Float.MAX_VALUE;
+        bestMeanFitness = Float.MAX_VALUE;
 
-        for (int n = 0; n < _populations[_currentPopulation].length; n++) {
-            GAIndividual i = _populations[_currentPopulation][n];
+        for (int n = 0; n < populations[currentPopulation].length; n++) {
+            GAIndividual i = populations[currentPopulation][n];
 
-            EvaluateIndividual(i);
+            evaluateIndividual(i);
 
             totalFitness += i.GetFitness();
 
-            if (i.GetFitness() < _bestMeanFitness) {
-                _bestMeanFitness = i.GetFitness();
-                _bestIndividual = n;
-                _bestSize = ((PushGPIndividual) i)._program.programsize();
-                _bestErrors = i.GetErrors();
+            if (i.GetFitness() < bestMeanFitness) {
+                bestMeanFitness = i.GetFitness();
+                bestIndividual = n;
+                bestSize = ((PushGPIndividual) i)._program.programSize();
+                bestErrors = i.GetErrors();
             }
         }
 
-        _populationMeanFitness = totalFitness
-                / _populations[_currentPopulation].length;
+        populationMeanFitness = totalFitness
+                / populations[currentPopulation].length;
     }
 
-    public void EvaluateIndividual(GAIndividual inIndividual) {
-        EvaluateIndividual(inIndividual, false);
+    public void evaluateIndividual(GAIndividual inIndividual) {
+        evaluateIndividual(inIndividual, false);
     }
 
-    protected void EvaluateIndividual(GAIndividual inIndividual, boolean duringSimplify) {
+    protected void evaluateIndividual(GAIndividual inIndividual, boolean duringSimplify) {
         ArrayList<Float> errors = new ArrayList<>();
 
         if (!duringSimplify)
-            _averageSize += ((PushGPIndividual) inIndividual)._program
-                    .programsize();
+            averageSize += ((PushGPIndividual) inIndividual)._program
+                    .programSize();
 
         long t = System.currentTimeMillis();
 
-        for (final GATestCase testCase : _testCases) {
-            float e = EvaluateTestCase(inIndividual, testCase.input(), testCase.output());
+        for (final GATestCase testCase : testCases) {
+            float e = evaluateTestCase(inIndividual, testCase.input(), testCase.output());
             errors.add(e);
         }
         t = System.currentTimeMillis() - t;
 
-        inIndividual.SetFitness(AbsoluteAverageOfErrors(errors));
+        inIndividual.SetFitness(absoluteAverageOfErrors(errors));
         inIndividual.SetErrors(errors);
     }
 
-    abstract protected void InitInterpreter(Interpreter inInterpreter)
-            throws Exception;
+    abstract protected void initInterpreter(Interpreter inInterpreter) throws Exception;
 
-    protected String Report() {
-        String report = super.Report();
+    protected String report() {
+        String report = super.report();
 
-        if (Double.isInfinite(_populationMeanFitness))
-            _populationMeanFitness = Double.MAX_VALUE;
+        if (Double.isInfinite(populationMeanFitness))
+            populationMeanFitness = Double.MAX_VALUE;
 
         report += ";; Best Program:\n  "
-                + _populations[_currentPopulation][_bestIndividual] + "\n\n";
+                + populations[currentPopulation][bestIndividual] + "\n\n";
 
-        report += ";; Best Program Fitness (mean): " + _bestMeanFitness + "\n";
-        if (_testCases.size() == _bestErrors.size()) {
+        report += ";; Best Program Fitness (mean): " + bestMeanFitness + "\n";
+        if (testCases.size() == bestErrors.size()) {
             report += ";; Best Program Errors: (";
-            for (int i = 0; i < _testCases.size(); i++) {
+            for (int i = 0; i < testCases.size(); i++) {
                 if (i != 0)
                     report += " ";
-                report += "(" + _testCases.get(i).input() + " ";
-                report += Math.abs(_bestErrors.get(i)) + ")";
+                report += "(" + testCases.get(i).input() + " ";
+                report += Math.abs(bestErrors.get(i)) + ")";
             }
             report += ")\n";
         }
-        report += ";; Best Program Size: " + _bestSize + "\n\n";
+        report += ";; Best Program Size: " + bestSize + "\n\n";
 
-        report += ";; Mean Fitness: " + _populationMeanFitness + "\n";
-        report += ";; Mean Program Size: " + _averageSize + "\n";
+        report += ";; Mean Fitness: " + populationMeanFitness + "\n";
+        report += ";; Mean Program Size: " + averageSize + "\n";
 
-        PushGPIndividual simplified = Autosimplify(
-                (PushGPIndividual) _populations[_currentPopulation][_bestIndividual],
-                _reportSimplifications);
+        PushGPIndividual simplified = autosimplify(
+                (PushGPIndividual) populations[currentPopulation][bestIndividual],
+            reportSimplifications);
 
         report += ";; Number of Evaluations Thus Far: "
-                + _interpreter.GetEvaluationExecutions() + "\n";
+                + interpreter.getEvaluationExecutions() + "\n";
         String mem = String
                 .valueOf(Runtime.getRuntime().totalMemory() / 10000000.0f);
         report += ";; Memory usage: " + mem + "\n\n";
@@ -329,102 +328,100 @@ abstract public class PushGP extends GA {
         report += ";; Partial Simplification (may beat best):\n  ";
         report += simplified._program + "\n";
         report += ";; Partial Simplification Size: ";
-        report += simplified._program.programsize() + "\n\n";
+        report += simplified._program.programSize() + "\n\n";
 
         return report;
     }
 
-    protected String FinalReport() {
+    protected String finalReport() {
         String report = "";
 
-        report += super.FinalReport();
+        report += super.finalReport();
 
-        if (!_targetFunctionString.equals("")) {
-            report += ">> Target Function: " + _targetFunctionString + "\n\n";
+        if (!targetFunctionString.equals("")) {
+            report += ">> Target Function: " + targetFunctionString + "\n\n";
         }
 
-        PushGPIndividual simplified = Autosimplify(
-                (PushGPIndividual) _populations[_currentPopulation][_bestIndividual],
-                _finalSimplifications);
+        PushGPIndividual simplified = autosimplify(
+                (PushGPIndividual) populations[currentPopulation][bestIndividual],
+            finalSimplifications);
 
         // Note: The number of evaluations here will likely be higher than that
         // given during the last generational report, since evaluations made
         // during simplification count towards the total number of
         // simplifications.
         report += ">> Number of Evaluations: "
-                + _interpreter.GetEvaluationExecutions() + "\n";
+                + interpreter.getEvaluationExecutions() + "\n";
 
         report += ">> Best Program: "
-                + _populations[_currentPopulation][_bestIndividual] + "\n";
-        report += ">> Fitness (mean): " + _bestMeanFitness + "\n";
-        if (_testCases.size() == _bestErrors.size()) {
+                + populations[currentPopulation][bestIndividual] + "\n";
+        report += ">> Fitness (mean): " + bestMeanFitness + "\n";
+        if (testCases.size() == bestErrors.size()) {
             report += ">> Errors: (";
-            for (int i = 0; i < _testCases.size(); i++) {
+            for (int i = 0; i < testCases.size(); i++) {
                 if (i != 0)
                     report += " ";
-                report += "(" + _testCases.get(i).input() + " ";
-                report += Math.abs(_bestErrors.get(i)) + ")";
+                report += "(" + testCases.get(i).input() + " ";
+                report += Math.abs(bestErrors.get(i)) + ")";
             }
             report += ")\n";
         }
-        report += ">> Size: " + _bestSize + "\n\n";
+        report += ">> Size: " + bestSize + "\n\n";
 
         report += "<<<<<<<<<< After Simplification >>>>>>>>>>\n";
         report += ">> Best Program: ";
         report += simplified._program + "\n";
         report += ">> Size: ";
-        report += simplified._program.programsize() + "\n\n";
+        report += simplified._program.programSize() + "\n\n";
 
         return report;
     }
 
-    public String GetTargetFunctionString() {
-        return _targetFunctionString;
+    public String getTargetFunctionString() {
+        return targetFunctionString;
     }
 
-    protected PushGPIndividual Autosimplify(PushGPIndividual inIndividual,
-            int steps) {
-
+    protected PushGPIndividual autosimplify(PushGPIndividual inIndividual, int steps) {
         PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
         PushGPIndividual trial = (PushGPIndividual) inIndividual.clone();
-        EvaluateIndividual(simplest, true);
+        evaluateIndividual(simplest, true);
         float bestError = simplest.GetFitness();
 
         boolean madeSimpler = false;
 
         for (int i = 0; i < steps; i++) {
             madeSimpler = false;
-            float method = _RNG.nextInt(100);
+            float method = random.nextInt(100);
 
-            if (trial._program.programsize() <= 0)
+            if (trial._program.programSize() <= 0)
                 break;
-            if (method < _simplifyFlattenPercent) {
+            if (method < simplifyFlattenPercent) {
                 // Flatten random thing
-                int pointIndex = _RNG.nextInt(trial._program.programsize());
-                Object point = trial._program.Subtree(pointIndex);
+                int pointIndex = random.nextInt(trial._program.programSize());
+                Object point = trial._program.subtree(pointIndex);
 
                 if (point instanceof Program) {
-                    trial._program.Flatten(pointIndex);
+                    trial._program.flatten(pointIndex);
                     madeSimpler = true;
                 }
             } else {
                 // Remove small number of random things
-                int numberToRemove = _RNG.nextInt(3) + 1;
+                int numberToRemove = random.nextInt(3) + 1;
 
                 for (int j = 0; j < numberToRemove; j++) {
-                    int trialSize = trial._program.programsize();
+                    int trialSize = trial._program.programSize();
 
                     if (trialSize > 0) {
-                        int pointIndex = _RNG.nextInt(trialSize);
-                        trial._program.ReplaceSubtree(pointIndex, new Program());
-                        trial._program.Flatten(pointIndex);
+                        int pointIndex = random.nextInt(trialSize);
+                        trial._program.replaceSubtree(pointIndex, new Program());
+                        trial._program.flatten(pointIndex);
                         madeSimpler = true;
                     }
                 }
             }
 
             if (madeSimpler) {
-                EvaluateIndividual(trial, true);
+                evaluateIndividual(trial, true);
 
                 if (trial.GetFitness() <= bestError) {
                     simplest = (PushGPIndividual) trial.clone();
@@ -438,75 +435,75 @@ abstract public class PushGP extends GA {
         return simplest;
     }
 
-    protected void Reproduce() {
-        int nextPopulation = _currentPopulation == 0 ? 1 : 0;
+    protected void reproduce() {
+        int nextPopulation = currentPopulation == 0 ? 1 : 0;
 
-        for (int n = 0; n < _populations[_currentPopulation].length; n++) {
-            float method = _RNG.nextInt(100);
+        for (int n = 0; n < populations[currentPopulation].length; n++) {
+            float method = random.nextInt(100);
             GAIndividual next;
 
-            if (method < _mutationPercent) {
-                next = ReproduceByMutation(n);
-            } else if (method < _crossoverPercent + _mutationPercent) {
-                next = ReproduceByCrossover(n);
-            } else if (method < _crossoverPercent + _mutationPercent
-                    + _simplificationPercent) {
-                next = ReproduceBySimplification(n);
+            if (method < mutationPercent) {
+                next = reproduceByMutation(n);
+            } else if (method < crossoverPercent + mutationPercent) {
+                next = reproduceByCrossover(n);
+            } else if (method < crossoverPercent + mutationPercent
+                    + simplificationPercent) {
+                next = reproduceBySimplification(n);
             } else {
-                next = ReproduceByClone(n);
+                next = reproduceByClone(n);
             }
 
-            _populations[nextPopulation][n] = next;
+            populations[nextPopulation][n] = next;
         }
     }
 
-    protected GAIndividual ReproduceByCrossover(int inIndex) {
-        PushGPIndividual a = (PushGPIndividual) ReproduceByClone(inIndex);
-        PushGPIndividual b = (PushGPIndividual) TournamentSelect(
-                _tournamentSize, inIndex);
+    protected GAIndividual reproduceByCrossover(int inIndex) {
+        PushGPIndividual a = (PushGPIndividual) reproduceByClone(inIndex);
+        PushGPIndividual b = (PushGPIndividual) tournamentSelect(
+            tournamentSize, inIndex);
 
-        if (a._program.programsize() <= 0) {
+        if (a._program.programSize() <= 0) {
             return b;
         }
-        if (b._program.programsize() <= 0) {
+        if (b._program.programSize() <= 0) {
             return a;
         }
 
-        int aindex = ReproductionNodeSelection(a);
-        int bindex = ReproductionNodeSelection(b);
+        int aindex = reproductionNodeSelection(a);
+        int bindex = reproductionNodeSelection(b);
 
-        if (a._program.programsize() + b._program.SubtreeSize(bindex)
-                - a._program.SubtreeSize(aindex) <= _maxPointsInProgram)
-            a._program.ReplaceSubtree(aindex, b._program.Subtree(bindex));
+        if (a._program.programSize() + b._program.subtreeSize(bindex)
+                - a._program.subtreeSize(aindex) <= maxPointsInProgram)
+            a._program.replaceSubtree(aindex, b._program.subtree(bindex));
 
         return a;
     }
 
-    protected GAIndividual ReproduceByMutation(int inIndex) {
-        PushGPIndividual i = (PushGPIndividual) ReproduceByClone(inIndex);
+    protected GAIndividual reproduceByMutation(int inIndex) {
+        PushGPIndividual i = (PushGPIndividual) reproduceByClone(inIndex);
 
-        int totalsize = i._program.programsize();
-        int which = ReproductionNodeSelection(i);
+        int totalsize = i._program.programSize();
+        int which = reproductionNodeSelection(i);
 
-        int oldsize = i._program.SubtreeSize(which);
+        int oldsize = i._program.subtreeSize(which);
         int newsize = 0;
 
-        if (_useFairMutation) {
-            int range = (int) Math.max(1, _fairMutationRange * oldsize);
-            newsize = Math.max(1, oldsize + _RNG.nextInt(2 * range) - range);
+        if (useFairMutation) {
+            int range = (int) Math.max(1, fairMutationRange * oldsize);
+            newsize = Math.max(1, oldsize + random.nextInt(2 * range) - range);
         } else {
-            newsize = _RNG.nextInt(_maxRandomCodeSize);
+            newsize = random.nextInt(maxRandomCodeSize);
         }
 
         Object newtree;
 
         if (newsize == 1)
-            newtree = _interpreter.RandomAtom();
+            newtree = interpreter.randomAtom();
         else
-            newtree = _interpreter.RandomCode(newsize);
+            newtree = interpreter.randomCode(newsize);
 
-        if (newsize + totalsize - oldsize <= _maxPointsInProgram)
-            i._program.ReplaceSubtree(which, newtree);
+        if (newsize + totalsize - oldsize <= maxPointsInProgram)
+            i._program.replaceSubtree(which, newtree);
 
         return i;
     }
@@ -518,29 +515,29 @@ abstract public class PushGP extends GA {
      * @param inInd = Individual to select node from.
      * @return Index of the node to use for reproduction.
      */
-    protected int ReproductionNodeSelection(PushGPIndividual inInd) {
-        int totalSize = inInd._program.programsize();
+    protected int reproductionNodeSelection(PushGPIndividual inInd) {
+        int totalSize = inInd._program.programSize();
         int selectedNode = 0;
 
         if (totalSize <= 1) {
             selectedNode = 0;
-        } else if (_nodeSelectionMode.equals("unbiased")) {
-            selectedNode = _RNG.nextInt(totalSize);
-        } else if (_nodeSelectionMode.equals("leaf-probability")) {
+        } else if (nodeSelectionMode.equals("unbiased")) {
+            selectedNode = random.nextInt(totalSize);
+        } else if (nodeSelectionMode.equals("leaf-probability")) {
             // TODO Implement. Currently runs unbiased
 
             // note: if there aren't any internal nodes, must select leaf, and
             // if no leaf, must select internal
 
-            selectedNode = _RNG.nextInt(totalSize);
+            selectedNode = random.nextInt(totalSize);
         } else {
             // size-tournament
             int maxSize = -1;
             selectedNode = 0;
 
-            for (int j = 0; j < _nodeSelectionTournamentSize; j++) {
-                int nextwhich = _RNG.nextInt(totalSize);
-                int nextwhichsize = inInd._program.SubtreeSize(nextwhich);
+            for (int j = 0; j < nodeSelectionTournamentSize; j++) {
+                int nextwhich = random.nextInt(totalSize);
+                int nextwhichsize = inInd._program.subtreeSize(nextwhich);
 
                 if (nextwhichsize > maxSize) {
                     selectedNode = nextwhich;
@@ -552,23 +549,22 @@ abstract public class PushGP extends GA {
         return selectedNode;
     }
 
-    protected GAIndividual ReproduceBySimplification(int inIndex) {
-        PushGPIndividual i = (PushGPIndividual) ReproduceByClone(inIndex);
+    protected GAIndividual reproduceBySimplification(int inIndex) {
+        PushGPIndividual i = (PushGPIndividual) reproduceByClone(inIndex);
 
-        i = Autosimplify(i, _reproductionSimplifications);
+        i = autosimplify(i, reproductionSimplifications);
 
         return i;
     }
 
-    public void RunTestProgram(Program p, int inTestCaseIndex) {
+    public void runTestProgram(Program p, int inTestCaseIndex) {
         PushGPIndividual i = new PushGPIndividual(p);
-        GATestCase test = _testCases.get(inTestCaseIndex);
+        GATestCase test = testCases.get(inTestCaseIndex);
 
         System.out.println("Executing program: " + p);
 
-        EvaluateTestCase(i, test.input(), test.output());
+        evaluateTestCase(i, test.input(), test.output());
 
-        System.out.println(_interpreter);
+        System.out.println(interpreter);
     }
-
 }

@@ -53,11 +53,11 @@ public class Main {
 
         // Print registered instructions
         System.out.println("Registered Instructions: "
-                + _interpreter.GetRegisteredInstructionsString() + "\n");
+                + _interpreter.getRegisteredInstructionsString() + "\n");
 
         // Run the Psh Inspector
         System.out.println("====== State after " + executed + " steps ======");
-        _interpreter.PrintStacks();
+        _interpreter.printStacks();
 
         while (executed < _executionLimit && stepsTaken == 1) {
             executed += 1;
@@ -83,7 +83,7 @@ public class Main {
 
             if (stepsTaken == 1) {
                 System.out.println(stepPrint);
-                _interpreter.PrintStacks();
+                _interpreter.printStacks();
             }
         }
     }
@@ -95,19 +95,19 @@ public class Main {
     private static void runGeneticProgramming(final String[] args) throws Exception {
         GA ga = null;
         if (args[0].endsWith(".gz"))
-            ga = GA.GAWithCheckpoint(args[0]);
+            ga = GA.gaWithCheckpoint(args[0]);
         else
-            ga = GA.GAWithParameters(Params.ReadFromFile(new File(args[0])));
+            ga = GA.gaWithParameters(Params.ReadFromFile(new File(args[0])));
 
         if (args.length == 3) {
             // Execute a test program
 
             Program p = new Program(args[1]);
-            ((PushGP) ga).RunTestProgram(p, Integer.parseInt(args[2]));
+            ((PushGP) ga).runTestProgram(p, Integer.parseInt(args[2]));
         } else {
             // Execute a GP run.
 
-            ga.Run();
+            ga.run();
         }
     }
 }

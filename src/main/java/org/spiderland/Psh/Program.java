@@ -21,7 +21,7 @@ public class Program extends ObjectStack implements Serializable {
      * @param inOther The Push program to copy.
      */
     public Program(Program inOther) {
-        inOther.CopyTo(this);
+        inOther.copyTo(this);
     }
 
     /**
@@ -29,8 +29,8 @@ public class Program extends ObjectStack implements Serializable {
      *
      * @param inString The Push program string to parse.
      */
-    public Program(String inString) throws Exception {
-        Parse(inString);
+    public Program(String inString) {
+        parse(inString);
     }
 
     /**
@@ -38,7 +38,7 @@ public class Program extends ObjectStack implements Serializable {
      *
      * @param inString The Push program string to parse.
      */
-    private void Parse(String inString) throws Exception {
+    private void parse(String inString) {
         clear();
 
         inString = inString.replace("(", " ( ");
@@ -46,10 +46,10 @@ public class Program extends ObjectStack implements Serializable {
 
         String[] tokens = inString.split("\\s+");
 
-        Parse(tokens, 0);
+        parse(tokens, 0);
     }
 
-    private int Parse(String[] inTokens, int inStart) throws Exception {
+    private int parse(String[] inTokens, int inStart) {
         boolean first = (inStart == 0);
 
         for (int n = inStart; n < inTokens.length; n++) {
@@ -66,7 +66,7 @@ public class Program extends ObjectStack implements Serializable {
                     if (!first) {
                         Program p = new Program();
 
-                        n = p.Parse(inTokens, n + 1);
+                        n = p.parse(inTokens, n + 1);
 
                         push(p);
                     }
@@ -95,7 +95,7 @@ public class Program extends ObjectStack implements Serializable {
 
         // If we're here, there was no closing brace for one of the programs
 
-        throw new Exception("no closing brace found for program");
+        throw new RuntimeException("no closing brace found for program");
     }
 
     /**
@@ -103,13 +103,13 @@ public class Program extends ObjectStack implements Serializable {
      *
      * @return The size of the program.
      */
-    public int programsize() {
+    public int programSize() {
         int size = _size;
 
         for (int n = 0; n < _size; n++) {
             Object o = _stack[n];
             if (o instanceof Program)
-                size += ((Program) o).programsize();
+                size += ((Program) o).programSize();
         }
 
         return size;
@@ -122,14 +122,14 @@ public class Program extends ObjectStack implements Serializable {
      * @return The size of the subtree.
      */
 
-    public int SubtreeSize(int inIndex) {
-        Object sub = Subtree(inIndex);
+    public int subtreeSize(int inIndex) {
+        Object sub = subtree(inIndex);
 
         if (sub == null)
             return 0;
 
         if (sub instanceof Program)
-            return ((Program) sub).programsize();
+            return ((Program) sub).programSize();
 
         return 1;
     }
@@ -141,7 +141,7 @@ public class Program extends ObjectStack implements Serializable {
      * @return The program subtree.
      */
 
-    public Object Subtree(int inIndex) {
+    public Object subtree(int inIndex) {
         if (inIndex < _size) {
             return _stack[inIndex];
         } else {
@@ -151,10 +151,10 @@ public class Program extends ObjectStack implements Serializable {
                 Object o = _stack[n];
 
                 if (o instanceof Program sub) {
-                    int length = sub.programsize();
+                    int length = sub.programSize();
 
                     if (inIndex - startIndex < length)
-                        return sub.Subtree(inIndex - startIndex);
+                        return sub.subtree(inIndex - startIndex);
 
                     startIndex += length;
                 }
@@ -172,9 +172,9 @@ public class Program extends ObjectStack implements Serializable {
      * @return True if a replacement was made (the index was valid).
      */
 
-    public boolean ReplaceSubtree(int inIndex, Object inReplacement) {
+    public boolean replaceSubtree(int inIndex, Object inReplacement) {
         if (inIndex < _size) {
-            _stack[inIndex] = cloneforprogram(inReplacement);
+            _stack[inIndex] = cloneForProgram(inReplacement);
             return true;
         } else {
             int startIndex = _size;
@@ -183,10 +183,10 @@ public class Program extends ObjectStack implements Serializable {
                 Object o = _stack[n];
 
                 if (o instanceof Program sub) {
-                    int length = sub.programsize();
+                    int length = sub.programSize();
 
                     if (inIndex - startIndex < length)
-                        return sub.ReplaceSubtree(inIndex - startIndex,
+                        return sub.replaceSubtree(inIndex - startIndex,
                                 inReplacement);
 
                     startIndex += length;
@@ -197,7 +197,7 @@ public class Program extends ObjectStack implements Serializable {
         return false;
     }
 
-    public void Flatten(int inIndex) {
+    public void flatten(int inIndex) {
         if (inIndex < _size) {
             // If here, the index to be flattened is in this program. So, push
             // the rest of the program onto a new program, and replace this with
@@ -226,10 +226,10 @@ public class Program extends ObjectStack implements Serializable {
                 Object o = _stack[n];
 
                 if (o instanceof Program sub) {
-                    int length = sub.programsize();
+                    int length = sub.programSize();
 
                     if (inIndex - startIndex < length) {
-                        sub.Flatten(inIndex - startIndex);
+                        sub.flatten(inIndex - startIndex);
                         break;
                     }
 
@@ -245,7 +245,7 @@ public class Program extends ObjectStack implements Serializable {
      * @param inOther The program to receive the copy of this program
      */
 
-    public void CopyTo(Program inOther) {
+    public void copyTo(Program inOther) {
         for (int n = 0; n < _size; n++)
             inOther.push(_stack[n]);
     }
@@ -270,7 +270,7 @@ public class Program extends ObjectStack implements Serializable {
      * clone() is unfortunately useless for this task.
      */
 
-    private Object cloneforprogram(Object inObject) {
+    private Object cloneForProgram(Object inObject) {
         // Java clone() is useless :(
 
         if (inObject instanceof String)

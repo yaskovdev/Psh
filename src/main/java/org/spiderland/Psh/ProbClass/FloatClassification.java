@@ -14,10 +14,10 @@ public class FloatClassification extends PushGP {
     float _currentInput;
     int _inputCount;
 
-    protected void InitFromParameters() throws Exception {
-        super.InitFromParameters();
+    protected void initFromParameters() throws Exception {
+        super.initFromParameters();
 
-        String cases = GetParam("test-cases");
+        String cases = getParam("test-cases");
 
         Program testCases = new Program(cases);
 
@@ -37,25 +37,25 @@ public class FloatClassification extends PushGP {
             Float in = Float.valueOf(p.peek(0).toString());
             Float out = Float.valueOf(p.peek(1).toString());
 
-            Print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
+            print(";; Fitness case #" + i + " input: " + in + " output: " + out + "\n");
 
-            _testCases.add(new GATestCase(in, out));
+            this.testCases.add(new GATestCase(in, out));
         }
     }
 
-    protected void InitInterpreter(Interpreter inInterpreter) {
+    protected void initInterpreter(Interpreter inInterpreter) {
     }
 
-    public float EvaluateTestCase(GAIndividual inIndividual, Object inInput, Object inOutput) {
-        _interpreter.clearStacks();
+    public float evaluateTestCase(GAIndividual inIndividual, Object inInput, Object inOutput) {
+        interpreter.clearStacks();
 
         _currentInput = (Float) inInput;
 
-        FloatStack stack = _interpreter.floatStack();
+        FloatStack stack = interpreter.floatStack();
 
         stack.push(_currentInput);
 
-        _interpreter.Execute(((PushGPIndividual) inIndividual)._program, _executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual)._program, executionLimit);
 
         float result = stack.top();
         return result - ((Float) inOutput);

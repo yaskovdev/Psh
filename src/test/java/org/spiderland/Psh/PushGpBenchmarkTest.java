@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.spiderland.Psh.GA.GAWithParameters;
+import static org.spiderland.Psh.GA.gaWithParameters;
 import static org.spiderland.Psh.Params.ReadFromFile;
 
 @Tag("BenchmarkTest")
@@ -37,8 +37,8 @@ public class PushGpBenchmarkTest {
 
     @Benchmark
     public void benchmarkCartCentering() throws Exception {
-        final GA ga = GAWithParameters(ReadFromFile(getFileFromResource("CartCenterBenchmark.pushgp")));
-        ga.Run();
+        final GA ga = gaWithParameters(ReadFromFile(getFileFromResource("CartCenterBenchmark.pushgp")));
+        ga.run();
     }
 
     private Collection<RunResult> runBenchmark(Options opt) throws RunnerException {
