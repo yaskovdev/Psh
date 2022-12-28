@@ -10,17 +10,16 @@ import java.util.HashMap;
 /**
  * A utility class for reading PushGP params.
  */
-
 public class Params {
-    public static HashMap<String, String> ReadFromFile(File inFile)
-            throws Exception {
-        HashMap<String, String> map = new HashMap<String, String>();
+
+    public static HashMap<String, String> readFromFile(File inFile) throws Exception {
+        HashMap<String, String> map = new HashMap<>();
         return Read(Files.readString(inFile.toPath(), StandardCharsets.UTF_8), map, inFile);
     }
 
     public static HashMap<String, String> Read(String inParams)
             throws Exception {
-        HashMap<String, String> map = new HashMap<String, String>();
+        HashMap<String, String> map = new HashMap<>();
         return Read(inParams, map, null);
     }
 

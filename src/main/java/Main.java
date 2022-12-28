@@ -97,7 +97,7 @@ public class Main {
         if (args[0].endsWith(".gz"))
             ga = GA.gaWithCheckpoint(args[0]);
         else
-            ga = GA.gaWithParameters(Params.ReadFromFile(new File(args[0])));
+            ga = GA.gaWithParameters(Params.readFromFile(new File(args[0])));
 
         if (args.length == 3) {
             // Execute a test program
