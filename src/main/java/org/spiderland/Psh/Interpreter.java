@@ -36,7 +36,7 @@ public class Interpreter implements Serializable {
     // problem classes
     protected List<Stack> customStacks = new ArrayList<>();
 
-    /* Since the _inputStack will not change after initialization, it will not
+    /* Since the inputStack will not change after initialization, it will not
      * need a frame stack.
      */
     protected ObjectStack intFrameStack = new ObjectStack();
@@ -224,7 +224,7 @@ public class Interpreter implements Serializable {
                             + "\" in instruction set");
                 } else {
                     // Legal stack type, so add all generators matching
-                    // registeredType to _randomGenerators.
+                    // registeredType to randomGenerators.
                     Object[] keys = instructions.keySet().toArray();
 
                     for (Object value : keys) {
@@ -672,8 +672,8 @@ public class Interpreter implements Serializable {
         return inputPusher;
     }
 
-    public void setInputPusher(InputPusher _inputPusher) {
-        this.inputPusher = _inputPusher;
+    public void setInputPusher(InputPusher inputPusher) {
+        this.inputPusher = inputPusher;
     }
 
     /**
@@ -764,14 +764,14 @@ public class Interpreter implements Serializable {
     private static class InstructionAtomGenerator extends AtomGenerator {
         private static final long serialVersionUID = 1L;
 
-        String _instruction;
+        String instruction;
 
         InstructionAtomGenerator(String inInstructionName) {
-            _instruction = inInstructionName;
+            instruction = inInstructionName;
         }
 
         Object generate(Interpreter inInterpreter) {
-            return _instruction;
+            return instruction;
         }
     }
 

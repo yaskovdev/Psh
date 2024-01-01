@@ -11,8 +11,8 @@ import org.spiderland.Psh.PushGPIndividual;
 public class FloatClassification extends PushGP {
     private static final long serialVersionUID = 1L;
 
-    float _currentInput;
-    int _inputCount;
+    float currentInput;
+    int inputCount;
 
     protected void initFromParameters() throws Exception {
         super.initFromParameters();
@@ -21,7 +21,7 @@ public class FloatClassification extends PushGP {
 
         Program testCases = new Program(cases);
 
-        _inputCount = ((Program) testCases.peek(0)).size() - 1;
+        inputCount = ((Program) testCases.peek(0)).size() - 1;
 
         for (int i = 0; i < testCases.size(); i++) {
             Program p = (Program) testCases.peek(i);
@@ -30,7 +30,7 @@ public class FloatClassification extends PushGP {
                 throw new Exception("Not enough entries for fitness case \""
                         + p + "\"");
 
-            if (p.size() != _inputCount + 1)
+            if (p.size() != inputCount + 1)
                 throw new Exception(
                         "Wrong number of inputs for fitness case \"" + p + "\"");
 
@@ -49,11 +49,11 @@ public class FloatClassification extends PushGP {
     public float evaluateTestCase(GAIndividual inIndividual, Object inInput, Object inOutput) {
         interpreter.clearStacks();
 
-        _currentInput = (Float) inInput;
+        currentInput = (Float) inInput;
 
         FloatStack stack = interpreter.floatStack();
 
-        stack.push(_currentInput);
+        stack.push(currentInput);
 
         interpreter.execute(((PushGPIndividual) inIndividual).program, executionLimit);
 

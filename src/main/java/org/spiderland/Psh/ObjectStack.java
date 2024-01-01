@@ -6,12 +6,12 @@ package org.spiderland.Psh;
 public class ObjectStack extends Stack {
     private static final long serialVersionUID = 1L;
 
-    protected Object[] _stack;
-    final static int _blocksize = 16;
+    protected Object[] stack;
+    final static int blocksize = 16;
 
     public void pushAllReverse(ObjectStack inOther) {
-        for (int n = _size - 1; n >= 0; n--)
-            inOther.push(_stack[n]);
+        for (int n = size - 1; n >= 0; n--)
+            inOther.push(stack[n]);
     }
 
     public boolean equals(Object inOther) {
@@ -21,15 +21,15 @@ public class ObjectStack extends Stack {
         if (!(inOther instanceof ObjectStack))
             return false;
 
-        return ((ObjectStack) inOther).compareStack(_stack, _size);
+        return ((ObjectStack) inOther).compareStack(stack, size);
     }
 
     boolean compareStack(Object[] inOther, int inOtherSize) {
-        if (inOtherSize != _size)
+        if (inOtherSize != size)
             return false;
 
-        for (int n = 0; n < _size; n++) {
-            if (!_stack[n].equals(inOther[n]))
+        for (int n = 0; n < size; n++) {
+            if (!stack[n].equals(inOther[n]))
                 return false;
         }
 
@@ -39,27 +39,27 @@ public class ObjectStack extends Stack {
     void resize(int inSize) {
         Object[] newstack = new Object[inSize];
 
-        if (_stack != null)
-            System.arraycopy(_stack, 0, newstack, 0, _size);
+        if (stack != null)
+            System.arraycopy(stack, 0, newstack, 0, size);
 
-        _stack = newstack;
-        _maxsize = inSize;
+        stack = newstack;
+        maxsize = inSize;
     }
 
     public Object peek(int inIndex) {
-        return inIndex >= 0 && inIndex < _size ? _stack[inIndex] : null;
+        return inIndex >= 0 && inIndex < size ? stack[inIndex] : null;
     }
 
     public Object top() {
-        return peek(_size - 1);
+        return peek(size - 1);
     }
 
     public Object pop() {
         Object result = null;
 
-        if (_size > 0) {
-            result = _stack[_size - 1];
-            _size--;
+        if (size > 0) {
+            result = stack[size - 1];
+            size--;
         }
 
         return result;
@@ -69,101 +69,101 @@ public class ObjectStack extends Stack {
         if (inValue instanceof Program)
             inValue = new Program((Program) inValue);
 
-        _stack[_size] = inValue;
-        _size++;
+        stack[size] = inValue;
+        size++;
 
-        if (_size >= _maxsize)
-            resize(_maxsize + _blocksize);
+        if (size >= maxsize)
+            resize(maxsize + blocksize);
     }
 
     public void dup() {
-        if (_size > 0)
-            push(_stack[_size - 1]);
+        if (size > 0)
+            push(stack[size - 1]);
     }
 
     public void shove(Object obj, int n) {
-        if (n > _size)
-            n = _size;
+        if (n > size)
+            n = size;
 
         // n = 0 is the same as push, so
         // the position in the array we insert at is
-        // _size-n.
+        // size - n.
 
-        n = _size - n;
+        n = size - n;
 
-        for (int i = _size; i > n; i--)
-            _stack[i] = _stack[i - 1];
-        _stack[n] = obj;
-        _size++;
-        if (_size >= _maxsize)
-            resize(_maxsize + _blocksize);
+        for (int i = size; i > n; i--)
+            stack[i] = stack[i - 1];
+        stack[n] = obj;
+        size++;
+        if (size >= maxsize)
+            resize(maxsize + blocksize);
     }
 
     public void shove(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
             Object toShove = top();
-            int shovedIndex = _size - inIndex - 1;
+            int shovedIndex = size - inIndex - 1;
 
-            for (int i = _size - 1; i > shovedIndex; i--) {
-                _stack[i] = _stack[i - 1];
+            for (int i = size - 1; i > shovedIndex; i--) {
+                stack[i] = stack[i - 1];
             }
-            _stack[shovedIndex] = toShove;
+            stack[shovedIndex] = toShove;
         }
     }
 
     public void swap() {
-        if (_size > 1) {
-            Object tmp = _stack[_size - 2];
-            _stack[_size - 2] = _stack[_size - 1];
-            _stack[_size - 1] = tmp;
+        if (size > 1) {
+            Object tmp = stack[size - 2];
+            stack[size - 2] = stack[size - 1];
+            stack[size - 1] = tmp;
         }
     }
 
     public void rot() {
-        if (_size > 2) {
-            Object tmp = _stack[_size - 3];
-            _stack[_size - 3] = _stack[_size - 2];
-            _stack[_size - 2] = _stack[_size - 1];
-            _stack[_size - 1] = tmp;
+        if (size > 2) {
+            Object tmp = stack[size - 3];
+            stack[size - 3] = stack[size - 2];
+            stack[size - 2] = stack[size - 1];
+            stack[size - 1] = tmp;
         }
     }
 
     public void yank(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
-            int yankedIndex = _size - inIndex - 1;
+            int yankedIndex = size - inIndex - 1;
             Object toYank = peek(yankedIndex);
 
-            for (int i = yankedIndex; i < _size - 1; i++) {
-                _stack[i] = _stack[i + 1];
+            for (int i = yankedIndex; i < size - 1; i++) {
+                stack[i] = stack[i + 1];
             }
-            _stack[_size - 1] = toYank;
+            stack[size - 1] = toYank;
         }
     }
 
     public void yankdup(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
-            int yankedIndex = _size - inIndex - 1;
+            int yankedIndex = size - inIndex - 1;
             push(peek(yankedIndex));
         }
     }
@@ -171,12 +171,12 @@ public class ObjectStack extends Stack {
     public String toString() {
         String result = "[";
 
-        for (int n = _size - 1; n >= 0; n--) {
+        for (int n = size - 1; n >= 0; n--) {
 
-            if (n == _size - 1)
-                result += _stack[n];
+            if (n == size - 1)
+                result += stack[n];
             else
-                result += " " + _stack[n];
+                result += " " + stack[n];
         }
         result += "]";
 

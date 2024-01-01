@@ -512,7 +512,7 @@ abstract public class PushGP extends GeneticAlgorithm {
 
     /**
      * Selects a node to use during crossover or mutation. The selection
-     * mechanism depends on the global parameter _nodeSelectionMode.
+     * mechanism depends on the global parameter nodeSelectionMode.
      *
      * @param inInd = Individual to select node from.
      * @return Index of the node to use for reproduction.

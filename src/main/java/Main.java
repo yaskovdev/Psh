@@ -42,24 +42,24 @@ public class Main {
      * boolean inputs are accepted.
      */
     private static void interpretPushProgram(final String[] args) throws Exception {
-        // _input will allow easy initialization of the interpreter.
-        InspectorInput _input = new InspectorInput(args[0]);
-        Interpreter _interpreter = _input.getInterpreter();
+        // input will allow easy initialization of the interpreter.
+        InspectorInput input = new InspectorInput(args[0]);
+        Interpreter interpreter = input.getInterpreter();
 
-        int _executionLimit = _input.getExecutionLimit();
+        int executionLimit = input.getExecutionLimit();
         int executed = 0;
         int stepsTaken = 1;
         String stepPrint = "";
 
         // Print registered instructions
         System.out.println("Registered Instructions: "
-                + _interpreter.getRegisteredInstructionsString() + "\n");
+                + interpreter.getRegisteredInstructionsString() + "\n");
 
         // Run the Psh Inspector
         System.out.println("====== State after " + executed + " steps ======");
-        _interpreter.printStacks();
+        interpreter.printStacks();
 
-        while (executed < _executionLimit && stepsTaken == 1) {
+        while (executed < executionLimit && stepsTaken == 1) {
             executed += 1;
 
             // Create output string
@@ -69,7 +69,7 @@ public class Main {
                 stepPrint = "====== State after " + executed + " steps ";
 
             stepPrint += "(last step: ";
-            Object execTop = _interpreter.execStack().top();
+            Object execTop = interpreter.execStack().top();
 
             if (execTop instanceof Program)
                 stepPrint += "(...)";
@@ -79,11 +79,11 @@ public class Main {
             stepPrint += ") ======";
 
             // Execute 1 instruction
-            stepsTaken = _interpreter.Step(1);
+            stepsTaken = interpreter.Step(1);
 
             if (stepsTaken == 1) {
                 System.out.println(stepPrint);
-                _interpreter.printStacks();
+                interpreter.printStacks();
             }
         }
     }

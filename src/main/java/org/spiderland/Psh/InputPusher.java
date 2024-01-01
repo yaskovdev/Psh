@@ -6,10 +6,10 @@ public class InputPusher implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public void pushInput(Interpreter inI, int n) {
-        ObjectStack _stack = inI.inputStack();
+        ObjectStack stack = inI.inputStack();
 
-        if (_stack.size() > n) {
-            Object inObject = _stack.peek(n);
+        if (stack.size() > n) {
+            Object inObject = stack.peek(n);
 
             if (inObject instanceof Integer) {
                 IntStack istack = inI.intStack();

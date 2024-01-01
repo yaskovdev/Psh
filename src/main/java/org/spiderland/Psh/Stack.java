@@ -8,11 +8,11 @@ import java.io.Serializable;
 abstract class Stack implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected int _size;
-    protected int _maxsize;
+    protected int size;
+    protected int maxsize;
 
     Stack() {
-        _size = 0;
+        size = 0;
         resize(8);
     }
 
@@ -31,15 +31,15 @@ abstract class Stack implements Serializable {
     abstract void yankdup(int inIndex);
 
     public void clear() {
-        _size = 0;
+        size = 0;
     }
 
     public int size() {
-        return _size;
+        return size;
     }
 
     public void popdiscard() {
-        if (_size > 0)
-            _size--;
+        if (size > 0)
+            size--;
     }
 }

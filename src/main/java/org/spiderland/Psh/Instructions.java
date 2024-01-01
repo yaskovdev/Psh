@@ -14,10 +14,10 @@ import java.util.Random;
 abstract class StackInstruction extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    protected Stack _stack;
+    protected Stack stack;
 
     StackInstruction(Stack inStack) {
-        _stack = inStack;
+        stack = inStack;
     }
 }
 
@@ -29,10 +29,10 @@ abstract class StackInstruction extends Instruction {
 abstract class ObjectStackInstruction extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    protected ObjectStack _stack;
+    protected ObjectStack stack;
 
     ObjectStackInstruction(ObjectStack inStack) {
-        _stack = inStack;
+        stack = inStack;
     }
 }
 
@@ -61,8 +61,8 @@ class Pop extends StackInstruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        if (_stack.size() > 0)
-            _stack.popdiscard();
+        if (stack.size() > 0)
+            stack.popdiscard();
     }
 }
 
@@ -75,7 +75,7 @@ class Flush extends StackInstruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        _stack.clear();
+        stack.clear();
     }
 }
 
@@ -88,7 +88,7 @@ class Dup extends StackInstruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        _stack.dup();
+        stack.dup();
     }
 }
 
@@ -101,8 +101,8 @@ class Rot extends StackInstruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        if (_stack.size() > 2)
-            _stack.rot();
+        if (stack.size() > 2)
+            stack.rot();
     }
 }
 
@@ -119,8 +119,8 @@ class Shove extends StackInstruction {
 
         if (iStack.size() > 0) {
             int index = iStack.pop();
-            if (_stack.size() > 0) {
-                _stack.shove(index);
+            if (stack.size() > 0) {
+                stack.shove(index);
             } else {
                 iStack.push(index);
             }
@@ -137,8 +137,8 @@ class Swap extends StackInstruction {
 
     @Override
     public void Execute(Interpreter inI) {
-        if (_stack.size() > 1)
-            _stack.swap();
+        if (stack.size() > 1)
+            stack.swap();
     }
 }
 
@@ -155,8 +155,8 @@ class Yank extends StackInstruction {
 
         if (iStack.size() > 0) {
             int index = iStack.pop();
-            if (_stack.size() > 0) {
-                _stack.yank(index);
+            if (stack.size() > 0) {
+                stack.yank(index);
             } else {
                 iStack.push(index);
             }
@@ -177,8 +177,8 @@ class YankDup extends StackInstruction {
 
         if (iStack.size() > 0) {
             int index = iStack.pop();
-            if (_stack.size() > 0) {
-                _stack.yankdup(index);
+            if (stack.size() > 0) {
+                stack.yankdup(index);
             } else {
                 iStack.push(index);
             }
@@ -196,68 +196,68 @@ class Depth extends StackInstruction {
     @Override
     public void Execute(Interpreter inI) {
         IntStack stack = inI.intStack();
-        stack.push(_stack.size());
+        stack.push(this.stack.size());
     }
 }
 
 class IntegerConstant extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    int _value;
+    int value;
 
     public IntegerConstant(int inValue) {
-        _value = inValue;
+        value = inValue;
     }
 
     @Override
     public void Execute(Interpreter inI) {
-        inI.intStack().push(_value);
+        inI.intStack().push(value);
     }
 }
 
 class FloatConstant extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    float _value;
+    float value;
 
     public FloatConstant(float inValue) {
-        _value = inValue;
+        value = inValue;
     }
 
     @Override
     public void Execute(Interpreter inI) {
-        inI.floatStack().push(_value);
+        inI.floatStack().push(value);
     }
 }
 
 class BooleanConstant extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    boolean _value;
+    boolean value;
 
     public BooleanConstant(boolean inValue) {
-        _value = inValue;
+        value = inValue;
     }
 
     @Override
     public void Execute(Interpreter inI) {
-        inI.boolStack().push(_value);
+        inI.boolStack().push(value);
     }
 }
 
 class ObjectConstant extends ObjectStackInstruction {
     private static final long serialVersionUID = 1L;
 
-    Object _value;
+    Object value;
 
     public ObjectConstant(ObjectStack inStack, Object inValue) {
         super(inStack);
-        _value = inValue;
+        value = inValue;
     }
 
     @Override
     public void Execute(Interpreter inI) {
-        _stack.push(_value);
+        stack.push(value);
     }
 }
 
@@ -495,17 +495,17 @@ class IntegerLn extends UnaryIntInstruction {
 class IntegerRand extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    Random _RNG;
+    Random random;
 
     IntegerRand() {
-        _RNG = new Random();
+        random = new Random();
     }
 
     @Override
     public void Execute(Interpreter inI) {
         int range = (inI.maxRandomInt - inI.minRandomInt)
                 / inI.randomIntResolution;
-        int randInt = (_RNG.nextInt(range) * inI.randomIntResolution)
+        int randInt = (random.nextInt(range) * inI.randomIntResolution)
                 + inI.minRandomInt;
         inI.intStack().push(randInt);
     }
@@ -887,10 +887,10 @@ class FloatLn extends UnaryFloatInstruction {
 class FloatRand extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    Random _RNG;
+    Random random;
 
     FloatRand() {
-        _RNG = new Random();
+        random = new Random();
     }
 
     @Override
@@ -899,7 +899,7 @@ class FloatRand extends Instruction {
 
         float range = (inI.maxRandomFloat - inI.minRandomFloat)
                 / inI.randomFloatResolution;
-        float randFloat = (_RNG.nextFloat() * range * inI.randomFloatResolution)
+        float randFloat = (random.nextFloat() * range * inI.randomFloatResolution)
                 + inI.minRandomFloat;
         inI.floatStack().push(randFloat);
     }
@@ -1063,15 +1063,15 @@ class BoolNot extends Instruction {
 class BoolRand extends Instruction {
     private static final long serialVersionUID = 1L;
 
-    Random _RNG;
+    Random random;
 
     BoolRand() {
-        _RNG = new Random();
+        random = new Random();
     }
 
     @Override
     public void Execute(Interpreter inI) {
-        inI.boolStack().push(_RNG.nextBoolean());
+        inI.boolStack().push(random.nextBoolean());
     }
 }
 
@@ -1136,8 +1136,8 @@ class InputInAll extends ObjectStackInstruction {
     @Override
     public void Execute(Interpreter inI) {
 
-        if (_stack.size() > 0) {
-            for (int index = 0; index < _stack.size(); index++) {
+        if (stack.size() > 0) {
+            for (int index = 0; index < stack.size(); index++) {
                 inI.getInputPusher().pushInput(inI, index);
             }
         }
@@ -1154,8 +1154,8 @@ class InputInRev extends ObjectStackInstruction {
     @Override
     public void Execute(Interpreter inI) {
 
-        if (_stack.size() > 0) {
-            for (int index = _stack.size() - 1; index >= 0; index--) {
+        if (stack.size() > 0) {
+            for (int index = stack.size() - 1; index >= 0; index--) {
                 inI.getInputPusher().pushInput(inI, index);
             }
         }
@@ -1173,13 +1173,13 @@ class InputIndex extends ObjectStackInstruction {
     public void Execute(Interpreter inI) {
         IntStack istack = inI.intStack();
 
-        if (istack.size() > 0 && _stack.size() > 0) {
+        if (istack.size() > 0 && stack.size() > 0) {
             int index = istack.pop();
 
             if (index < 0)
                 index = 0;
-            if (index >= _stack.size())
-                index = _stack.size() - 1;
+            if (index >= stack.size())
+                index = stack.size() - 1;
 
             inI.getInputPusher().pushInput(inI, index);
         }
@@ -1206,10 +1206,10 @@ class CodeDoRange extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 1) {
+        if (stack.size() > 0 && istack.size() > 1) {
             int stop = istack.pop();
             int start = istack.pop();
-            Object code = _stack.pop();
+            Object code = stack.pop();
 
             if (start == stop) {
                 istack.push(start);
@@ -1248,13 +1248,13 @@ class CodeDoTimes extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 0) {
+        if (stack.size() > 0 && istack.size() > 0) {
             if (istack.top() > 0) {
-                Object bodyObj = _stack.pop();
+                Object bodyObj = stack.pop();
 
                 if (bodyObj instanceof Program) {
                     // insert integer.pop in front of program
-                    ((Program) bodyObj).shove("integer.pop", ((Program) bodyObj)._size);
+                    ((Program) bodyObj).shove("integer.pop", ((Program) bodyObj).size);
                 } else {
                     // create a new program with integer.pop in front of
                     // the popped object
@@ -1296,10 +1296,10 @@ class CodeDoCount extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 0) {
+        if (stack.size() > 0 && istack.size() > 0) {
             if (istack.top() > 0) {
                 int stop = istack.pop() - 1;
-                Object bodyObj = _stack.pop();
+                Object bodyObj = stack.pop();
 
                 try {
                     Program doRangeMacroProgram = new Program();
@@ -1382,10 +1382,10 @@ class ExecDoRange extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 1) {
+        if (stack.size() > 0 && istack.size() > 1) {
             int stop = istack.pop();
             int start = istack.pop();
-            Object code = _stack.pop();
+            Object code = stack.pop();
 
             if (start == stop) {
                 istack.push(start);
@@ -1425,13 +1425,13 @@ class ExecDoTimes extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 0) {
+        if (stack.size() > 0 && istack.size() > 0) {
             if (istack.top() > 0) {
-                Object bodyObj = _stack.pop();
+                Object bodyObj = stack.pop();
 
                 if (bodyObj instanceof Program) {
                     // insert integer.pop in front of program
-                    ((Program) bodyObj).shove("integer.pop", ((Program) bodyObj)._size);
+                    ((Program) bodyObj).shove("integer.pop", ((Program) bodyObj).size);
                 } else {
                     // create a new program with integer.pop in front of
                     // the popped object
@@ -1472,10 +1472,10 @@ class ExecDoCount extends ObjectStackInstruction {
         IntStack istack = inI.intStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 0 && istack.size() > 0) {
+        if (stack.size() > 0 && istack.size() > 0) {
             if (istack.top() > 0) {
                 int stop = istack.pop() - 1;
-                Object bodyObj = _stack.pop();
+                Object bodyObj = stack.pop();
 
                 try {
                     Program doRangeMacroProgram = new Program();
@@ -1505,9 +1505,9 @@ class ExecK extends ObjectStackInstruction {
     @Override
     public void Execute(Interpreter inI) {
         // Removes the second item on the stack
-        if (_stack.size() > 1) {
-            _stack.swap();
-            _stack.popdiscard();
+        if (stack.size() > 1) {
+            stack.swap();
+            stack.popdiscard();
         }
     }
 }
@@ -1515,36 +1515,36 @@ class ExecK extends ObjectStackInstruction {
 class ExecS extends ObjectStackInstruction {
     private static final long serialVersionUID = 1L;
 
-    int _maxPointsInProgram;
+    int maxPointsInProgram;
 
     ExecS(ObjectStack inStack, int inMaxPointsInProgram) {
         super(inStack);
-        _maxPointsInProgram = inMaxPointsInProgram;
+        maxPointsInProgram = inMaxPointsInProgram;
     }
 
     @Override
     public void Execute(Interpreter inI) {
         // Removes the second item on the stack
-        if (_stack.size() > 2) {
-            Object a = _stack.pop();
-            Object b = _stack.pop();
-            Object c = _stack.pop();
+        if (stack.size() > 2) {
+            Object a = stack.pop();
+            Object b = stack.pop();
+            Object c = stack.pop();
             Program listBC = new Program();
 
             listBC.push(b);
             listBC.push(c);
 
-            if (listBC.programSize() > _maxPointsInProgram) {
+            if (listBC.programSize() > maxPointsInProgram) {
                 // If the new list is too large, turn into a noop by re-pushing
                 // the popped instructions
-                _stack.push(c);
-                _stack.push(b);
-                _stack.push(a);
+                stack.push(c);
+                stack.push(b);
+                stack.push(a);
             } else {
                 // If not too big, continue as planned
-                _stack.push(listBC);
-                _stack.push(c);
-                _stack.push(a);
+                stack.push(listBC);
+                stack.push(c);
+                stack.push(a);
             }
         }
     }
@@ -1560,15 +1560,15 @@ class ExecY extends ObjectStackInstruction {
     @Override
     public void Execute(Interpreter inI) {
         // Removes the second item on the stack
-        if (_stack.size() > 0) {
-            Object a = _stack.pop();
+        if (stack.size() > 0) {
+            Object a = stack.pop();
             Program listExecYA = new Program();
 
             listExecYA.push("exec.y");
             listExecYA.push(a);
 
-            _stack.push(listExecYA);
-            _stack.push(a);
+            stack.push(listExecYA);
+            stack.push(a);
         }
     }
 }
@@ -1585,11 +1585,11 @@ class ExecNoop extends Instruction {
 class RandomPushCode extends ObjectStackInstruction {
     private static final long serialVersionUID = 1L;
 
-    Random _RNG;
+    Random random;
 
     RandomPushCode(ObjectStack inStack) {
         super(inStack);
-        _RNG = new Random();
+        random = new Random();
     }
 
     @Override
@@ -1603,13 +1603,13 @@ class RandomPushCode extends ObjectStackInstruction {
 
             int randomCodeSize;
             if (randCodeMaxPoints > 0) {
-                randomCodeSize = _RNG.nextInt(randCodeMaxPoints) + 2;
+                randomCodeSize = random.nextInt(randCodeMaxPoints) + 2;
             } else {
                 randomCodeSize = 2;
             }
             Program p = inI.randomCode(randomCodeSize);
 
-            _stack.push(p);
+            stack.push(p);
         }
     }
 }
@@ -1626,9 +1626,9 @@ class ObjectEquals extends ObjectStackInstruction {
     public void Execute(Interpreter inI) {
         BooleanStack bstack = inI.boolStack();
 
-        if (_stack.size() > 1) {
-            Object o1 = _stack.pop();
-            Object o2 = _stack.pop();
+        if (stack.size() > 1) {
+            Object o1 = stack.pop();
+            Object o2 = stack.pop();
 
             bstack.push(o1.equals(o2));
         }
@@ -1647,11 +1647,11 @@ class If extends ObjectStackInstruction {
         BooleanStack bstack = inI.boolStack();
         ObjectStack estack = inI.execStack();
 
-        if (_stack.size() > 1 && bstack.size() > 0) {
+        if (stack.size() > 1 && bstack.size() > 0) {
             boolean istrue = bstack.pop();
 
-            Object iftrue = _stack.pop();
-            Object iffalse = _stack.pop();
+            Object iftrue = stack.pop();
+            Object iffalse = stack.pop();
 
             if (istrue)
                 estack.push(iftrue);

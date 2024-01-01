@@ -17,7 +17,7 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
 public class IntSymbolicRegression extends PushGP {
     private static final long serialVersionUID = 1L;
 
-    protected float _noResultPenalty = 1000;
+    protected float noResultPenalty = 1000;
 
     protected void initFromParameters() throws Exception {
         super.initFromParameters();
@@ -92,11 +92,11 @@ public class IntSymbolicRegression extends PushGP {
         interpreter.execute(((PushGPIndividual) inIndividual).program, executionLimit);
 
         int result = stack.top();
-        // System.out.println( _interpreter + " " + result );
+        // System.out.println(interpreter + " " + result);
 
         // Penalize individual if there is no result on the stack.
         if (stack.size() == 0) {
-            return _noResultPenalty;
+            return noResultPenalty;
         }
 
         return result - ((Integer) inOutput);

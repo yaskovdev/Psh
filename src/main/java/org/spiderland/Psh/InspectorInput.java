@@ -10,9 +10,9 @@ import java.nio.file.Files;
 
 public class InspectorInput {
 
-    Program _program;
-    int _executionLimit;
-    Interpreter _interpreter;
+    Program program;
+    int executionLimit;
+    Interpreter interpreter;
 
     /**
      * Constructs an InspectorInput from a filename string
@@ -44,7 +44,7 @@ public class InspectorInput {
      * @param inFile The file to input from.
      */
     private void InitInspectorInput(File inFile) throws Exception {
-        _interpreter = new Interpreter();
+        interpreter = new Interpreter();
 
         // Read fileString
         String fileString = Files.readString(inFile.toPath(), StandardCharsets.UTF_8);
@@ -54,16 +54,16 @@ public class InspectorInput {
         String programString = fileString.substring(0, indexNewline).trim();
         fileString = fileString.substring(indexNewline + 1);
 
-        // Get _executionLimit
+        // Get executionLimit
         indexNewline = fileString.indexOf("\n");
         if (indexNewline != -1) {
             String limitString = fileString.substring(0, indexNewline).trim();
 
-            _executionLimit = Integer.parseInt(limitString);
+            executionLimit = Integer.parseInt(limitString);
             fileString = fileString.substring(indexNewline + 1);
         } else {
             // If here, no inputs to be pushed were included
-            _executionLimit = Integer.parseInt(fileString);
+            executionLimit = Integer.parseInt(fileString);
             fileString = "";
         }
 
@@ -84,25 +84,25 @@ public class InspectorInput {
         // Get the available instructions for random code generation
         indexNewline = fileString.indexOf("\n");
         if (!fileString.trim().equals("")) {
-            _interpreter.setInstructions(new Program(fileString.trim()));
+            interpreter.setInstructions(new Program(fileString.trim()));
         }
 
         // Check for input.inN instructions
         checkForInputIn(programString);
 
         // Add random integer and float parameters
-        _interpreter.minRandomInt = -10;
-        _interpreter.maxRandomInt = 10;
-        _interpreter.randomIntResolution = 1;
-        _interpreter.minRandomFloat = -10.0f;
-        _interpreter.maxRandomFloat = 10.0f;
-        _interpreter.randomFloatResolution = 0.01f;
+        interpreter.minRandomInt = -10;
+        interpreter.maxRandomInt = 10;
+        interpreter.randomIntResolution = 1;
+        interpreter.minRandomFloat = -10.0f;
+        interpreter.maxRandomFloat = 10.0f;
+        interpreter.randomFloatResolution = 0.01f;
 
-        _interpreter.maxRandomCodeSize = 50;
+        interpreter.maxRandomCodeSize = 50;
 
         // Load the program
-        _program = new Program(programString);
-        _interpreter.loadProgram(_program); // Initializes program
+        program = new Program(programString);
+        interpreter.loadProgram(program); // Initializes program
     }
 
     /**
@@ -111,11 +111,11 @@ public class InspectorInput {
      * @return The initialized interpreter
      */
     public Interpreter getInterpreter() {
-        return _interpreter;
+        return interpreter;
     }
 
     public Program getProgram() {
-        return _program;
+        return program;
     }
 
     /**
@@ -124,7 +124,7 @@ public class InspectorInput {
      * @return The execution limit
      */
     public int getExecutionLimit() {
-        return _executionLimit;
+        return executionLimit;
     }
 
     private void parseAndLoadInputs(String inputs) throws Exception {
@@ -133,18 +133,18 @@ public class InspectorInput {
         for (String token : inputTokens) {
             if (token.equals("")) {
             } else if (token.equals("true")) {
-                _interpreter.boolStack().push(true);
-                _interpreter.inputStack().push(true);
+                interpreter.boolStack().push(true);
+                interpreter.inputStack().push(true);
             } else if (token.equals("false")) {
-                _interpreter.boolStack().push(false);
-                _interpreter.inputStack().push(false);
+                interpreter.boolStack().push(false);
+                interpreter.inputStack().push(false);
             } else if (token.matches("(([-+])?[0-9]+(\\.[0-9]+)?)+")) {
                 if (token.indexOf('.') != -1) {
-                    _interpreter.floatStack().push(Float.parseFloat(token));
-                    _interpreter.inputStack().push(Float.parseFloat(token));
+                    interpreter.floatStack().push(Float.parseFloat(token));
+                    interpreter.inputStack().push(Float.parseFloat(token));
                 } else {
-                    _interpreter.intStack().push(Integer.parseInt(token));
-                    _interpreter.inputStack().push(Integer.parseInt(token));
+                    interpreter.intStack().push(Integer.parseInt(token));
+                    interpreter.inputStack().push(Integer.parseInt(token));
                 }
             } else {
                 throw new Exception(
@@ -191,7 +191,7 @@ public class InspectorInput {
             // Check for doubles in added
             if (added.indexOf(" " + numstr + " ") == -1) {
                 added = added + " " + numstr + " ";
-                _interpreter.addInstruction("input.in" + numstr, new InputInN(
+                interpreter.addInstruction("input.in" + numstr, new InputInN(
                         Integer.parseInt(numstr)));
             }
 

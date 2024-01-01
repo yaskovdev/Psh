@@ -4,35 +4,35 @@ import org.spiderland.Psh.ObjectPair;
 
 public class IntRegTestCases1 implements TestCaseGenerator {
 
-    private static final int _testCaseCount = 200;
-    private int[] _testCasesX = null;
-    private int[] _testCasesY = null;
+    private static final int testCaseCount = 200;
+    private int[] testCasesX = null;
+    private int[] testCasesY = null;
 
-    private static final int _firstSample = -99;
-    private static final int _stepSize = 1;
+    private static final int firstSample = -99;
+    private static final int stepSize = 1;
 
     @Override
     public int testCaseCount() {
-        return _testCaseCount;
+        return testCaseCount;
     }
 
     @Override
     public ObjectPair testCase(int inIndex) {
-        if (_testCasesX == null) {
-            _testCasesX = new int[_testCaseCount];
-            _testCasesY = new int[_testCaseCount];
+        if (testCasesX == null) {
+            testCasesX = new int[testCaseCount];
+            testCasesY = new int[testCaseCount];
 
-            for (int i = 0; i < _testCaseCount; i++) {
-                _testCasesX[i] = XValue(i);
-                _testCasesY[i] = TestCaseFunction(_testCasesX[i]);
+            for (int i = 0; i < testCaseCount; i++) {
+                testCasesX[i] = XValue(i);
+                testCasesY[i] = TestCaseFunction(testCasesX[i]);
             }
         }
 
-        return new ObjectPair(_testCasesX[inIndex], _testCasesY[inIndex]);
+        return new ObjectPair(testCasesX[inIndex], testCasesY[inIndex]);
     }
 
     private int XValue(int i) {
-        return _firstSample + (_stepSize * i);
+        return firstSample + (stepSize * i);
     }
 
     private int TestCaseFunction(int x) {

@@ -4,36 +4,36 @@ import org.spiderland.Psh.ObjectPair;
 
 public class FloatRegTestCases1 implements TestCaseGenerator {
 
-    private static final int _testCaseCount = 200;
-    private static final float _firstSample = -10;
-    private static final float _lastSample = 10;
+    private static final int testCaseCount = 200;
+    private static final float firstSample = -10;
+    private static final float lastSample = 10;
 
-    private float[] _testCasesX = null;
-    private float[] _testCasesY = null;
+    private float[] testCasesX = null;
+    private float[] testCasesY = null;
 
     @Override
     public int testCaseCount() {
-        return _testCaseCount;
+        return testCaseCount;
     }
 
     @Override
     public ObjectPair testCase(int inIndex) {
-        if (_testCasesX == null) {
-            _testCasesX = new float[_testCaseCount];
-            _testCasesY = new float[_testCaseCount];
+        if (testCasesX == null) {
+            testCasesX = new float[testCaseCount];
+            testCasesY = new float[testCaseCount];
 
-            for (int i = 0; i < _testCaseCount; i++) {
-                _testCasesX[i] = XValue(i);
-                _testCasesY[i] = TestCaseFunction(_testCasesX[i]);
+            for (int i = 0; i < testCaseCount; i++) {
+                testCasesX[i] = XValue(i);
+                testCasesY[i] = TestCaseFunction(testCasesX[i]);
             }
         }
 
-        return new ObjectPair(_testCasesX[inIndex], _testCasesY[inIndex]);
+        return new ObjectPair(testCasesX[inIndex], testCasesY[inIndex]);
     }
 
     private float XValue(float i) {
-        return _firstSample
-                + (((_lastSample - _firstSample) / (_testCaseCount - 1)) * i);
+        return firstSample
+                + (((lastSample - firstSample) / (testCaseCount - 1)) * i);
     }
 
     private float TestCaseFunction(float x) {

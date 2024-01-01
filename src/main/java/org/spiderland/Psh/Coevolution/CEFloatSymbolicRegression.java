@@ -23,20 +23,20 @@ import java.util.HashMap;
 public class CEFloatSymbolicRegression extends PushGP {
     private static final long serialVersionUID = 1L;
 
-    protected float _currentInput;
+    protected float currentInput;
 
-    protected long _effort;
-    protected float _predictorEffortPercent;
-    protected PredictionGeneticAlgorithm _predictorGA;
+    protected long effort;
+    protected float predictorEffortPercent;
+    protected PredictionGeneticAlgorithm predictorGeneticAlgorithm;
 
-    private boolean _success;
+    private boolean success;
 
     private static final float NO_RESULT_PENALTY = 1000f;
 
     protected void initFromParameters() throws Exception {
         super.initFromParameters();
 
-        _effort = 0;
+        effort = 0;
 
         String cases = getParam("test-cases", true);
         String casesClass = getParam("test-case-class", true);
@@ -88,9 +88,9 @@ public class CEFloatSymbolicRegression extends PushGP {
         }
 
         // Create and initialize predictors
-        _predictorEffortPercent = getFloatParam("PREDICTOR-effort-percent",
+        predictorEffortPercent = getFloatParam("PREDICTOR-effort-percent",
                 true);
-        _predictorGA = PredictionGeneticAlgorithm.PredictionGAWithParameters(this,
+        predictorGeneticAlgorithm = PredictionGeneticAlgorithm.PredictionGAWithParameters(this,
                 GetPredictorParameters(parameters));
 
     }
@@ -102,7 +102,7 @@ public class CEFloatSymbolicRegression extends PushGP {
     protected void beginGeneration() throws Exception {
         //trh Temporary solution, needs to actually use effort info
         if (generationCount % 2 == 1) {
-            _predictorGA.run(1);
+            predictorGeneticAlgorithm.run(1);
         }
     }
 
@@ -111,7 +111,7 @@ public class CEFloatSymbolicRegression extends PushGP {
      */
     protected void PredictIndividual(GAIndividual inIndividual, boolean duringSimplify) {
 
-        FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) _predictorGA.GetBestPredictor();
+        FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) predictorGeneticAlgorithm.getBestPredictor();
         float fitness = predictor.PredictSolutionFitness((PushGPIndividual) inIndividual);
 
         inIndividual.setFitness(fitness);
@@ -120,31 +120,31 @@ public class CEFloatSymbolicRegression extends PushGP {
 
     public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
             Object inOutput) {
-        _effort++;
+        effort++;
 
         interpreter.clearStacks();
 
-        _currentInput = (Float) inInput;
+        currentInput = (Float) inInput;
 
         FloatStack fstack = interpreter.floatStack();
 
-        fstack.push(_currentInput);
+        fstack.push(currentInput);
 
         // Must be included in order to use the input stack.
-        interpreter.inputStack().push(_currentInput);
+        interpreter.inputStack().push(currentInput);
 
         interpreter.execute(((PushGPIndividual) inIndividual).program,
                 executionLimit);
 
         float result = fstack.top();
 
-        // System.out.println( _interpreter + " " + result );
+        // System.out.println(interpreter + " " + result);
 
         //trh
         /*
          * System.out.println("\nevaluations according to interpreter " +
          * Interpreter.GetEvaluationExecutions());
-         * System.out.println("evaluations according to effort " + _effort);
+         * System.out.println("evaluations according to effort " + effort);
          */
 
         // Penalize individual if there is no result on the stack.
@@ -156,19 +156,19 @@ public class CEFloatSymbolicRegression extends PushGP {
     }
 
     protected boolean success() {
-        if (_success) {
+        if (success) {
             return true;
         }
 
         GAIndividual best = populations[currentPopulation][bestIndividual];
         float predictedFitness = best.getFitness();
 
-        _predictorGA.EvaluateSolutionIndividual((PushGPIndividual) best);
+        predictorGeneticAlgorithm.evaluateSolutionIndividual((PushGPIndividual) best);
 
         bestMeanFitness = best.getFitness();
 
         if (bestMeanFitness <= 0.1) {
-            _success = true;
+            success = true;
             return true;
         }
 

@@ -13,11 +13,11 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     protected void initIndividual(GAIndividual inIndividual) {
         FloatRegFitPredictionIndividual i = (FloatRegFitPredictionIndividual) inIndividual;
 
-        int[] samples = new int[FloatRegFitPredictionIndividual._sampleSize];
+        int[] samples = new int[FloatRegFitPredictionIndividual.sampleSize];
         for (int j = 0; j < samples.length; j++) {
-            samples[j] = random.nextInt(_solutionGA.testCases.size());
+            samples[j] = random.nextInt(solutionGeneticAlgorithm.testCases.size());
         }
-        i.SetSampleIndicesAndSolutionGA(_solutionGA, samples);
+        i.SetSampleIndicesAndSolutionGA(solutionGeneticAlgorithm, samples);
     }
 
     @Override
@@ -26,12 +26,12 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
         FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) inIndividual;
         List<Float> errors = new ArrayList<>();
 
-        for (int i = 0; i < _trainerPopulationSize; i++) {
-            float predictedError = predictor.PredictSolutionFitness(_trainerPopulation.get(i));
+        for (int i = 0; i < trainerPopulationSize; i++) {
+            float predictedError = predictor.PredictSolutionFitness(trainerPopulation.get(i));
 
             // Error is difference between predictedError and the actual fitness
             // of the trainer.
-            float error = Math.abs(predictedError) - Math.abs(_trainerPopulation.get(i).getFitness());
+            float error = Math.abs(predictedError) - Math.abs(trainerPopulation.get(i).getFitness());
             errors.add(error);
         }
 
@@ -62,10 +62,10 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     }
 
     @Override
-    protected void EvaluateTrainerFitnesses() {
-        for (PushGPIndividual trainer : _trainerPopulation) {
+    protected void evaluateTrainerFitnesses() {
+        for (PushGPIndividual trainer : trainerPopulation) {
             if (!trainer.isFitnessSet()) {
-                EvaluateSolutionIndividual(trainer);
+                evaluateSolutionIndividual(trainer);
             }
         }
     }
@@ -91,9 +91,9 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
                 if (((FloatRegFitPredictionIndividual) next)
                         .equalPredictors(populations[nextPopulation][k])) {
                     int index = random
-                            .nextInt(FloatRegFitPredictionIndividual._sampleSize);
+                            .nextInt(FloatRegFitPredictionIndividual.sampleSize);
                     ((FloatRegFitPredictionIndividual) next).SetSampleIndex(
-                            index, random.nextInt(_solutionGA.testCases.size()));
+                            index, random.nextInt(solutionGeneticAlgorithm.testCases.size()));
                 }
             }
 
@@ -110,8 +110,8 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     protected GAIndividual reproduceByMutation(int inIndex) {
         FloatRegFitPredictionIndividual i = (FloatRegFitPredictionIndividual) reproduceByClone(inIndex);
 
-        int index = random.nextInt(FloatRegFitPredictionIndividual._sampleSize);
-        i.SetSampleIndex(index, random.nextInt(_solutionGA.testCases.size()));
+        int index = random.nextInt(FloatRegFitPredictionIndividual.sampleSize);
+        i.SetSampleIndex(index, random.nextInt(solutionGeneticAlgorithm.testCases.size()));
 
         return i;
     }
@@ -125,8 +125,8 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
         // crossoverPoint is the first index of a that will be changed to the
         // gene from b.
         int crossoverPoint = random
-                .nextInt(FloatRegFitPredictionIndividual._sampleSize - 1) + 1;
-        for (int i = crossoverPoint; i < FloatRegFitPredictionIndividual._sampleSize; i++) {
+                .nextInt(FloatRegFitPredictionIndividual.sampleSize - 1) + 1;
+        for (int i = crossoverPoint; i < FloatRegFitPredictionIndividual.sampleSize; i++) {
             a.SetSampleIndex(i, b.GetSampleIndex(i));
         }
 

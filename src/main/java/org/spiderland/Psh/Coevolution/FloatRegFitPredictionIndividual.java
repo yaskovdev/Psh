@@ -13,25 +13,25 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
     private static final long serialVersionUID = 1L;
 
     // The sample test cases used for fitness prediction.
-    private int[] _sampleIndices;
-    protected static int _sampleSize = 8;
+    private int[] sampleIndices;
+    protected static int sampleSize = 8;
 
-    protected PushGP _solutionGA;
+    protected PushGP solutionGeneticAlgorithm;
 
     public FloatRegFitPredictionIndividual() {
-        _sampleIndices = new int[_sampleSize];
-        _solutionGA = null;
+        sampleIndices = new int[sampleSize];
+        solutionGeneticAlgorithm = null;
     }
 
     public FloatRegFitPredictionIndividual(PushGP inSolutionGA) {
-        _sampleIndices = new int[_sampleSize];
-        _solutionGA = inSolutionGA;
+        sampleIndices = new int[sampleSize];
+        solutionGeneticAlgorithm = inSolutionGA;
     }
 
     public FloatRegFitPredictionIndividual(PushGP inSolutionGA, int[] inSamples) {
-        _sampleIndices = new int[_sampleSize];
-        System.arraycopy(inSamples, 0, _sampleIndices, 0, _sampleSize);
-        _solutionGA = inSolutionGA;
+        sampleIndices = new int[sampleSize];
+        System.arraycopy(inSamples, 0, sampleIndices, 0, sampleSize);
+        solutionGeneticAlgorithm = inSolutionGA;
     }
 
 
@@ -42,7 +42,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
      * @return sample index
      */
     public int GetSampleIndex(int inIndex) {
-        return _sampleIndices[inIndex];
+        return sampleIndices[inIndex];
     }
 
     /**
@@ -52,22 +52,22 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
      * @param sample
      */
     public void SetSampleIndex(int index, int sample) {
-        _sampleIndices[index] = sample;
+        sampleIndices[index] = sample;
     }
 
     public void SetSampleIndicesAndSolutionGA(PushGP inSolutionGA, int[] inSamples) {
-        _sampleIndices = new int[_sampleSize];
-        System.arraycopy(inSamples, 0, _sampleIndices, 0, _sampleSize);
-        _solutionGA = inSolutionGA;
+        sampleIndices = new int[sampleSize];
+        System.arraycopy(inSamples, 0, sampleIndices, 0, sampleSize);
+        solutionGeneticAlgorithm = inSolutionGA;
     }
 
     @Override
     public float PredictSolutionFitness(PushGPIndividual pgpIndividual) {
         List<Float> errors = new ArrayList<>();
 
-        for (int n = 0; n < _sampleSize; n++) {
-            GATestCase test = _solutionGA.testCases.get(_sampleIndices[n]);
-            float e = _solutionGA.evaluateTestCase(pgpIndividual, test.input(), test.output());
+        for (int n = 0; n < sampleSize; n++) {
+            GATestCase test = solutionGeneticAlgorithm.testCases.get(sampleIndices[n]);
+            float e = solutionGeneticAlgorithm.evaluateTestCase(pgpIndividual, test.input(), test.output());
             errors.add(e);
         }
 
@@ -76,12 +76,12 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 
     @Override
     public GAIndividual clone() {
-        return new FloatRegFitPredictionIndividual(_solutionGA, _sampleIndices);
+        return new FloatRegFitPredictionIndividual(solutionGeneticAlgorithm, sampleIndices);
     }
 
     public String toString() {
         String str = "Prediction Indices: [ ";
-        for (int i : _sampleIndices) {
+        for (int i : sampleIndices) {
             str += i + " ";
         }
         str += "]";
@@ -89,8 +89,8 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
     }
 
     public boolean equalPredictors(GAIndividual inB) {
-        int[] a = copyArray(_sampleIndices);
-        int[] b = copyArray(((FloatRegFitPredictionIndividual) inB)._sampleIndices);
+        int[] a = copyArray(sampleIndices);
+        int[] b = copyArray(((FloatRegFitPredictionIndividual) inB).sampleIndices);
         Arrays.sort(a);
         Arrays.sort(b);
         return Arrays.equals(a, b);

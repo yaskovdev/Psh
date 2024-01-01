@@ -21,12 +21,12 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
 
     // Note: Oldest trainer has the lowest index; newest trainer has the highest
     // index.
-    protected List<PushGPIndividual> _trainerPopulation;
-    protected int _generationsBetweenTrainers;
-    protected int _trainerPopulationSize;
+    protected List<PushGPIndividual> trainerPopulation;
+    protected int generationsBetweenTrainers;
+    protected int trainerPopulationSize;
 
     // The solution population and genetic algorithm.
-    protected PushGP _solutionGA;
+    protected PushGP solutionGeneticAlgorithm;
 
     /**
      * Customizes GA.GAWithParameters to allow the inclusion of the solution GA,
@@ -37,7 +37,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
      * @return
      * @throws Exception
      */
-    public static PredictionGeneticAlgorithm PredictionGAWithParameters(PushGP inSolutionGA, HashMap<String, String> inParams) throws Exception {
+    public static PredictionGeneticAlgorithm PredictionGAWithParameters(PushGP solutionGeneticAlgorithm, HashMap<String, String> inParams) throws Exception {
 
         Class<?> cls = Class.forName(inParams.get("problem-class"));
         Object gaObject = cls.newInstance();
@@ -46,8 +46,8 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
                     + " class PredictorGA"));
 
         // Must set the solution GA before InitFromParameters, since the latter
-        // uses _solutionGA while creating the predictor population.
-        ga.SetSolutionGA(inSolutionGA);
+        // uses solutionGeneticAlgorithm while creating the predictor population.
+        ga.setSolutionGeneticAlgorithm(solutionGeneticAlgorithm);
         ga.setParams(inParams);
         ga.initFromParameters();
 
@@ -56,10 +56,10 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
 
     @Override
     protected void initFromParameters() throws Exception {
-        _generationsBetweenTrainers = (int) getFloatParam("generations-between-trainers");
-        _trainerPopulationSize = (int) getFloatParam("trainer-population-size");
+        generationsBetweenTrainers = (int) getFloatParam("generations-between-trainers");
+        trainerPopulationSize = (int) getFloatParam("trainer-population-size");
 
-        InitTrainerPopulation();
+        initTrainerPopulation();
 
         super.initFromParameters();
     }
@@ -75,15 +75,15 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
 
     @Override
     protected void beginGeneration() {
-        if (generationCount % _generationsBetweenTrainers == _generationsBetweenTrainers - 1) {
+        if (generationCount % generationsBetweenTrainers == generationsBetweenTrainers - 1) {
             // Time to add a new trainer
-            PushGPIndividual newTrainer = (PushGPIndividual) ChooseNewTrainer().clone();
-            EvaluateSolutionIndividual(newTrainer);
+            PushGPIndividual newTrainer = (PushGPIndividual) chooseNewTrainer().clone();
+            evaluateSolutionIndividual(newTrainer);
 
-            _trainerPopulation.remove(0);
-            _trainerPopulation.add(newTrainer);
+            trainerPopulation.remove(0);
+            trainerPopulation.add(newTrainer);
 
-            EvaluateTrainerFitnesses();
+            evaluateTrainerFitnesses();
 
         }
     }
@@ -103,11 +103,11 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
      * population. The solution individual is chosen with the highest variance
      * of the predictions from the current predictor population.
      */
-    protected PushGPIndividual ChooseNewTrainer() {
+    protected PushGPIndividual chooseNewTrainer() {
         List<Float> individualVariances = new ArrayList<>();
 
-        for (int i = 0; i < _solutionGA.GetPopulationSize(); i++) {
-            PushGPIndividual individual = (PushGPIndividual) _solutionGA
+        for (int i = 0; i < solutionGeneticAlgorithm.GetPopulationSize(); i++) {
+            PushGPIndividual individual = (PushGPIndividual) solutionGeneticAlgorithm
                     .getIndividualFromPopulation(i);
 
             List<Float> predictions = new ArrayList<>();
@@ -116,25 +116,25 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
                 predictions.add(predictor.PredictSolutionFitness(individual));
             }
 
-            individualVariances.add(Variance(predictions));
+            individualVariances.add(variance(predictions));
         }
 
         // Find individual with the highest variance
         int highestVarianceIndividual = 0;
         float highestVariance = individualVariances.get(0);
 
-        for (int i = 0; i < _solutionGA.GetPopulationSize(); i++) {
+        for (int i = 0; i < solutionGeneticAlgorithm.GetPopulationSize(); i++) {
             if (highestVariance < individualVariances.get(i)) {
                 highestVarianceIndividual = i;
                 highestVariance = individualVariances.get(i);
             }
         }
 
-        return (PushGPIndividual) _solutionGA
+        return (PushGPIndividual) solutionGeneticAlgorithm
                 .getIndividualFromPopulation(highestVarianceIndividual);
     }
 
-    protected PredictionGAIndividual GetBestPredictor() {
+    protected PredictionGAIndividual getBestPredictor() {
         float bestFitness = Float.MAX_VALUE;
         GAIndividual bestPredictor = populations[currentPopulation][0];
 
@@ -150,33 +150,33 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
 
     /**
      * Calculates and sets the exact fitness from any individual of the
-     * _solutionGA population. This includes trainers.
+     * solutionGeneticAlgorithm population. This includes trainers.
      *
      * @param inIndividual
      */
-    protected void EvaluateSolutionIndividual(PushGPIndividual inIndividual) {
-        _solutionGA.evaluateIndividual(inIndividual);
+    protected void evaluateSolutionIndividual(PushGPIndividual inIndividual) {
+        solutionGeneticAlgorithm.evaluateIndividual(inIndividual);
     }
 
-    protected void SetSolutionGA(PushGP inGA) {
-        _solutionGA = inGA;
+    protected void setSolutionGeneticAlgorithm(PushGP geneticAlgorithm) {
+        solutionGeneticAlgorithm = geneticAlgorithm;
     }
 
     /**
-     * This must be private, since there must be a _solutionGA set before this
+     * This must be private, since there must be a solutionGeneticAlgorithm set before this
      * method is invoked. Use SetGAandTrainers() instead.
      */
-    private void InitTrainerPopulation() {
-        _trainerPopulation = new ArrayList<PushGPIndividual>();
+    private void initTrainerPopulation() {
+        trainerPopulation = new ArrayList<>();
 
         PushGPIndividual individual = new PushGPIndividual();
 
-        for (int i = 0; i < _trainerPopulationSize; i++) {
-            _trainerPopulation.add((PushGPIndividual) individual.clone());
-            _solutionGA.initIndividual(_trainerPopulation.get(i));
+        for (int i = 0; i < trainerPopulationSize; i++) {
+            trainerPopulation.add((PushGPIndividual) individual.clone());
+            solutionGeneticAlgorithm.initIndividual(trainerPopulation.get(i));
         }
 
-        EvaluateTrainerFitnesses();
+        evaluateTrainerFitnesses();
     }
 
     protected String report() {
@@ -199,8 +199,8 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
         return "";
     }
 
-    private Float Variance(List<Float> list) {
-        float sampleMean = SampleMean(list);
+    private Float variance(List<Float> list) {
+        float sampleMean = sampleMean(list);
         float sum = 0;
 
         for (float element : list) {
@@ -210,7 +210,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
         return (sum / (list.size() - 1));
     }
 
-    private float SampleMean(List<Float> list) {
+    private float sampleMean(List<Float> list) {
         float total = 0;
         for (float element : list) {
             total += element;
@@ -252,7 +252,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
      * function may be used to make sure fitnesses or ranks are updated, i.e. to
      * recalculate rank order with the addition of a new trainer.
      */
-    protected abstract void EvaluateTrainerFitnesses();
+    protected abstract void evaluateTrainerFitnesses();
 
     @Override
     protected abstract GAIndividual reproduceByMutation(int inIndex);

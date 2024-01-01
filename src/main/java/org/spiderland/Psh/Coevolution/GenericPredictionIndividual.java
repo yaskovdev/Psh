@@ -8,22 +8,22 @@ import org.spiderland.Psh.PushGPIndividual;
 public class GenericPredictionIndividual extends PredictionGAIndividual {
     private static final long serialVersionUID = 1L;
 
-    protected Program _program;
+    protected Program program;
 
-    protected PushGP _solutionGA;
+    protected PushGP solutionGeneticAlgorithm;
 
     public GenericPredictionIndividual() {
-        _solutionGA = null;
+        solutionGeneticAlgorithm = null;
     }
 
     public GenericPredictionIndividual(Program inProgram, PushGP inSolutionGA) {
-        _program = inProgram;
-        _solutionGA = inSolutionGA;
+        program = inProgram;
+        solutionGeneticAlgorithm = inSolutionGA;
     }
 
     @Override
     public float PredictSolutionFitness(PushGPIndividual pgpIndividual) {
-        //TODO implement _program being run to predict fitness
+        //TODO implement program being run to predict fitness
 
 
         return -2999;
@@ -31,16 +31,16 @@ public class GenericPredictionIndividual extends PredictionGAIndividual {
 
     @Override
     public GAIndividual clone() {
-        return new GenericPredictionIndividual(_program, _solutionGA);
+        return new GenericPredictionIndividual(program, solutionGeneticAlgorithm);
     }
 
     void SetProgram(Program inProgram) {
         if (inProgram != null)
-            _program = new Program(inProgram);
+            program = new Program(inProgram);
     }
 
     public String toString() {
-        return _program.toString();
+        return program.toString();
     }
 
 }

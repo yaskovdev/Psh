@@ -13,13 +13,13 @@ import org.spiderland.Psh.ObjectPair;
 public interface TestCaseGenerator {
 
     /**
-     * @returns The number of cases the generator will create.
+     * @return The number of cases the generator will create.
      */
     int testCaseCount();
 
     /**
-     * @returns Test case at index n as an ObjectPair, where _first is the input
-     * and _second is the output. The types of the objects may depend
+     * @return Test case at index n as an ObjectPair, where first is the input
+     * and second is the output. The types of the objects may depend
      * on the problem type.
      */
     ObjectPair testCase(int inIndex);

@@ -17,7 +17,7 @@ import org.spiderland.Psh.TestCase.TestCaseGenerator;
 public class FloatSymbolicRegression extends PushGP {
     private static final long serialVersionUID = 1L;
 
-    private final float _noResultPenalty = 10000;
+    private final float noResultPenalty = 10000;
 
     protected void initFromParameters() throws Exception {
         super.initFromParameters();
@@ -96,7 +96,7 @@ public class FloatSymbolicRegression extends PushGP {
 
         // Penalize individual if there is no result on the stack.
         if (stack.size() == 0) {
-            return _noResultPenalty;
+            return noResultPenalty;
         }
 
         return result - ((Float) inOutput);

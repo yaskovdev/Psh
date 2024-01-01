@@ -104,10 +104,10 @@ public class Program extends ObjectStack implements Serializable {
      * @return The size of the program.
      */
     public int programSize() {
-        int size = _size;
+        int size = this.size;
 
-        for (int n = 0; n < _size; n++) {
-            Object o = _stack[n];
+        for (int n = 0; n < this.size; n++) {
+            Object o = stack[n];
             if (o instanceof Program)
                 size += ((Program) o).programSize();
         }
@@ -142,13 +142,13 @@ public class Program extends ObjectStack implements Serializable {
      */
 
     public Object subtree(int inIndex) {
-        if (inIndex < _size) {
-            return _stack[inIndex];
+        if (inIndex < size) {
+            return stack[inIndex];
         } else {
-            int startIndex = _size;
+            int startIndex = size;
 
-            for (int n = 0; n < _size; n++) {
-                Object o = _stack[n];
+            for (int n = 0; n < size; n++) {
+                Object o = stack[n];
 
                 if (o instanceof Program sub) {
                     int length = sub.programSize();
@@ -173,14 +173,14 @@ public class Program extends ObjectStack implements Serializable {
      */
 
     public boolean replaceSubtree(int inIndex, Object inReplacement) {
-        if (inIndex < _size) {
-            _stack[inIndex] = cloneForProgram(inReplacement);
+        if (inIndex < size) {
+            stack[inIndex] = cloneForProgram(inReplacement);
             return true;
         } else {
-            int startIndex = _size;
+            int startIndex = size;
 
-            for (int n = 0; n < _size; n++) {
-                Object o = _stack[n];
+            for (int n = 0; n < size; n++) {
+                Object o = stack[n];
 
                 if (o instanceof Program sub) {
                     int length = sub.programSize();
@@ -198,7 +198,7 @@ public class Program extends ObjectStack implements Serializable {
     }
 
     public void flatten(int inIndex) {
-        if (inIndex < _size) {
+        if (inIndex < size) {
             // If here, the index to be flattened is in this program. So, push
             // the rest of the program onto a new program, and replace this with
             // that new program.
@@ -206,24 +206,24 @@ public class Program extends ObjectStack implements Serializable {
             Program replacement = new Program(this);
             clear();
 
-            for (int i = 0; i < replacement._size; i++) {
+            for (int i = 0; i < replacement.size; i++) {
                 if (inIndex == i) {
 
-                    if (replacement._stack[i] instanceof Program p) {
-                        for (int j = 0; j < p._size; j++)
-                            this.push(p._stack[j]);
+                    if (replacement.stack[i] instanceof Program p) {
+                        for (int j = 0; j < p.size; j++)
+                            this.push(p.stack[j]);
                     } else {
-                        this.push(replacement._stack[i]);
+                        this.push(replacement.stack[i]);
                     }
                 } else {
-                    this.push(replacement._stack[i]);
+                    this.push(replacement.stack[i]);
                 }
             }
         } else {
-            int startIndex = _size;
+            int startIndex = size;
 
-            for (int n = 0; n < _size; n++) {
-                Object o = _stack[n];
+            for (int n = 0; n < size; n++) {
+                Object o = stack[n];
 
                 if (o instanceof Program sub) {
                     int length = sub.programSize();
@@ -246,18 +246,18 @@ public class Program extends ObjectStack implements Serializable {
      */
 
     public void copyTo(Program inOther) {
-        for (int n = 0; n < _size; n++)
-            inOther.push(_stack[n]);
+        for (int n = 0; n < size; n++)
+            inOther.push(stack[n]);
     }
 
     public String toString() {
         StringBuilder result = new StringBuilder("(");
 
-        for (int n = 0; n < _size; n++) {
+        for (int n = 0; n < size; n++) {
             if (result.charAt(result.length() - 1) == '(')
-                result.append(_stack[n]);
+                result.append(stack[n]);
             else
-                result.append(" ").append(_stack[n]);
+                result.append(" ").append(stack[n]);
         }
 
         result.append(")");

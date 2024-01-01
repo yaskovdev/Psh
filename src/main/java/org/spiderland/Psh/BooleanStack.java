@@ -7,7 +7,7 @@ package org.spiderland.Psh;
 public class BooleanStack extends Stack {
     private static final long serialVersionUID = 1L;
 
-    protected boolean[] _stack;
+    protected boolean[] stack;
 
     @Override
     public boolean equals(Object obj) {
@@ -16,10 +16,10 @@ public class BooleanStack extends Stack {
         if (getClass() != obj.getClass())
             return false;
         final BooleanStack other = (BooleanStack) obj;
-        if (_size != other._size)
+        if (size != other.size)
             return false;
-        for (int i = 0; i < _size; i++)
-            if (_stack[i] != other._stack[i])
+        for (int i = 0; i < size; i++)
+            if (stack[i] != other.stack[i])
                 return false;
         return true;
     }
@@ -27,31 +27,31 @@ public class BooleanStack extends Stack {
     @Override
     public int hashCode() {
         int hash = 7;
-        for (int i = 0; i < _size; i++)
-            hash = 41 * hash + Boolean.valueOf(_stack[i]).hashCode();
+        for (int i = 0; i < size; i++)
+            hash = 41 * hash + Boolean.valueOf(stack[i]).hashCode();
         return hash;
     }
 
     void resize(int inSize) {
         boolean[] newstack = new boolean[inSize];
 
-        if (_stack != null)
-            System.arraycopy(_stack, 0, newstack, 0, _size);
+        if (stack != null)
+            System.arraycopy(stack, 0, newstack, 0, size);
 
-        _stack = newstack;
-        _maxsize = inSize;
+        stack = newstack;
+        maxsize = inSize;
     }
 
     public boolean top() {
-        if (_size > 0)
-            return peek(_size - 1);
+        if (size > 0)
+            return peek(size - 1);
 
         return false;
     }
 
     public boolean peek(int inIndex) {
-        if (inIndex >= 0 && inIndex < _size)
-            return _stack[inIndex];
+        if (inIndex >= 0 && inIndex < size)
+            return stack[inIndex];
 
         return false;
     }
@@ -59,92 +59,92 @@ public class BooleanStack extends Stack {
     public boolean pop() {
         boolean result = false;
 
-        if (_size > 0) {
-            result = _stack[_size - 1];
-            _size--;
+        if (size > 0) {
+            result = stack[size - 1];
+            size--;
         }
 
         return result;
     }
 
     public void push(boolean inValue) {
-        _stack[_size] = inValue;
-        _size++;
+        stack[size] = inValue;
+        size++;
 
-        if (_size >= _maxsize)
-            resize(_maxsize * 2);
+        if (size >= maxsize)
+            resize(maxsize * 2);
     }
 
     public void dup() {
-        if (_size > 0)
-            push(_stack[_size - 1]);
+        if (size > 0)
+            push(stack[size - 1]);
     }
 
     public void shove(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
             boolean toShove = top();
-            int shovedIndex = _size - inIndex - 1;
+            int shovedIndex = size - inIndex - 1;
 
-            for (int i = _size - 1; i > shovedIndex; i--) {
-                _stack[i] = _stack[i - 1];
+            for (int i = size - 1; i > shovedIndex; i--) {
+                stack[i] = stack[i - 1];
             }
-            _stack[shovedIndex] = toShove;
+            stack[shovedIndex] = toShove;
         }
     }
 
     public void swap() {
-        if (_size > 1) {
-            boolean tmp = _stack[_size - 1];
-            _stack[_size - 1] = _stack[_size - 2];
-            _stack[_size - 2] = tmp;
+        if (size > 1) {
+            boolean tmp = stack[size - 1];
+            stack[size - 1] = stack[size - 2];
+            stack[size - 2] = tmp;
         }
     }
 
     public void rot() {
-        if (_size > 2) {
-            boolean tmp = _stack[_size - 3];
-            _stack[_size - 3] = _stack[_size - 2];
-            _stack[_size - 2] = _stack[_size - 1];
-            _stack[_size - 1] = tmp;
+        if (size > 2) {
+            boolean tmp = stack[size - 3];
+            stack[size - 3] = stack[size - 2];
+            stack[size - 2] = stack[size - 1];
+            stack[size - 1] = tmp;
         }
     }
 
     public void yank(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
-            int yankedIndex = _size - inIndex - 1;
+            int yankedIndex = size - inIndex - 1;
             boolean toYank = peek(yankedIndex);
 
-            for (int i = yankedIndex; i < _size - 1; i++) {
-                _stack[i] = _stack[i + 1];
+            for (int i = yankedIndex; i < size - 1; i++) {
+                stack[i] = stack[i + 1];
             }
-            _stack[_size - 1] = toYank;
+            stack[size - 1] = toYank;
         }
     }
 
     public void yankdup(int inIndex) {
-        if (_size > 0) {
+        if (size > 0) {
             if (inIndex < 0) {
                 inIndex = 0;
             }
-            if (inIndex > _size - 1) {
-                inIndex = _size - 1;
+            if (inIndex > size - 1) {
+                inIndex = size - 1;
             }
 
-            int yankedIndex = _size - inIndex - 1;
+            int yankedIndex = size - inIndex - 1;
             push(peek(yankedIndex));
         }
     }
@@ -152,11 +152,11 @@ public class BooleanStack extends Stack {
     public String toString() {
         String result = "[";
 
-        for (int n = _size - 1; n >= 0; n--) {
-            if (n == _size - 1)
-                result += _stack[n];
+        for (int n = size - 1; n >= 0; n--) {
+            if (n == size - 1)
+                result += stack[n];
             else
-                result += " " + _stack[n];
+                result += " " + stack[n];
         }
         result += "]";
 
