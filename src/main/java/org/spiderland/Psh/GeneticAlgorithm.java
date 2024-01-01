@@ -31,7 +31,7 @@ public abstract class GeneticAlgorithm implements Serializable {
     protected double populationMeanFitness;
     protected int bestIndividual;
 
-    protected ArrayList<Float> bestErrors;
+    protected List<Float> bestErrors;
 
     protected int maxGenerations;
     protected int tournamentSize;
@@ -475,7 +475,7 @@ public abstract class GeneticAlgorithm implements Serializable {
      *
      * @return the average error value for the vector.
      */
-    protected float absoluteAverageOfErrors(ArrayList<Float> inArray) {
+    protected float absoluteAverageOfErrors(List<Float> inArray) {
         float total = 0.0f;
 
         for (Float aFloat : inArray) total += Math.abs(aFloat);

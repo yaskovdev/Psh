@@ -4,6 +4,7 @@ import org.spiderland.Psh.GAIndividual;
 import org.spiderland.Psh.PushGPIndividual;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract CEPredictorGA individual class for developing co-evolved
@@ -26,7 +27,7 @@ public abstract class PredictionGAIndividual extends GAIndividual {
      *
      * @return the average error value for the vector.
      */
-    protected float AbsoluteAverageOfErrors(ArrayList<Float> inArray) {
+    protected float AbsoluteAverageOfErrors(List<Float> inArray) {
         float total = 0.0f;
 
         for (int n = 0; n < inArray.size(); n++)

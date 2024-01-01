@@ -4,6 +4,7 @@ import org.spiderland.Psh.GAIndividual;
 import org.spiderland.Psh.PushGPIndividual;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     private static final long serialVersionUID = 1L;
@@ -23,7 +24,7 @@ public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     protected void evaluateIndividual(GAIndividual inIndividual) {
 
         FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) inIndividual;
-        ArrayList<Float> errors = new ArrayList<>();
+        List<Float> errors = new ArrayList<>();
 
         for (int i = 0; i < _trainerPopulationSize; i++) {
             float predictedError = predictor.PredictSolutionFitness(_trainerPopulation.get(i));

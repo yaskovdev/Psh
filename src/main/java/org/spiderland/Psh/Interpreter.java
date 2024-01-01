@@ -20,7 +20,7 @@ public class Interpreter implements Serializable {
     // All generators
 
     protected HashMap<String, AtomGenerator> generators = new HashMap<>();
-    protected ArrayList<AtomGenerator> randomGenerators = new ArrayList<>();
+    protected List<AtomGenerator> randomGenerators = new ArrayList<>();
 
     // Create the stacks.
     protected IntStack intStack;
@@ -34,7 +34,7 @@ public class Interpreter implements Serializable {
 
     // This arraylist will hold all custom stacks that can be created by the
     // problem classes
-    protected ArrayList<Stack> customStacks = new ArrayList<>();
+    protected List<Stack> customStacks = new ArrayList<>();
 
     /* Since the _inputStack will not change after initialization, it will not
      * need a frame stack.
@@ -623,7 +623,7 @@ public class Interpreter implements Serializable {
      */
     public String getInstructionsString() {
         Object[] keys = instructions.keySet().toArray();
-        ArrayList<String> strings = new ArrayList<>();
+        List<String> strings = new ArrayList<>();
         StringBuilder str = new StringBuilder();
 
         for (Object o : keys) {
@@ -726,7 +726,7 @@ public class Interpreter implements Serializable {
      */
 
     public List<Integer> randomCodeDistribution(int inCount, int inMaxElements) {
-        ArrayList<Integer> result = new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
 
         randomCodeDistribution(result, inCount, inMaxElements);
 

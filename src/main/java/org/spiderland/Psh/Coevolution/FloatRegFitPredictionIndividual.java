@@ -7,6 +7,7 @@ import org.spiderland.Psh.PushGPIndividual;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
     private static final long serialVersionUID = 1L;
@@ -62,7 +63,7 @@ public class FloatRegFitPredictionIndividual extends PredictionGAIndividual {
 
     @Override
     public float PredictSolutionFitness(PushGPIndividual pgpIndividual) {
-        ArrayList<Float> errors = new ArrayList<>();
+        List<Float> errors = new ArrayList<>();
 
         for (int n = 0; n < _sampleSize; n++) {
             GATestCase test = _solutionGA.testCases.get(_sampleIndices[n]);

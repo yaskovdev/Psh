@@ -2,6 +2,7 @@ package org.spiderland.Psh;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ public abstract class GAIndividual implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private float fitness;
-    private ArrayList<Float> errors;
+    private List<Float> errors;
     protected boolean fitnessSet;
 
     public float getFitness() {
@@ -28,11 +29,11 @@ public abstract class GAIndividual implements Serializable {
         fitnessSet = true;
     }
 
-    public ArrayList<Float> getErrors() {
+    public List<Float> getErrors() {
         return errors;
     }
 
-    public void setErrors(ArrayList<Float> errors) {
+    public void setErrors(List<Float> errors) {
         this.errors = errors;
     }
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Used to print equations from Psh programs
@@ -37,7 +38,7 @@ public class PshEquationBuilder {
 
         String[] instructions = programString.split("\\s+");
 
-        ArrayList<String> stringStack = new ArrayList<String>();
+        List<String> stringStack = new ArrayList<>();
         stringStack.add("x");
         for (String instruction : instructions) {
 

@@ -7,6 +7,7 @@ import org.spiderland.Psh.PushGPIndividual;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * An abstract class for a population of co-evolving predictors of fitness,
@@ -20,7 +21,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
 
     // Note: Oldest trainer has the lowest index; newest trainer has the highest
     // index.
-    protected ArrayList<PushGPIndividual> _trainerPopulation;
+    protected List<PushGPIndividual> _trainerPopulation;
     protected int _generationsBetweenTrainers;
     protected int _trainerPopulationSize;
 
@@ -103,13 +104,13 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
      * of the predictions from the current predictor population.
      */
     protected PushGPIndividual ChooseNewTrainer() {
-        ArrayList<Float> individualVariances = new ArrayList<>();
+        List<Float> individualVariances = new ArrayList<>();
 
         for (int i = 0; i < _solutionGA.GetPopulationSize(); i++) {
             PushGPIndividual individual = (PushGPIndividual) _solutionGA
                     .getIndividualFromPopulation(i);
 
-            ArrayList<Float> predictions = new ArrayList<>();
+            List<Float> predictions = new ArrayList<>();
             for (int j = 0; j < populations[currentPopulation].length; j++) {
                 PredictionGAIndividual predictor = (PredictionGAIndividual) populations[currentPopulation][j];
                 predictions.add(predictor.PredictSolutionFitness(individual));
@@ -198,7 +199,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
         return "";
     }
 
-    private Float Variance(ArrayList<Float> list) {
+    private Float Variance(List<Float> list) {
         float sampleMean = SampleMean(list);
         float sum = 0;
 
@@ -209,7 +210,7 @@ public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
         return (sum / (list.size() - 1));
     }
 
-    private float SampleMean(ArrayList<Float> list) {
+    private float SampleMean(List<Float> list) {
         float total = 0;
         for (float element : list) {
             total += element;

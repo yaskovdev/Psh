@@ -1,6 +1,7 @@
 package org.spiderland.Psh;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Push Genetic Programming core class.
@@ -271,7 +272,7 @@ abstract public class PushGP extends GeneticAlgorithm {
     }
 
     protected void evaluateIndividual(GAIndividual inIndividual, boolean duringSimplify) {
-        ArrayList<Float> errors = new ArrayList<>();
+        List<Float> errors = new ArrayList<>();
 
         if (!duringSimplify)
             averageSize += ((PushGPIndividual) inIndividual).program
