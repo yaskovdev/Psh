@@ -42,8 +42,8 @@ public class IntSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Integer in = (Integer) testCase._first;
-                Integer out = (Integer) testCase._second;
+                Integer in = (Integer) testCase.getFirst();
+                Integer out = (Integer) testCase.getSecond();
 
                 print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
@@ -89,8 +89,7 @@ public class IntSymbolicRegression extends PushGP {
         // Must be included in order to use the input stack.
         interpreter.inputStack().push(currentInput);
 
-        interpreter.execute(((PushGPIndividual) inIndividual)._program,
-                executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual).program, executionLimit);
 
         int result = stack.top();
         // System.out.println( _interpreter + " " + result );

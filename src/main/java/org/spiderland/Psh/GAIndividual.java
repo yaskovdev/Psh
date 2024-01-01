@@ -1,5 +1,7 @@
 package org.spiderland.Psh;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -10,33 +12,17 @@ import java.util.ArrayList;
  * perfect solution.
  */
 
+@Data
 public abstract class GAIndividual implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    float _fitness;
-    ArrayList<Float> _errors;
+    private float fitness;
+    private ArrayList<Float> errors;
+    protected boolean fitnessSet;
 
-    boolean _fitnessSet;
-
-    public boolean FitnessIsSet() {
-        return _fitnessSet;
-    }
-
-    public float GetFitness() {
-        return _fitness;
-    }
-
-    public void SetFitness(float inFitness) {
-        _fitness = inFitness;
-        _fitnessSet = true;
-    }
-
-    public ArrayList<Float> GetErrors() {
-        return _errors;
-    }
-
-    public void SetErrors(ArrayList<Float> inErrors) {
-        _errors = inErrors;
+    public void setFitness(float inFitness) {
+        fitness = inFitness;
+        fitnessSet = true;
     }
 
     public abstract GAIndividual clone();

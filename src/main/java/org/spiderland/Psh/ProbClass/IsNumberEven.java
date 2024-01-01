@@ -30,7 +30,7 @@ public class IsNumberEven extends PushGP {
         interpreter.clearStacks();
         final IntStack intStack = interpreter.intStack();
         intStack.push((Integer) input);
-        interpreter.execute(((PushGPIndividual) individual)._program, executionLimit);
+        interpreter.execute(((PushGPIndividual) individual).program, executionLimit);
         final BooleanStack booleanStack = interpreter.boolStack();
         if (booleanStack.size() == 0) {
             return MAX_ERROR;

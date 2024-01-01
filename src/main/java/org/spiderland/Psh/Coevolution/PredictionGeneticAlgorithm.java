@@ -1,6 +1,6 @@
 package org.spiderland.Psh.Coevolution;
 
-import org.spiderland.Psh.GA;
+import org.spiderland.Psh.GeneticAlgorithm;
 import org.spiderland.Psh.GAIndividual;
 import org.spiderland.Psh.PushGP;
 import org.spiderland.Psh.PushGPIndividual;
@@ -15,7 +15,7 @@ import java.util.HashMap;
  * individual, or it may be referring to something similar, such as the
  * individual's rank.
  */
-public abstract class PredictionGA extends GA {
+public abstract class PredictionGeneticAlgorithm extends GeneticAlgorithm {
     private static final long serialVersionUID = 1L;
 
     // Note: Oldest trainer has the lowest index; newest trainer has the highest
@@ -36,11 +36,11 @@ public abstract class PredictionGA extends GA {
      * @return
      * @throws Exception
      */
-    public static PredictionGA PredictionGAWithParameters(PushGP inSolutionGA, HashMap<String, String> inParams) throws Exception {
+    public static PredictionGeneticAlgorithm PredictionGAWithParameters(PushGP inSolutionGA, HashMap<String, String> inParams) throws Exception {
 
         Class<?> cls = Class.forName(inParams.get("problem-class"));
         Object gaObject = cls.newInstance();
-        if (!(gaObject instanceof PredictionGA ga))
+        if (!(gaObject instanceof PredictionGeneticAlgorithm ga))
             throw (new Exception("Predictor problem-class must inherit from"
                     + " class PredictorGA"));
 
@@ -138,9 +138,9 @@ public abstract class PredictionGA extends GA {
         GAIndividual bestPredictor = populations[currentPopulation][0];
 
         for (GAIndividual ind : populations[currentPopulation]) {
-            if (ind.GetFitness() < bestFitness) {
+            if (ind.getFitness() < bestFitness) {
                 bestPredictor = ind;
-                bestFitness = ind.GetFitness();
+                bestFitness = ind.getFitness();
             }
         }
 

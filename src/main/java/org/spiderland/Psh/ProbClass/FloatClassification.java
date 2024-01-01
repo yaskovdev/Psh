@@ -55,7 +55,7 @@ public class FloatClassification extends PushGP {
 
         stack.push(_currentInput);
 
-        interpreter.execute(((PushGPIndividual) inIndividual)._program, executionLimit);
+        interpreter.execute(((PushGPIndividual) inIndividual).program, executionLimit);
 
         float result = stack.top();
         return result - ((Float) inOutput);

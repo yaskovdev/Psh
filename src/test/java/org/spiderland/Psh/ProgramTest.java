@@ -4,12 +4,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ProgramTest {
+
     @Test
-    @SuppressWarnings("deprecation")
-    public void testEquals() throws Exception {
+    public void testEquals() {
         // Equality testing of nested programs
 
         Program p = new Program("( 1.0 ( TEST 2 ( 3 ) ) )");
@@ -21,8 +20,7 @@ public class ProgramTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void testParse() throws Exception {
+    public void testParse() {
         // Parse a program, and then reparse its string representation.
         // They should be equal.
 
@@ -34,16 +32,13 @@ public class ProgramTest {
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void testSubtreeFetch() throws Exception {
+    public void testSubtreeFetch() {
         Program p = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
-
-        assertTrue(true);
+        assertEquals(new Program("(TEST 2 (3))"), p.subtree(1));
     }
 
     @Test
-    @SuppressWarnings("deprecation")
-    public void testSubtreeReplace() throws Exception {
+    public void testSubtreeReplace() {
         Program p = new Program("( 2.0 ( TEST 2 ( 3 ) ) )");
 
         p.replaceSubtree(0, 3);

@@ -1,33 +1,36 @@
 package org.spiderland.Psh;
 
+import lombok.EqualsAndHashCode;
+
 /**
  * A PushGA individual class which is a simple wrapper around a Push Program
  * object.
  */
-
+@EqualsAndHashCode
 public class PushGPIndividual extends GAIndividual {
     private static final long serialVersionUID = 1L;
 
-    public Program _program;
+    public Program program;
 
     public PushGPIndividual() {
     }
 
     PushGPIndividual(Program inProgram) {
-        SetProgram(inProgram);
-        _fitnessSet = false;
+        setProgram(inProgram);
+        fitnessSet = false;
     }
 
-    void SetProgram(Program inProgram) {
-        if (inProgram != null)
-            _program = new Program(inProgram);
+    void setProgram(Program inProgram) {
+        if (inProgram != null) {
+            program = new Program(inProgram);
+        }
     }
 
     public String toString() {
-        return _program.toString();
+        return program.toString();
     }
 
     public GAIndividual clone() {
-        return new PushGPIndividual(_program);
+        return new PushGPIndividual(program);
     }
 }

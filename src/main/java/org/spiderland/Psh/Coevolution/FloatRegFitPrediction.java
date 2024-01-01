@@ -5,7 +5,7 @@ import org.spiderland.Psh.PushGPIndividual;
 
 import java.util.ArrayList;
 
-public class FloatRegFitPrediction extends PredictionGA {
+public class FloatRegFitPrediction extends PredictionGeneticAlgorithm {
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -30,12 +30,12 @@ public class FloatRegFitPrediction extends PredictionGA {
 
             // Error is difference between predictedError and the actual fitness
             // of the trainer.
-            float error = Math.abs(predictedError) - Math.abs(_trainerPopulation.get(i).GetFitness());
+            float error = Math.abs(predictedError) - Math.abs(_trainerPopulation.get(i).getFitness());
             errors.add(error);
         }
 
-        predictor.SetFitness(absoluteAverageOfErrors(errors));
-        predictor.SetErrors(errors);
+        predictor.setFitness(absoluteAverageOfErrors(errors));
+        predictor.setErrors(errors);
     }
 
     /**
@@ -63,7 +63,7 @@ public class FloatRegFitPrediction extends PredictionGA {
     @Override
     protected void EvaluateTrainerFitnesses() {
         for (PushGPIndividual trainer : _trainerPopulation) {
-            if (!trainer.FitnessIsSet()) {
+            if (!trainer.isFitnessSet()) {
                 EvaluateSolutionIndividual(trainer);
             }
         }

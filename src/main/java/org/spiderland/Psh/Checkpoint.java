@@ -5,12 +5,16 @@ import java.io.Serializable;
 public class Checkpoint implements Serializable {
     private static final long serialVersionUID = 1L;
     int checkpointNumber;
-    GA ga;
+    private final GeneticAlgorithm geneticAlgorithm;
     StringBuffer report;
 
-    public Checkpoint(GA ga) {
+    public Checkpoint(GeneticAlgorithm geneticAlgorithm) {
         checkpointNumber = 0;
-        this.ga = ga;
+        this.geneticAlgorithm = geneticAlgorithm;
         report = new StringBuffer();
+    }
+
+    public GeneticAlgorithm getGeneticAlgorithm() {
+        return geneticAlgorithm;
     }
 }

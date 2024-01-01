@@ -42,8 +42,8 @@ public class FloatSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Float in = (Float) testCase._first;
-                Float out = (Float) testCase._second;
+                Float in = (Float) testCase.getFirst();
+                Float out = (Float) testCase.getSecond();
 
                 print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
@@ -89,7 +89,7 @@ public class FloatSymbolicRegression extends PushGP {
         // Must be included in order to use the input stack.
         interpreter.inputStack().push(currentInput);
 
-        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+        interpreter.execute(((PushGPIndividual) inIndividual).program,
                 executionLimit);
 
         float result = stack.top();
@@ -114,7 +114,7 @@ public class FloatSymbolicRegression extends PushGP {
         // Must be included in order to use the input stack.
         interpreter.inputStack().push(currentInput);
 
-        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+        interpreter.execute(((PushGPIndividual) inIndividual).program,
                 executionLimit);
 
         float result = stack.top();

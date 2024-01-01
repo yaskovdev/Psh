@@ -12,15 +12,12 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.VerboseMode;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.spiderland.Psh.GA.gaWithParameters;
+import static org.spiderland.Psh.GeneticAlgorithm.gaWithParameters;
 import static org.spiderland.Psh.Params.readFromFile;
 
 @Tag("BenchmarkTest")
@@ -37,8 +34,8 @@ public class PushGpBenchmarkTest {
 
     @Benchmark
     public void benchmarkCartCentering() throws Exception {
-        final GA ga = gaWithParameters(readFromFile(getFileFromResource("CartCenterBenchmark.pushgp")));
-        ga.run();
+        final GeneticAlgorithm geneticAlgorithm = gaWithParameters(readFromFile(TestUtil.getFileFromResource("CartCenterBenchmark.pushgp")));
+        geneticAlgorithm.run();
     }
 
     private Collection<RunResult> runBenchmark(Options opt) throws RunnerException {
@@ -69,16 +66,6 @@ public class PushGpBenchmarkTest {
                 assertTrue(score < AVERAGE_EXPECTED_TIME_MS, "Benchmark score " + score
                         + " is higher than " + AVERAGE_EXPECTED_TIME_MS + " " + benchmarkResult.getScoreUnit() + ". Too slow.");
             }
-        }
-    }
-
-    private static File getFileFromResource(final String fileName) throws URISyntaxException {
-        final ClassLoader classLoader = PushGpBenchmarkTest.class.getClassLoader();
-        final URL resource = classLoader.getResource(fileName);
-        if (resource == null) {
-            throw new IllegalArgumentException("File with name " + fileName + " was not found");
-        } else {
-            return new File(resource.toURI());
         }
     }
 }

@@ -10,22 +10,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class InstructionTest {
     protected Interpreter interpreter = null;
-    protected IntStack istack = null;
-    protected FloatStack fstack = null;
-    protected BooleanStack bstack = null;
+    protected IntStack intStack = null;
+    protected FloatStack floatStack = null;
+    protected BooleanStack booleanStack = null;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         interpreter = new Interpreter();
         Program instructionList = new Program("( )");
         interpreter.setInstructions(instructionList);
-        istack = new IntStack();
-        fstack = new FloatStack();
-        bstack = new BooleanStack();
+        intStack = new IntStack();
+        floatStack = new FloatStack();
+        booleanStack = new BooleanStack();
     }
 
     @Test
-    public void testNumberName() throws Exception {
+    public void testNumberName() {
         Program p = new Program("( 1 false 1.0 0 0.0 x true )");
         interpreter.execute(p);
         assertEquals(2, interpreter.intStack().size());
@@ -43,93 +43,93 @@ public class InstructionTest {
     }
 
     @Test
-    public void testPop() throws Exception {
+    public void testPop() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.pop integer.pop float.pop )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(2);
 
-        fstack.push(4.0f);
+        floatStack.push(4.0f);
 
-        bstack.push(true);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testDup() throws Exception {
+    public void testDup() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.dup integer.dup float.dup )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
-        istack.push(3);
-        istack.push(3);
+        intStack.push(1);
+        intStack.push(2);
+        intStack.push(3);
+        intStack.push(3);
 
-        fstack.push(4.0f);
-        fstack.push(5.0f);
-        fstack.push(5.0f);
+        floatStack.push(4.0f);
+        floatStack.push(5.0f);
+        floatStack.push(5.0f);
 
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testSwap() throws Exception {
+    public void testSwap() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.swap integer.swap float.swap )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(3);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(3);
+        intStack.push(2);
 
-        fstack.push(5.0f);
-        fstack.push(4.0f);
+        floatStack.push(5.0f);
+        floatStack.push(4.0f);
 
-        bstack.push(false);
-        bstack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testRot() throws Exception {
+    public void testRot() {
         Program p = new Program("( 1 2 3 4.0 5.0 6.0 true false true " +
                 "boolean.rot integer.rot float.rot )");
         interpreter.execute(p);
 
-        istack.push(2);
-        istack.push(3);
-        istack.push(1);
+        intStack.push(2);
+        intStack.push(3);
+        intStack.push(1);
 
-        fstack.push(5.0f);
-        fstack.push(6.0f);
-        fstack.push(4.0f);
+        floatStack.push(5.0f);
+        floatStack.push(6.0f);
+        floatStack.push(4.0f);
 
-        bstack.push(false);
-        bstack.push(true);
-        bstack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testFlush() throws Exception {
+    public void testFlush() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.flush integer.flush float.flush )");
         interpreter.execute(p);
@@ -140,190 +140,190 @@ public class InstructionTest {
     }
 
     @Test
-    public void testStackDepth() throws Exception {
+    public void testStackDepth() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "boolean.stackdepth integer.stackdepth float.stackdepth )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
-        istack.push(3);
-        istack.push(2);
-        istack.push(4);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(2);
+        intStack.push(3);
+        intStack.push(2);
+        intStack.push(4);
+        intStack.push(2);
 
-        assertEquals(istack, interpreter.intStack());
+        assertEquals(intStack, interpreter.intStack());
     }
 
     @Test
-    public void testAdd() throws Exception {
+    public void testAdd() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.+ float.+ )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(5);
+        intStack.push(1);
+        intStack.push(5);
 
-        fstack.push(9.0f);
+        floatStack.push(9.0f);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testSub() throws Exception {
+    public void testSub() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.- float.- )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(-1);
+        intStack.push(1);
+        intStack.push(-1);
 
-        fstack.push(-1.0f);
+        floatStack.push(-1.0f);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testMul() throws Exception {
+    public void testMul() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer.* float.* )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(6);
+        intStack.push(1);
+        intStack.push(6);
 
-        fstack.push(20.0f);
+        floatStack.push(20.0f);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testDiv() throws Exception {
+    public void testDiv() {
         Program p = new Program("( 1 2 3 4.0 5.0 true false " +
                 "integer./ float./ )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(0);
+        intStack.push(1);
+        intStack.push(0);
 
-        fstack.push(4.0f / 5.0f);
+        floatStack.push(4.0f / 5.0f);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testMod() throws Exception {
+    public void testMod() {
         Program p = new Program("( 1 5 3 7.0 5.0 true false " +
                 "integer.% float.% )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(2);
 
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testEq() throws Exception {
+    public void testEq() {
         Program p = new Program("( 1 3 3 7.0 5.0 true false " +
                 "integer.= float.= true false boolean.= false false boolean.=)");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(false);
-        bstack.push(true);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(false);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testLt() throws Exception {
+    public void testLt() {
         Program p = new Program("( 1 3 3 5.0 6.0 true false " +
                 "integer.< float.< )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(false);
-        bstack.push(true);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(false);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testGt() throws Exception {
+    public void testGt() {
         Program p = new Program("( 1 3 3 5.0 6.0 true false " +
                 "integer.> float.> )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(false);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(false);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testBoolOps() throws Exception {
+    public void testBoolOps() {
         Program p = new Program("( true false boolean.or " +
                 "true false boolean.and true false boolean.xor true boolean.not )");
         interpreter.execute(p);
 
-        bstack.push(true);
-        bstack.push(false);
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testInputIndex() throws Exception {
+    public void testInputIndex() {
         Program p = new Program("( 1 input.index 1 input.index 0 input.index " +
                 "0 input.index 2 input.index 2 input.index 1000 input.index -1 input.index)");
         interpreter.inputStack().push(true);
@@ -332,30 +332,30 @@ public class InstructionTest {
 
         interpreter.execute(p);
 
-        istack.push(3);
-        istack.push(3);
+        intStack.push(3);
+        intStack.push(3);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        bstack.push(true);
-        bstack.push(true);
-        bstack.push(true);
+        booleanStack.push(true);
+        booleanStack.push(true);
+        booleanStack.push(true);
 
         ObjectStack inputs = new ObjectStack();
         inputs.push(true);
         inputs.push(3);
         inputs.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
         assertEquals(inputs, interpreter.inputStack());
     }
 
     @Test
-    public void testInputStackDepth() throws Exception {
+    public void testInputStackDepth() {
         Program p = new Program("( input.stackdepth )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
@@ -364,15 +364,15 @@ public class InstructionTest {
 
         interpreter.execute(p);
 
-        istack.push(4);
+        intStack.push(4);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testInputInAll() throws Exception {
+    public void testInputInAll() {
         Program p = new Program("( input.inall )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
@@ -381,20 +381,20 @@ public class InstructionTest {
 
         interpreter.execute(p);
 
-        istack.push(3);
+        intStack.push(3);
 
-        fstack.push(2.0f);
-        fstack.push(1.0f);
+        floatStack.push(2.0f);
+        floatStack.push(1.0f);
 
-        bstack.push(true);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testInputInAllRev() throws Exception {
+    public void testInputInAllRev() {
         Program p = new Program("( input.inallrev )");
         interpreter.inputStack().push(true);
         interpreter.inputStack().push(3);
@@ -403,208 +403,208 @@ public class InstructionTest {
 
         interpreter.execute(p);
 
-        istack.push(3);
+        intStack.push(3);
 
-        fstack.push(1.0f);
-        fstack.push(2.0f);
+        floatStack.push(1.0f);
+        floatStack.push(2.0f);
 
-        bstack.push(true);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
     @Disabled
-    public void testCodeQuote() throws Exception {
+    public void testCodeQuote() {
         Program p = new Program("( 1 code.quote integer.pop code.quote code.quote)");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
         assertEquals(interpreter.getInstruction("code.quote"), interpreter.codeStack().pop());
         assertEquals(interpreter.getInstruction("integer.pop"), interpreter.codeStack().pop());
     }
 
     @Test
-    public void testCodeEquals() throws Exception {
+    public void testCodeEquals() {
         Program p = new Program("( 1 " +
                 "code.quote integer.pop code.quote integer.pop code.= " +
                 "code.quote integer.pop code.quote integer.+ code.= )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        bstack.push(true);
-        bstack.push(false);
+        booleanStack.push(true);
+        booleanStack.push(false);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testExecEquals() throws Exception {
+    public void testExecEquals() {
         Program p = new Program("( 1 " +
                 "exec.= code.quote integer.pop " +
                 "exec.= integer.pop integer.pop )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        bstack.push(false);
-        bstack.push(true);
+        booleanStack.push(false);
+        booleanStack.push(true);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testCodeIf() throws Exception {
+    public void testCodeIf() {
         Program p = new Program("( 1 2 1.0 2.0 " +
                 "code.quote integer.pop code.quote float.pop true code.if " +
                 "code.quote integer.pop code.quote float.pop false code.if )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        fstack.push(1.0f);
+        floatStack.push(1.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testExecIf() throws Exception {
+    public void testExecIf() {
         Program p = new Program("( 1 2 1.0 2.0 " +
                 "true exec.if integer.pop float.pop " +
                 "false exec.if integer.pop float.pop )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        fstack.push(1.0f);
+        floatStack.push(1.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testExecDoRange() throws Exception {
+    public void testExecDoRange() {
         Program p = new Program("( 1 3 " +
                 "exec.do*range 2.0 )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
-        istack.push(3);
+        intStack.push(1);
+        intStack.push(2);
+        intStack.push(3);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testExecDoTimes() throws Exception {
+    public void testExecDoTimes() {
         Program p = new Program("( 1 3 " +
                 "exec.do*times 2.0 )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testExecDoCount() throws Exception {
+    public void testExecDoCount() {
         Program p = new Program("( 1 3 " +
                 "exec.do*count 2.0 )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(0);
-        istack.push(1);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(0);
+        intStack.push(1);
+        intStack.push(2);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testCodeDoRange() throws Exception {
+    public void testCodeDoRange() {
         Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*range )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(2);
-        istack.push(3);
+        intStack.push(1);
+        intStack.push(2);
+        intStack.push(3);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testCodeDoTimes() throws Exception {
+    public void testCodeDoTimes() {
         Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*times )");
         interpreter.execute(p);
 
-        istack.push(1);
+        intStack.push(1);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 
     @Test
-    public void testCodeDoCount() throws Exception {
+    public void testCodeDoCount() {
         Program p = new Program("( 1 3 " +
                 "code.quote 2.0 code.do*count )");
         interpreter.execute(p);
 
-        istack.push(1);
-        istack.push(0);
-        istack.push(1);
-        istack.push(2);
+        intStack.push(1);
+        intStack.push(0);
+        intStack.push(1);
+        intStack.push(2);
 
-        fstack.push(2.0f);
-        fstack.push(2.0f);
-        fstack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
+        floatStack.push(2.0f);
 
-        assertEquals(istack, interpreter.intStack());
-        assertEquals(fstack, interpreter.floatStack());
-        assertEquals(bstack, interpreter.boolStack());
+        assertEquals(intStack, interpreter.intStack());
+        assertEquals(floatStack, interpreter.floatStack());
+        assertEquals(booleanStack, interpreter.boolStack());
     }
 }

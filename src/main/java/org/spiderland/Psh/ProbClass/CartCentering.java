@@ -64,8 +64,8 @@ public class CartCentering extends PushGP {
         float captureRadius = 0.01f;
 
         ObjectPair xv = (ObjectPair) inInput;
-        float position = (Float) xv._first;
-        float velocity = (Float) xv._second;
+        float position = (Float) xv.getFirst();
+        float velocity = (Float) xv.getSecond();
 
         for (int step = 1; step <= timeSteps; step++) {
             interpreter.clearStacks();
@@ -84,7 +84,7 @@ public class CartCentering extends PushGP {
             iStack.push(position);
             iStack.push(velocity);
 
-            interpreter.execute(((PushGPIndividual) inIndividual)._program,
+            interpreter.execute(((PushGPIndividual) inIndividual).program,
                     executionLimit);
 
             // If there is no boolean on the stack, the program has failed to

@@ -1,4 +1,4 @@
-import org.spiderland.Psh.GA;
+import org.spiderland.Psh.GeneticAlgorithm;
 import org.spiderland.Psh.InspectorInput;
 import org.spiderland.Psh.Interpreter;
 import org.spiderland.Psh.Params;
@@ -93,17 +93,17 @@ public class Main {
      * information about parameter files can be found in the README.
      */
     private static void runGeneticProgramming(final String[] args) throws Exception {
-        GA ga = args[0].endsWith(".gz") ? GA.gaWithCheckpoint(args[0]) : GA.gaWithParameters(Params.readFromFile(new File(args[0])));
+        GeneticAlgorithm geneticAlgorithm = args[0].endsWith(".gz") ? GeneticAlgorithm.gaWithCheckpoint(args[0]) : GeneticAlgorithm.gaWithParameters(Params.readFromFile(new File(args[0])));
 
         if (args.length == 3) {
             // Execute a test program
 
             Program p = new Program(args[1]);
-            ((PushGP) ga).runTestProgram(p, Integer.parseInt(args[2]));
+            ((PushGP) geneticAlgorithm).runTestProgram(p, Integer.parseInt(args[2]));
         } else {
             // Execute a GP run.
 
-            ga.run();
+            geneticAlgorithm.run();
         }
     }
 }

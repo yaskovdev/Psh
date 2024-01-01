@@ -5,7 +5,8 @@ import java.util.ArrayList;
 /**
  * The Push Genetic Programming core class.
  */
-abstract public class PushGP extends GA {
+abstract public class PushGP extends GeneticAlgorithm {
+
     private static final long serialVersionUID = 1L;
 
     protected Interpreter interpreter;
@@ -231,7 +232,7 @@ abstract public class PushGP extends GA {
         int randomCodeSize = random.nextInt(maxRandomCodeSize) + 2;
         Program p = interpreter.randomCode(randomCodeSize);
 
-        i.SetProgram(p);
+        i.setProgram(p);
     }
 
     protected void beginGeneration() throws Exception {
@@ -251,13 +252,13 @@ abstract public class PushGP extends GA {
 
             evaluateIndividual(i);
 
-            totalFitness += i.GetFitness();
+            totalFitness += i.getFitness();
 
-            if (i.GetFitness() < bestMeanFitness) {
-                bestMeanFitness = i.GetFitness();
+            if (i.getFitness() < bestMeanFitness) {
+                bestMeanFitness = i.getFitness();
                 bestIndividual = n;
-                bestSize = ((PushGPIndividual) i)._program.programSize();
-                bestErrors = i.GetErrors();
+                bestSize = ((PushGPIndividual) i).program.programSize();
+                bestErrors = i.getErrors();
             }
         }
 
@@ -273,7 +274,7 @@ abstract public class PushGP extends GA {
         ArrayList<Float> errors = new ArrayList<>();
 
         if (!duringSimplify)
-            averageSize += ((PushGPIndividual) inIndividual)._program
+            averageSize += ((PushGPIndividual) inIndividual).program
                     .programSize();
 
         long t = System.currentTimeMillis();
@@ -284,8 +285,8 @@ abstract public class PushGP extends GA {
         }
         t = System.currentTimeMillis() - t;
 
-        inIndividual.SetFitness(absoluteAverageOfErrors(errors));
-        inIndividual.SetErrors(errors);
+        inIndividual.setFitness(absoluteAverageOfErrors(errors));
+        inIndividual.setErrors(errors);
     }
 
     abstract protected void initInterpreter(Interpreter inInterpreter) throws Exception;
@@ -326,9 +327,9 @@ abstract public class PushGP extends GA {
         report += ";; Memory usage: " + mem + "\n\n";
 
         report += ";; Partial Simplification (may beat best):\n  ";
-        report += simplified._program + "\n";
+        report += simplified.program + "\n";
         report += ";; Partial Simplification Size: ";
-        report += simplified._program.programSize() + "\n\n";
+        report += simplified.program.programSize() + "\n\n";
 
         return report;
     }
@@ -370,9 +371,9 @@ abstract public class PushGP extends GA {
 
         report += "<<<<<<<<<< After Simplification >>>>>>>>>>\n";
         report += ">> Best Program: ";
-        report += simplified._program + "\n";
+        report += simplified.program + "\n";
         report += ">> Size: ";
-        report += simplified._program.programSize() + "\n\n";
+        report += simplified.program.programSize() + "\n\n";
 
         return report;
     }
@@ -385,7 +386,7 @@ abstract public class PushGP extends GA {
         PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
         PushGPIndividual trial = (PushGPIndividual) inIndividual.clone();
         evaluateIndividual(simplest, true);
-        float bestError = simplest.GetFitness();
+        float bestError = simplest.getFitness();
 
         boolean madeSimpler = false;
 
@@ -393,15 +394,15 @@ abstract public class PushGP extends GA {
             madeSimpler = false;
             float method = random.nextInt(100);
 
-            if (trial._program.programSize() <= 0)
+            if (trial.program.programSize() <= 0)
                 break;
             if (method < simplifyFlattenPercent) {
                 // Flatten random thing
-                int pointIndex = random.nextInt(trial._program.programSize());
-                Object point = trial._program.subtree(pointIndex);
+                int pointIndex = random.nextInt(trial.program.programSize());
+                Object point = trial.program.subtree(pointIndex);
 
                 if (point instanceof Program) {
-                    trial._program.flatten(pointIndex);
+                    trial.program.flatten(pointIndex);
                     madeSimpler = true;
                 }
             } else {
@@ -409,12 +410,12 @@ abstract public class PushGP extends GA {
                 int numberToRemove = random.nextInt(3) + 1;
 
                 for (int j = 0; j < numberToRemove; j++) {
-                    int trialSize = trial._program.programSize();
+                    int trialSize = trial.program.programSize();
 
                     if (trialSize > 0) {
                         int pointIndex = random.nextInt(trialSize);
-                        trial._program.replaceSubtree(pointIndex, new Program());
-                        trial._program.flatten(pointIndex);
+                        trial.program.replaceSubtree(pointIndex, new Program());
+                        trial.program.flatten(pointIndex);
                         madeSimpler = true;
                     }
                 }
@@ -423,9 +424,9 @@ abstract public class PushGP extends GA {
             if (madeSimpler) {
                 evaluateIndividual(trial, true);
 
-                if (trial.GetFitness() <= bestError) {
+                if (trial.getFitness() <= bestError) {
                     simplest = (PushGPIndividual) trial.clone();
-                    bestError = trial.GetFitness();
+                    bestError = trial.getFitness();
                 }
             }
 
@@ -462,19 +463,19 @@ abstract public class PushGP extends GA {
         PushGPIndividual b = (PushGPIndividual) tournamentSelect(
             tournamentSize, inIndex);
 
-        if (a._program.programSize() <= 0) {
+        if (a.program.programSize() <= 0) {
             return b;
         }
-        if (b._program.programSize() <= 0) {
+        if (b.program.programSize() <= 0) {
             return a;
         }
 
         int aindex = reproductionNodeSelection(a);
         int bindex = reproductionNodeSelection(b);
 
-        if (a._program.programSize() + b._program.subtreeSize(bindex)
-                - a._program.subtreeSize(aindex) <= maxPointsInProgram)
-            a._program.replaceSubtree(aindex, b._program.subtree(bindex));
+        if (a.program.programSize() + b.program.subtreeSize(bindex)
+                - a.program.subtreeSize(aindex) <= maxPointsInProgram)
+            a.program.replaceSubtree(aindex, b.program.subtree(bindex));
 
         return a;
     }
@@ -482,10 +483,10 @@ abstract public class PushGP extends GA {
     protected GAIndividual reproduceByMutation(int inIndex) {
         PushGPIndividual i = (PushGPIndividual) reproduceByClone(inIndex);
 
-        int totalsize = i._program.programSize();
+        int totalsize = i.program.programSize();
         int which = reproductionNodeSelection(i);
 
-        int oldsize = i._program.subtreeSize(which);
+        int oldsize = i.program.subtreeSize(which);
         int newsize = 0;
 
         if (useFairMutation) {
@@ -503,7 +504,7 @@ abstract public class PushGP extends GA {
             newtree = interpreter.randomCode(newsize);
 
         if (newsize + totalsize - oldsize <= maxPointsInProgram)
-            i._program.replaceSubtree(which, newtree);
+            i.program.replaceSubtree(which, newtree);
 
         return i;
     }
@@ -516,7 +517,7 @@ abstract public class PushGP extends GA {
      * @return Index of the node to use for reproduction.
      */
     protected int reproductionNodeSelection(PushGPIndividual inInd) {
-        int totalSize = inInd._program.programSize();
+        int totalSize = inInd.program.programSize();
         int selectedNode = 0;
 
         if (totalSize <= 1) {
@@ -537,7 +538,7 @@ abstract public class PushGP extends GA {
 
             for (int j = 0; j < nodeSelectionTournamentSize; j++) {
                 int nextwhich = random.nextInt(totalSize);
-                int nextwhichsize = inInd._program.subtreeSize(nextwhich);
+                int nextwhichsize = inInd.program.subtreeSize(nextwhich);
 
                 if (nextwhichsize > maxSize) {
                     selectedNode = nextwhich;

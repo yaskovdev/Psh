@@ -27,7 +27,7 @@ public class CEFloatSymbolicRegression extends PushGP {
 
     protected long _effort;
     protected float _predictorEffortPercent;
-    protected PredictionGA _predictorGA;
+    protected PredictionGeneticAlgorithm _predictorGA;
 
     private boolean _success;
 
@@ -58,8 +58,8 @@ public class CEFloatSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Float in = (Float) testCase._first;
-                Float out = (Float) testCase._second;
+                Float in = (Float) testCase.getFirst();
+                Float out = (Float) testCase.getSecond();
 
                 print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
@@ -90,7 +90,7 @@ public class CEFloatSymbolicRegression extends PushGP {
         // Create and initialize predictors
         _predictorEffortPercent = getFloatParam("PREDICTOR-effort-percent",
                 true);
-        _predictorGA = PredictionGA.PredictionGAWithParameters(this,
+        _predictorGA = PredictionGeneticAlgorithm.PredictionGAWithParameters(this,
                 GetPredictorParameters(parameters));
 
     }
@@ -114,8 +114,8 @@ public class CEFloatSymbolicRegression extends PushGP {
         FloatRegFitPredictionIndividual predictor = (FloatRegFitPredictionIndividual) _predictorGA.GetBestPredictor();
         float fitness = predictor.PredictSolutionFitness((PushGPIndividual) inIndividual);
 
-        inIndividual.SetFitness(fitness);
-        inIndividual.SetErrors(new ArrayList<>());
+        inIndividual.setFitness(fitness);
+        inIndividual.setErrors(new ArrayList<>());
     }
 
     public float evaluateTestCase(GAIndividual inIndividual, Object inInput,
@@ -133,7 +133,7 @@ public class CEFloatSymbolicRegression extends PushGP {
         // Must be included in order to use the input stack.
         interpreter.inputStack().push(_currentInput);
 
-        interpreter.execute(((PushGPIndividual) inIndividual)._program,
+        interpreter.execute(((PushGPIndividual) inIndividual).program,
                 executionLimit);
 
         float result = fstack.top();
@@ -161,18 +161,18 @@ public class CEFloatSymbolicRegression extends PushGP {
         }
 
         GAIndividual best = populations[currentPopulation][bestIndividual];
-        float predictedFitness = best.GetFitness();
+        float predictedFitness = best.getFitness();
 
         _predictorGA.EvaluateSolutionIndividual((PushGPIndividual) best);
 
-        bestMeanFitness = best.GetFitness();
+        bestMeanFitness = best.getFitness();
 
         if (bestMeanFitness <= 0.1) {
             _success = true;
             return true;
         }
 
-        best.SetFitness(predictedFitness);
+        best.setFitness(predictedFitness);
         return false;
     }
 
@@ -225,13 +225,13 @@ public class CEFloatSymbolicRegression extends PushGP {
 
             PredictIndividual(i, false);
 
-            totalFitness += i.GetFitness();
+            totalFitness += i.getFitness();
 
-            if (i.GetFitness() < bestMeanFitness) {
-                bestMeanFitness = i.GetFitness();
+            if (i.getFitness() < bestMeanFitness) {
+                bestMeanFitness = i.getFitness();
                 bestIndividual = n;
-                bestSize = ((PushGPIndividual) i)._program.programSize();
-                bestErrors = i.GetErrors();
+                bestSize = ((PushGPIndividual) i).program.programSize();
+                bestErrors = i.getErrors();
             }
         }
 
@@ -248,7 +248,7 @@ public class CEFloatSymbolicRegression extends PushGP {
         PushGPIndividual simplest = (PushGPIndividual) inIndividual.clone();
         PushGPIndividual trial = (PushGPIndividual) inIndividual.clone();
         PredictIndividual(simplest, true); // Changed from EvaluateIndividual
-        float bestError = simplest.GetFitness();
+        float bestError = simplest.getFitness();
 
         boolean madeSimpler = false;
 
@@ -256,15 +256,15 @@ public class CEFloatSymbolicRegression extends PushGP {
             madeSimpler = false;
             float method = random.nextInt(100);
 
-            if (trial._program.programSize() <= 0)
+            if (trial.program.programSize() <= 0)
                 break;
             if (method < simplifyFlattenPercent) {
                 // Flatten random thing
-                int pointIndex = random.nextInt(trial._program.programSize());
-                Object point = trial._program.subtree(pointIndex);
+                int pointIndex = random.nextInt(trial.program.programSize());
+                Object point = trial.program.subtree(pointIndex);
 
                 if (point instanceof Program) {
-                    trial._program.flatten(pointIndex);
+                    trial.program.flatten(pointIndex);
                     madeSimpler = true;
                 }
             } else {
@@ -272,12 +272,12 @@ public class CEFloatSymbolicRegression extends PushGP {
                 int numberToRemove = random.nextInt(3) + 1;
 
                 for (int j = 0; j < numberToRemove; j++) {
-                    int trialSize = trial._program.programSize();
+                    int trialSize = trial.program.programSize();
 
                     if (trialSize > 0) {
                         int pointIndex = random.nextInt(trialSize);
-                        trial._program.replaceSubtree(pointIndex, new Program());
-                        trial._program.flatten(pointIndex);
+                        trial.program.replaceSubtree(pointIndex, new Program());
+                        trial.program.flatten(pointIndex);
                         madeSimpler = true;
                     }
                 }
@@ -286,9 +286,9 @@ public class CEFloatSymbolicRegression extends PushGP {
             if (madeSimpler) {
                 PredictIndividual(trial, true); // Changed from EvaluateIndividual
 
-                if (trial.GetFitness() <= bestError) {
+                if (trial.getFitness() <= bestError) {
                     simplest = (PushGPIndividual) trial.clone();
-                    bestError = trial.GetFitness();
+                    bestError = trial.getFitness();
                 }
             }
 
