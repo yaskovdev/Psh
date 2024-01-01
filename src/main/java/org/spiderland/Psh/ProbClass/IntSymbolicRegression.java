@@ -42,8 +42,8 @@ public class IntSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Integer in = (Integer) testCase.getFirst();
-                Integer out = (Integer) testCase.getSecond();
+                Integer in = (Integer) testCase.first();
+                Integer out = (Integer) testCase.second();
 
                 print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");

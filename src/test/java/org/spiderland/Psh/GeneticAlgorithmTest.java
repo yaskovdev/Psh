@@ -1,6 +1,5 @@
 package org.spiderland.Psh;
 
-import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.spiderland.Psh.ProbClass.CartCentering;
 
@@ -10,8 +9,7 @@ import static org.hamcrest.Matchers.is;
 public class GeneticAlgorithmTest {
 
     @Test
-    @SneakyThrows
-    public void shouldLoadGeneticAlgorithmStateFromCheckpoint() {
+    public void shouldLoadGeneticAlgorithmStateFromCheckpoint() throws Exception {
         final CartCentering geneticAlgorithm = (CartCentering) GeneticAlgorithm.gaWithParameters(Params.readFromFile(TestUtil.getFileFromResource("CartCenter.pushgp")));
         geneticAlgorithm.run(1);
         final CartCentering instanceUnderTest = (CartCentering) GeneticAlgorithm.gaWithCheckpoint("target/CartCenter0.gz");

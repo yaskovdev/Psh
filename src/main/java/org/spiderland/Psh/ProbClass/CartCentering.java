@@ -64,8 +64,8 @@ public class CartCentering extends PushGP {
         float captureRadius = 0.01f;
 
         ObjectPair xv = (ObjectPair) inInput;
-        float position = (Float) xv.getFirst();
-        float velocity = (Float) xv.getSecond();
+        float position = (Float) xv.first();
+        float velocity = (Float) xv.second();
 
         for (int step = 1; step <= timeSteps; step++) {
             interpreter.clearStacks();

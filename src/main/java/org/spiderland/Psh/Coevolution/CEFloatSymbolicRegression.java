@@ -58,8 +58,8 @@ public class CEFloatSymbolicRegression extends PushGP {
             for (int i = 0; i < numTestCases; i++) {
                 ObjectPair testCase = testCaseGenerator.testCase(i);
 
-                Float in = (Float) testCase.getFirst();
-                Float out = (Float) testCase.getSecond();
+                Float in = (Float) testCase.first();
+                Float out = (Float) testCase.second();
 
                 print(";; Fitness case #" + i + " input: " + in + " output: "
                         + out + "\n");
