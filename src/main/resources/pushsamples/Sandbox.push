@@ -17,11 +17,33 @@
 
         integer.dup
         -1 integer.=
-        exec.if () ()
+        exec.if
+        (
+            1 1 60 integer.+ integer.+ integer.yankdup
+            1 integer.+ integer.yank
+            1 integer.+
+            2 1 60 integer.+ integer.+ integer.yankdup
+            (2 integer.+) integer.shove
+
+            (1 60 integer.+) integer.yank
+            1 integer.+
+            (1 60 integer.+) integer.shove
+        ) ()
 
         integer.dup
         -2 integer.=
-        exec.if () ()
+        exec.if
+        (
+            1 1 60 integer.+ integer.+ integer.yankdup
+            1 integer.+ integer.yank
+            -1 integer.+
+            2 1 60 integer.+ integer.+ integer.yankdup
+            (2 integer.+) integer.shove
+
+            (1 60 integer.+) integer.yank
+            1 integer.+
+            (1 60 integer.+) integer.shove
+        ) ()
 
         integer.dup
         -3 integer.=
