@@ -1,0 +1,3 @@
+(integer.abs integer.neg true integer.dup integer.abs integer.pow exec.do*times float.shove exec.= name.dup ())
+150
+-1

@@ -1,0 +1,3 @@
+(integer.abs integer.neg true integer.dup integer.abs integer.pow exec.do*times code.= exec.= code.dup exec.do*times)
+150
+4

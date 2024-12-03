@@ -50,12 +50,12 @@ public class InspectorInput {
         String fileString = Files.readString(inFile.toPath(), StandardCharsets.UTF_8);
 
         // Get programString
-        int indexNewline = fileString.indexOf("\n");
-        String programString = fileString.substring(0, indexNewline).trim();
-        fileString = fileString.substring(indexNewline + 1);
+        int lastProgramCharIndex = lastProgramCharacter(fileString);
+        String programString = fileString.substring(0, lastProgramCharIndex + 1).trim();
+        fileString = fileString.substring(lastProgramCharIndex + 1).trim();
 
         // Get executionLimit
-        indexNewline = fileString.indexOf("\n");
+        int indexNewline = fileString.indexOf("\n");
         if (indexNewline != -1) {
             String limitString = fileString.substring(0, indexNewline).trim();
 
@@ -103,6 +103,30 @@ public class InspectorInput {
         // Load the program
         program = new Program(programString);
         interpreter.loadProgram(program); // Initializes program
+    }
+
+    /**
+     * Could use Program itself to count the characters while it is parsing, but this also works as a quick temporary solution.
+     */
+    private static int lastProgramCharacter(String input) {
+        int pointer = 0;
+        while (pointer < input.length() && input.charAt(pointer) != '(') {
+            pointer++;
+        }
+        if (pointer == input.length()) {
+            throw new RuntimeException("No program found in input file");
+        }
+        pointer++;
+        int numberOfOpenBrackets = 1;
+        while (numberOfOpenBrackets > 0) {
+            if (input.charAt(pointer) == '(') {
+                numberOfOpenBrackets++;
+            } else if (input.charAt(pointer) == ')') {
+                numberOfOpenBrackets--;
+            }
+            pointer++;
+        }
+        return pointer;
     }
 
     /**

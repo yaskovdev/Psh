@@ -1,0 +1,3 @@
+(exec.stackdepth (integer.% boolean.frominteger boolean.not) float.dup)
+10000000
+4

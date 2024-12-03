@@ -1,0 +1,3 @@
+(exec.stackdepth (integer.- exec.stackdepth) (integer.% boolean.frominteger) float.%)
+1000000
+-836

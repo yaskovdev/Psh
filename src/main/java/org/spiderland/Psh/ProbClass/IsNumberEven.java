@@ -1,14 +1,10 @@
 package org.spiderland.Psh.ProbClass;
 
-import org.spiderland.Psh.BooleanStack;
-import org.spiderland.Psh.GAIndividual;
-import org.spiderland.Psh.GATestCase;
-import org.spiderland.Psh.IntStack;
-import org.spiderland.Psh.Interpreter;
-import org.spiderland.Psh.PushGP;
-import org.spiderland.Psh.PushGPIndividual;
+import org.spiderland.Psh.*;
 
-import static java.util.stream.IntStream.range;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class IsNumberEven extends PushGP {
 
@@ -20,9 +16,7 @@ public class IsNumberEven extends PushGP {
 
     protected void initFromParameters() throws Exception {
         super.initFromParameters();
-        testCases = range(0, 100)
-                .mapToObj(it -> new GATestCase(it, it % 2 == 0))
-                .toList();
+        testCases = sampleTestCases(-1000000000, 1000000000, 50);
     }
 
     @Override
@@ -39,5 +33,17 @@ public class IsNumberEven extends PushGP {
             final boolean actual = booleanStack.pop();
             return expected == actual ? 0 : MAX_ERROR;
         }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private List<GATestCase> sampleTestCases(final int min, final int max, final int numberOfSamples) {
+        final Set<Integer> integers = new HashSet<>();
+        while (integers.size() < numberOfSamples) {
+            integers.add(random.nextInt(max - min) + min);
+        }
+        return integers
+                .stream()
+                .map(it -> new GATestCase(it, it % 2 == 0))
+                .toList();
     }
 }
