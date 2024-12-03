@@ -11,14 +11,27 @@
         60 integer.yankdup
         (6 integer.+) integer.yankdup
 
+        integer.dup
+        0 integer.=
+        exec.if ( exec.flush ) ()
+
+        integer.dup
+        -1 integer.=
+        exec.if () ()
+
+        integer.dup
+        -2 integer.=
+        exec.if () ()
+
+        integer.dup
         -3 integer.=
-        exec.if
-        (
-            -3.0
-        )
-        (
-            3.0
-        )
+        exec.if () ()
+
+        integer.dup
+        -4 integer.=
+        exec.if () ()
+
+        integer.pop
 
         60 integer.yank
         1 integer.+
