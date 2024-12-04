@@ -1,10 +1,10 @@
 (
     0 0
 
-    16 exec.do*times ( 0 )
-    (0 3 -4 1 -4 1 -2 5 -1 -3 5 -4 5 -2 4 -1 1 -1 -3 3 -2 4 -4 4 -2 2 -1 -3 -3 2 -4 2 -2 5 -1 4 -1 -3)
+    46 exec.do*times ( 0 )
+    (0 3 -4 3 -2 2 -1 -3)
 
-    0 0 0 0 0 0
+    0 0 3 6 0 0
 
     54 exec.do*times
     (
@@ -60,37 +60,36 @@
             exec.y
             (
                 (1 61 integer.+) integer.yankdup
-                1 integer.=
+                0 integer.>
 
-                1.0
-                (1 60 integer.+) integer.yank
-                1 integer.+
-                (1 60 integer.+) integer.shove
-
-                1 60 integer.+ integer.yankdup
-                1 (6 integer.+) integer.+ integer.yankdup
-
-                integer.dup
-                (-3 integer.=) exec.if
+                exec.if
                 (
-                    (2 61 integer.+) integer.yank
+                    (1 60 integer.+) integer.yank
                     1 integer.+
-                    (2 61 integer.+) integer.shove
-                ) ()
+                    (1 60 integer.+) integer.shove
 
-                integer.dup
-                (-4 integer.=) exec.if
-                (
-                    (2 61 integer.+) integer.yank
-                    -1 integer.+
-                    (2 61 integer.+) integer.shove
-                ) ()
+                    1 60 integer.+ integer.yankdup
+                    1 (6 integer.+) integer.+ integer.yankdup
 
-                integer.pop
+                    integer.dup
+                    (-3 integer.=) exec.if
+                    (
+                        (2 61 integer.+) integer.yank
+                        1 integer.+
+                        (2 61 integer.+) integer.shove
+                    ) ()
 
-                exec.if () exec.pop
+                    integer.dup
+                    (-4 integer.=) exec.if
+                    (
+                        (2 61 integer.+) integer.yank
+                        -1 integer.+
+                        (2 61 integer.+) integer.shove
+                    ) ()
+
+                    integer.pop
+                ) exec.pop
             )
-            exec.flush
 
             (1 60 integer.+) integer.yank
             -1 integer.+
@@ -113,9 +112,35 @@
                 exec.y
                 (
                     (1 61 integer.+) integer.yankdup
-                    1 integer.=
+                    0 integer.>
 
-                    exec.if () exec.pop
+                    exec.if
+                    (
+                        (1 60 integer.+) integer.yank
+                        -1 integer.+
+                        (1 60 integer.+) integer.shove
+
+                        1 60 integer.+ integer.yankdup
+                        1 (6 integer.+) integer.+ integer.yankdup
+
+                        integer.dup
+                        (-4 integer.=) exec.if
+                        (
+                            (2 61 integer.+) integer.yank
+                            1 integer.+
+                            (2 61 integer.+) integer.shove
+                        ) ()
+
+                        integer.dup
+                        (-3 integer.=) exec.if
+                        (
+                            (2 61 integer.+) integer.yank
+                            -1 integer.+
+                            (2 61 integer.+) integer.shove
+                        ) ()
+
+                        integer.pop
+                    ) exec.pop
                 )
             )
             (
