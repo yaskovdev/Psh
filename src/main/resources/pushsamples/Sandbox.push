@@ -57,7 +57,39 @@
             1 integer.+
             (1 61 integer.+) integer.shove
 
-            // TODO: while
+            exec.y
+            (
+                (1 61 integer.+) integer.yankdup
+                1 integer.=
+
+                1.0
+                (1 60 integer.+) integer.yank
+                1 integer.+
+                (1 60 integer.+) integer.shove
+
+                1 60 integer.+ integer.yankdup
+                1 (6 integer.+) integer.+ integer.yankdup
+
+                integer.dup
+                (-3 integer.=) exec.if
+                (
+                    (2 61 integer.+) integer.yank
+                    1 integer.+
+                    (2 61 integer.+) integer.shove
+                ) ()
+
+                integer.dup
+                (-4 integer.=) exec.if
+                (
+                    (2 61 integer.+) integer.yank
+                    -1 integer.+
+                    (2 61 integer.+) integer.shove
+                ) ()
+
+                integer.pop
+
+                exec.if () exec.pop
+            )
             exec.flush
 
             (1 60 integer.+) integer.yank
@@ -78,7 +110,13 @@
                 1 integer.+
                 (1 61 integer.+) integer.shove
 
-                // TODO: while
+                exec.y
+                (
+                    (1 61 integer.+) integer.yankdup
+                    1 integer.=
+
+                    exec.if () exec.pop
+                )
             )
             (
                 (1 60 integer.+) integer.yank
