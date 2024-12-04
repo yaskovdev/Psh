@@ -57,7 +57,12 @@
             1 integer.+
             (1 61 integer.+) integer.shove
 
-            // TODO: while + memory[60]--;
+            // TODO: while
+            exec.flush
+
+            (1 60 integer.+) integer.yank
+            -1 integer.+
+            (1 60 integer.+) integer.shove
         ) ()
 
         integer.dup
