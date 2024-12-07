@@ -2,6 +2,11 @@ package org.spiderland.Psh;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -48,5 +53,11 @@ public class ProgramTest {
         Program q = new Program("( 3 ( TEST2 ( X ) ( 3 ) ) )");
 
         assertEquals(q, p);
+    }
+
+    @Test
+    public void shouldReadProgramWithComments() throws Exception {
+        var programWithComments = Files.readString(TestUtil.getFileFromResource("ProgramWithComments.push").toPath());
+        assertThat(new Program(programWithComments), is(new Program("( 7 integer.= )")));
     }
 }

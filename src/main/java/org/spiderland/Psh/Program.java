@@ -1,6 +1,8 @@
 package org.spiderland.Psh;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A Push program.
@@ -8,6 +10,8 @@ import java.io.Serializable;
 
 public class Program extends ObjectStack implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    private static final Pattern PATTERN = Pattern.compile("#.*$", Pattern.MULTILINE);
 
     /**
      * Constructs an empty Program.
@@ -41,7 +45,7 @@ public class Program extends ObjectStack implements Serializable {
     private void parse(String inString) {
         clear();
 
-        inString = inString.replace("(", " ( ");
+        inString = withoutComments(inString).replace("(", " ( ");
         inString = inString.replace(")", " ) ");
 
         String[] tokens = inString.split("\\s+");
@@ -291,4 +295,8 @@ public class Program extends ObjectStack implements Serializable {
         return null;
     }
 
+    private static String withoutComments(final String program) {
+        final var matcher = PATTERN.matcher(program);
+        return matcher.replaceAll("");
+    }
 }

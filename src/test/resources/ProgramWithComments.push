@@ -1,0 +1,5 @@
+(
+    # This is a simple Push program
+    7 integer.= # Comparing with 7
+)
+10000000
