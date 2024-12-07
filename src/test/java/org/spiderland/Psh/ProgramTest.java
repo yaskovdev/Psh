@@ -2,7 +2,6 @@ package org.spiderland.Psh;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.nio.file.Files;
 
 import static org.hamcrest.MatcherAssert.assertThat;

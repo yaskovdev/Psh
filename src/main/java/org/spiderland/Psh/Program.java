@@ -1,7 +1,6 @@
 package org.spiderland.Psh;
 
 import java.io.Serializable;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
