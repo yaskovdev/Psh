@@ -32,7 +32,7 @@
             # Push the incremented value of the program pointer on top of the stack
             1 60 integer.+ integer.yankdup
 
-            # "Exchange" the value of the program pointer for the the register index
+            # "Exchange" the value of the program pointer for the register index
             1 (6 integer.+) integer.+ integer.yankdup
             # We will exchange one copy of the register index for the value of the register and use the other to save the incremented value later
             integer.dup
